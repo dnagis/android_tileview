@@ -1,6 +1,10 @@
 TileView remasterisé pour passer dans l'aosp
 
-attention j'ai viré les jpg de assets/tiles/ of course, je vais pas bloater mon github
+adb uninstall tileview.demo
+adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
+pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+
+j'ai enlevé les jpg de assets/tiles/ of course, je vais pas bloater mon github
 
 HOWTO passer du projet tileview vers qq chose qui compile dans l'aosp/development/samples/
 
@@ -52,5 +56,4 @@ dans le manifest enlever android:name=".DemoApplication" sinon bloque au démarr
 
 l'apk fait 15Mo (le contenu de assets pèse 28 Mo)
 
-adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
-adb uninstall tileview.demo
+
