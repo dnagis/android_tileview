@@ -17,14 +17,17 @@ public class StreamProviderFiles implements StreamProvider {
   public InputStream getStream(int column, int row, Context context, Object data) throws Exception {
     String file = String.format(Locale.US, (String) data, column, row);
     
-    //try {
-   return new FileInputStream(file);
-	//} catch (FileNotFoundException ex) {
-   //Log.d("vvnx", "exception");
-	//}
+    FileInputStream is = null;
     
+    try {
+   is = new FileInputStream(file); 
+
+	} catch (FileNotFoundException ex) {
+   Log.d("vvnx", "exception:" + ex);
+	}
     
-    //return is;
+   return is;    
+    
   }
 
 }

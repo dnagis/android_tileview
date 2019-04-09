@@ -20,7 +20,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
-import com.qozix.tileview.R;
+//import com.qozix.tileview.R;
+import tileview.demo.R;
 
 
 /**

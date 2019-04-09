@@ -35,6 +35,11 @@ commenter deux lignes qui contiennent Sthetho dans DemoApplication.java
 "R cannot be resolved to a variable" à chaque fois qu'il y a R dans un .java  AndroidManifest.xml assets/ et res/ qui sont tout en bas de la path de demo/--> passer dans TOPDIR/ 
 vraisemblablement cette erreur vient à chaque fois que pb dans le manifest, dans res/
 
+java/com/qozix/widget/ScrollView.java:23.8: The import com.qozix.tileview.R cannot be resolved --> entraîne des R cannot be resolved to a variable
+	j'ai cherché dans out/ des R.java à un endroit qui pourrait correspondre. effectivement pas de com/qozix mais un out/target/common/R/tileview/demo/R.java
+	du coup import tileview.demo.R;
+	à mon avis le problème vient d'anciens builds qui laissent des R.java. Le problème c'est que je sais pas nettoyer out/
+
 "No resource found that matches the given name: attr 'color{Accent,Primary,PrimaryDark}'. --> res/values/styles.xml --> <item name="android:colorPrimary">@color/colorPrimary</item> au lieu de <item name="colorPrimary">@color/colorPrimary</item>
 un bon moment passé là dessus-> c'est aapt qui parse res/ la commande simplifiée et qui évite de régénérer à chaque make et donc de passer 5 minutes à chaque essai: 
 aapt package -M development/samples/TileView/tileview/src/main/AndroidManifest.xml -P /initrd/mnt/dev_save/android/lineageOS/sources/out/target/common/obj/APPS/TileView_intermediates/public_resources.xml -S development/samples/TileView/tileview/src/main/res -A development/samples/TileView/tileview/src/main/assets -I /initrd/mnt/dev_save/android/lineageOS/sources/out/target/common/obj/APPS/framework-res_intermediates/package-export.apk -v
