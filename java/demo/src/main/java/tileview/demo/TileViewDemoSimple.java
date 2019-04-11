@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.File;
 import java.lang.StringBuilder;
 import java.lang.String;
+import java.lang.Double;
 import android.content.Context;
 
 import android.widget.ImageView;
@@ -31,6 +32,8 @@ public class TileViewDemoSimple extends Activity {
   public static final double WEST = 39.9639998777094;
   public static final double SOUTH = -75.12462846235614;
   public static final double EAST = 39.93699709962642;
+  double[] coordinate = new double[]{-75.1494000, 39.9487722};
+  
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,12 @@ public class TileViewDemoSimple extends Activity {
     //Context mContext = getApplicationContext();    
     //Log.d("vvnx", "getfilesdir=" + mContext.getFilesDir()); //me donne /data/user/0/tileview.demo/files
     
+    
+    //récup des coordonnées qui vont servir à créer marker, dans un fichier
     //permissions pour lire sdcard: manifest: android.permission.READ_EXTERNAL_STORAGE
     //***et***
     //pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
-	File fichier = new File("/sdcard/essai.txt");    
+	File fichier = new File("/sdcard/gps.txt");    
     StringBuilder text = new StringBuilder();    
     try {
 	   BufferedReader br = new BufferedReader(new FileReader(fichier));
@@ -56,13 +61,18 @@ public class TileViewDemoSimple extends Activity {
         text.append(line);
         text.append('\n');
     }
-    br.close();
-    
+    br.close();    
     } catch(IOException e) {
-				    Log.d("vvnx", "erreur" + e.getMessage());
-			}
+				    Log.d("vvnx", "erreur" + e.getMessage());	}
 
     Log.d("vvnx", "contenu du fichier=" + text);
+    
+    String[] monArray = text.toString().split(" ");
+    coordinate[0] = Double.parseDouble(monArray[1]);
+    coordinate[1] = Double.parseDouble(monArray[2]);
+    
+    Log.d("vvnx", "les coordonnees recup = " + coordinate[0] + " " + coordinate[1]);
+     
     
 	 /**
 	 * dans assets ils mettent phi-1000000-[0-69]_[0-52].jpg de 256*256 
@@ -91,7 +101,7 @@ public class TileViewDemoSimple extends Activity {
     CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);
 
-	double[] coordinate = new double[]{-75.1494000, 39.9487722};
+
 
     
 	int x = coordinatePlugin.longitudeToX(coordinate[1]);
