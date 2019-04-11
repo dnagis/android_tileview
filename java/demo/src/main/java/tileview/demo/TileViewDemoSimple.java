@@ -8,6 +8,14 @@ import android.os.Bundle;
 import com.qozix.tileview.io.StreamProvider;
 import com.qozix.tileview.io.StreamProviderFiles;
 
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.File;
+import java.lang.StringBuilder;
+import java.lang.String;
+import android.content.Context;
+
 import android.widget.ImageView;
 
 import com.qozix.tileview.TileView;
@@ -32,8 +40,29 @@ public class TileViewDemoSimple extends Activity {
     setContentView(R.layout.activity_demos_tileview);
     
     //accéder à mon espace perso en espérant que ce soit plus rapide qu'external storage...
-    Context mContext = getApplicationContext();    
-    Log.d("vvnx", "getfilesdir=" + mContext.getFilesDir()); //me donne /data/user/0/tileview.demo/files
+    //Context mContext = getApplicationContext();    
+    //Log.d("vvnx", "getfilesdir=" + mContext.getFilesDir()); //me donne /data/user/0/tileview.demo/files
+    
+    //permissions pour lire sdcard: manifest: android.permission.READ_EXTERNAL_STORAGE
+    //***et***
+    //pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+	File fichier = new File("/sdcard/essai.txt");    
+    StringBuilder text = new StringBuilder();    
+    try {
+	   BufferedReader br = new BufferedReader(new FileReader(fichier));
+		String line;
+
+    while ((line = br.readLine()) != null) {
+        text.append(line);
+        text.append('\n');
+    }
+    br.close();
+    
+    } catch(IOException e) {
+				    Log.d("vvnx", "erreur" + e.getMessage());
+			}
+
+    Log.d("vvnx", "contenu du fichier=" + text);
     
 	 /**
 	 * dans assets ils mettent phi-1000000-[0-69]_[0-52].jpg de 256*256 
