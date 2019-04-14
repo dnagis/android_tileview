@@ -34,6 +34,12 @@ public class TileViewDemoSimple extends Activity {
   public static final double EAST = 39.93699709962642;
   double[] coordinate = new double[]{-75.1494000, 39.9487722};
   
+  /**public static final double NORTH = 3.90014;
+  public static final double WEST = 44.0422;
+  public static final double SOUTH = 3.51560;
+  public static final double EAST = 43.83054;
+  double[] coordinate = new double[]{3.709521, 43.934109};**/  
+  
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +74,10 @@ public class TileViewDemoSimple extends Activity {
     Log.d("vvnx", "contenu du fichier=" + text);
     
     String[] monArray = text.toString().split(" ");
-    coordinate[0] = Double.parseDouble(monArray[1]);
-    coordinate[1] = Double.parseDouble(monArray[2]);
+    //coordinate[0] = Double.parseDouble(monArray[1]);
+    //coordinate[1] = Double.parseDouble(monArray[2]);
     
-    Log.d("vvnx", "les coordonnees recup = " + coordinate[0] + " " + coordinate[1]);
+    Log.d("vvnx", "les coordonnees quon va utiliser pr le marker = " + coordinate[0] + " " + coordinate[1]);
      
     
 	 /**

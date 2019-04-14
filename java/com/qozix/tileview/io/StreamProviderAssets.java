@@ -12,7 +12,7 @@ public class StreamProviderAssets implements StreamProvider {
   @Override
   public InputStream getStream(int column, int row, Context context, Object data) throws IOException {
     String file = String.format(Locale.US, (String) data, column, row);
-    Log.d("vvnx", "file=" + file);
+    //Log.d("vvnx", "file=" + file);
     return context.getAssets().open(file);
   }
 }
