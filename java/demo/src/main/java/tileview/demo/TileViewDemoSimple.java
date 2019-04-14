@@ -83,7 +83,10 @@ public class TileViewDemoSimple extends Activity {
     TileView tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
         .setSize(17934, 13452) 
-        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
+//        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
+		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
+		  .setRow0(23820)
+		  .setCol0(33408)
 //        .defineZoomLevel("/data/user/0/tileview.demo/files/tiles/phi-1000000-%1$d_%2$d.jpg")
 //        .defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg")
 //        .setStreamProvider(new StreamProviderFiles())

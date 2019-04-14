@@ -25,6 +25,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import android.util.Log;
+
 public class TileView extends ScalingScrollView implements
     Handler.Callback,
     ScalingScrollView.ScaleChangedListener,
@@ -45,6 +47,10 @@ public class TileView extends ScalingScrollView implements
   private boolean mIsLaidOut;
   private boolean mHasRunOnReady;
   private Detail mCurrentDetail;
+  
+  //vvnx
+  private int mRow0_vvnx = 0;
+  private int mCol0_vvnx = 0;
 
   private Set<Listener> mListeners = new LinkedHashSet<>();
   private Set<ReadyListener> mReadyListeners = new LinkedHashSet<>();
@@ -147,12 +153,16 @@ public class TileView extends ScalingScrollView implements
   public void removeViews(int start, int count) {
     mContainer.removeViews(start, count);
   }
-
+  
   // public
 
   public int getZoom() {
     return mZoom;
   }
+  
+
+    
+
 
   public boolean addListener(Listener listener) {
     return mListeners.add(listener);
@@ -419,11 +429,14 @@ public class TileView extends ScalingScrollView implements
     // determine which tiles should be showing.  use sample size for patching very small tiles together
     mNewlyVisibleTiles.clear();
     populateTileGridFromViewport();
+    //Log.d("vvnx", "grid rows.start=" + mGrid.rows.start + "grid rows.end=" + mGrid.rows.end); //variables modifiées à chaque move/zoom event
     for (int row = mGrid.rows.start; row < mGrid.rows.end; row += mImageSample) {
       for (int column = mGrid.columns.start; column < mGrid.columns.end; column += mImageSample) {
         Tile tile = mTilePool.get();
         tile.setColumn(column);
         tile.setRow(row);
+        tile.setRow0(mRow0_vvnx);
+        tile.setCol0(mCol0_vvnx);
         tile.setDetail(mCurrentDetail);
         tile.setImageSample(mImageSample);
         mNewlyVisibleTiles.add(tile);
@@ -641,6 +654,18 @@ public class TileView extends ScalingScrollView implements
       mTileView.mTileSize = tileSize;
       return this;
     }
+    
+    //vvnx
+    public Builder setRow0(int new_row0) {
+      mTileView.mRow0_vvnx = new_row0;
+      return this;
+    }
+    
+    public Builder setCol0(int new_col0) {
+      mTileView.mCol0_vvnx = new_col0;
+      return this;
+    }
+    //vvnx
 
     public Builder setDiskCachePolicity(DiskCachePolicy policy) {
       mTileView.mDiskCachePolicy = policy;
@@ -693,5 +718,7 @@ public class TileView extends ScalingScrollView implements
   public enum DiskCachePolicy {
     CACHE_NONE, CACHE_PATCHES, CACHE_ALL
   }
+  
+
 
 }

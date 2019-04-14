@@ -21,6 +21,9 @@ public class Tile implements Runnable {
   // variable (settable)
   private int mRow;
   private int mColumn;
+  private int mRow0_vvnx;
+  private int mCol0_vvnx;
+  
   private int mImageSample = 1;
   private Detail mDetail;
 
@@ -89,6 +92,14 @@ public class Tile implements Runnable {
 
   public void setColumn(int column) {
     mColumn = column;
+  }
+  
+  public void setRow0(int row0) {
+    mRow0_vvnx = row0;
+  }
+  
+  public void setCol0(int col0) {
+    mCol0_vvnx = col0;
   }
 
   public void setImageSample(int imageSample) {
@@ -177,7 +188,7 @@ public class Tile implements Runnable {
         }
       }
       // no strong disk cache policy, go ahead and decode
-      InputStream stream = mStreamProvider.getStream(mColumn, mRow, context, mDetail.getData());
+      InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx, mRow + mRow0_vvnx , context, mDetail.getData());
       if (stream != null) {
         // measure it and populate measure options to pass to cache
         BitmapFactory.decodeStream(stream, null, mMeasureOptions);
@@ -215,7 +226,7 @@ public class Tile implements Runnable {
           if (mState != State.DECODING) {
             return;
           }
-          InputStream stream = mStreamProvider.getStream(mColumn + j, mRow + i, context, mDetail.getData());
+          InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i, context, mDetail.getData());
           if (stream != null) {
             Bitmap piece = BitmapFactory.decodeStream(stream, null, mDrawingOptions);
             canvas.drawBitmap(piece, j * size, i * size, null);
