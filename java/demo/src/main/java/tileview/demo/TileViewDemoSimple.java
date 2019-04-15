@@ -28,17 +28,17 @@ import android.content.Context;
 
 public class TileViewDemoSimple extends Activity {
 	
-  public static final double NORTH = -75.17261900652977;
+  /**public static final double NORTH = -75.17261900652977;
   public static final double WEST = 39.9639998777094;
   public static final double SOUTH = -75.12462846235614;
   public static final double EAST = 39.93699709962642;
-  double[] coordinate = new double[]{-75.1494000, 39.9487722};
+  double[] coordinate = new double[]{-75.1494000, 39.9487722};**/
   
-  /**public static final double NORTH = 3.90014;
+  public static final double NORTH = 3.90014;
   public static final double WEST = 44.0422;
   public static final double SOUTH = 3.51560;
   public static final double EAST = 43.83054;
-  double[] coordinate = new double[]{3.709521, 43.934109};**/  
+  double[] coordinate = new double[]{3.709521, 43.934109};  
   
 
   @Override
@@ -115,6 +115,7 @@ public class TileViewDemoSimple extends Activity {
     
 	int x = coordinatePlugin.longitudeToX(coordinate[1]);
 	int y = coordinatePlugin.latitudeToY(coordinate[0]);
+	Log.d("vvnx", "le marker a x=" + x + " et y=" + y);
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
