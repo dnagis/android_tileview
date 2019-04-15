@@ -34,11 +34,18 @@ public class TileViewDemoSimple extends Activity {
   public static final double EAST = 39.93699709962642;
   double[] coordinate = new double[]{-75.1494000, 39.9487722};**/
   
-  public static final double NORTH = 3.90014;
+  //ganges
+  /**public static final double NORTH = 3.90014;
   public static final double WEST = 44.0422;
   public static final double SOUTH = 3.51560;
   public static final double EAST = 43.83054;
-  double[] coordinate = new double[]{3.709521, 43.934109};  
+  double[] coordinate = new double[]{3.709521, 43.934109};**/  
+  //palavas
+  public static final double NORTH = 3.93859863281;
+  public static final double WEST = 43.5326204268;
+  public static final double SOUTH = 3.90014648438;
+  public static final double EAST = 43.516688535;
+  double[] coordinate = new double[]{3.92032146453857, 43.5224723815918};
   
 
   @Override
@@ -84,18 +91,21 @@ public class TileViewDemoSimple extends Activity {
 	 * dans assets ils mettent phi-1000000-[0-69]_[0-52].jpg de 256*256 
 	 * 69*256 = 17920
 	 * 52*256 = 13312
+	 * 
+	 * 7*256 = 1792
+	 * 5*256 = 1280
 	 */
 
     TileView tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
-        .setSize(17934, 13452) 
+//        .setSize(17934, 13452) //pour 69 col par 52 row
+			.setSize(1792, 1280) //pour 7 col par 5 row
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
-		  .setRow0(23820)
-		  .setCol0(33408)
-//        .defineZoomLevel("/data/user/0/tileview.demo/files/tiles/phi-1000000-%1$d_%2$d.jpg")
-//        .defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg")
-//        .setStreamProvider(new StreamProviderFiles())
+//		  .setRow0(23820) //ganges
+//		  .setCol0(33408) //ganges
+		  .setCol0(33478) //pal
+		  .setRow0(23948) //pal
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 		.addReadyListener(this::onReady)
@@ -106,21 +116,14 @@ public class TileViewDemoSimple extends Activity {
   
   
     private void onReady(TileView tileView) {
-
     CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
-    MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);
-
-
-
-    
+    MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
 	int x = coordinatePlugin.longitudeToX(coordinate[1]);
 	int y = coordinatePlugin.latitudeToY(coordinate[0]);
 	Log.d("vvnx", "le marker a x=" + x + " et y=" + y);
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
-    
-
   }
 
 }
