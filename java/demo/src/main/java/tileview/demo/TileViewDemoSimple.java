@@ -73,8 +73,8 @@ public class TileViewDemoSimple extends Activity {
     Log.d("vvnx", "contenu du fichier=" + text);
     
     String[] monArray = text.toString().split(" ");
-    //coordinate[0] = Double.parseDouble(monArray[1]);
-    //coordinate[1] = Double.parseDouble(monArray[2]);
+    coordinate[0] = Double.parseDouble(monArray[1]);
+    coordinate[1] = Double.parseDouble(monArray[2]);
     
     Log.d("vvnx", "les coordonnees quon va utiliser pr le marker = " + coordinate[0] + " " + coordinate[1]);
      
