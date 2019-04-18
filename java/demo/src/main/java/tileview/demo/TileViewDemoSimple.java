@@ -28,24 +28,16 @@ import android.content.Context;
 
 public class TileViewDemoSimple extends Activity {
 	
-  /**public static final double NORTH = -75.17261900652977;
-  public static final double WEST = 39.9639998777094;
-  public static final double SOUTH = -75.12462846235614;
-  public static final double EAST = 39.93699709962642;
-  double[] coordinate = new double[]{-75.1494000, 39.9487722};**/
-  
-  //ganges
-  /**public static final double NORTH = 3.90014;
-  public static final double WEST = 44.0422;
-  public static final double SOUTH = 3.51560;
-  public static final double EAST = 43.83054;
-  double[] coordinate = new double[]{3.709521, 43.934109};**/  
+  //coordonnées: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames --> en python, mon script latlong, 
   //palavas
-  public static final double NORTH = 3.93859863281;
-  public static final double WEST = 43.5326204268;
-  public static final double SOUTH = 3.90014648438;
-  public static final double EAST = 43.516688535;
-  double[] coordinate = new double[]{3.92032146453857, 43.5224723815918};
+  //upper left tile : COL0=33478 ROW0=23948 43.53262042681010 3.90014648437500
+  //angle bas droite j'ai tile max bas à dte 33484 23952 donc je calcule upper left corner de 33484+1 23952+1 43.51270490464819 3.93859863281250
+  public static final double NORTH = 43.53262042681010;
+  public static final double WEST = 3.90014648437500;
+  public static final double SOUTH = 43.51270490464819;
+  public static final double EAST = 3.93859863281250;
+  //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
+  double[] coordinate = new double[]{43.5196571350098,3.91340827941895};
   
 
   @Override
