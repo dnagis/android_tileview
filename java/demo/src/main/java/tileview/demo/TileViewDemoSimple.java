@@ -53,34 +53,6 @@ public class TileViewDemoSimple extends Activity {
     //Context mContext = getApplicationContext();    
     //Log.d("vvnx", "getfilesdir=" + mContext.getFilesDir()); //me donne /data/user/0/tileview.demo/files
     
-    
-    //récup des coordonnées qui vont servir à créer marker, dans un fichier
-    //permissions pour lire sdcard: manifest: android.permission.READ_EXTERNAL_STORAGE
-    //***et***
-    //pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
-	File fichier = new File("/sdcard/gps.txt");    
-    StringBuilder text = new StringBuilder();    
-    try {
-	   BufferedReader br = new BufferedReader(new FileReader(fichier));
-		String line;
-
-    while ((line = br.readLine()) != null) {
-        text.append(line);
-        text.append('\n');
-    }
-    br.close();    
-    } catch(IOException e) {
-				    Log.d("vvnx", "erreur" + e.getMessage());	}
-
-    Log.d("vvnx", "contenu du fichier=" + text);
-    
-    String[] arrayCoord = text.toString().split(" ");
-    coordinates[0] = Double.parseDouble(arrayCoord[1]);
-    coordinates[1] = Double.parseDouble(arrayCoord[2]);
-    
-    Log.d("vvnx", "les coordonnees dans le fichier /sdcard/gps.txt = " + coordinates[0] + " " + coordinates[1]);
-     
-    
 	 /**
 	 * dans assets ils mettent phi-1000000-[0-69]_[0-52].jpg de 256*256 
 	 * 69*256 = 17920
@@ -124,6 +96,7 @@ public class TileViewDemoSimple extends Activity {
     protected void onResume() {
 	super.onResume();
 	Log.d("vvnx", "onResume");
+	recup_latlng_fichier();
 	CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
 	int x = coordinatePlugin.longitudeToX(coordinates[1]);
@@ -134,5 +107,36 @@ public class TileViewDemoSimple extends Activity {
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
 	
   }
+  
+  
+    public void recup_latlng_fichier(){
+	/**récup des coordonnées qui vont servir à créer marker, dans un fichier
+    permissions pour lire sdcard: manifest: android.permission.READ_EXTERNAL_STORAGE
+    ***et***
+    pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE**/
+    
+	File fichier = new File("/sdcard/gps.txt");    
+    StringBuilder text = new StringBuilder();    
+    try {
+	   BufferedReader br = new BufferedReader(new FileReader(fichier));
+		String line;
+
+    while ((line = br.readLine()) != null) {
+        text.append(line);
+        text.append('\n');
+    }
+    br.close();    
+    } catch(IOException e) {
+				    Log.d("vvnx", "erreur" + e.getMessage());	}
+
+    //Log.d("vvnx", "contenu du fichier=" + text);
+    
+    String[] arrayCoord = text.toString().split(" ");
+    coordinates[0] = Double.parseDouble(arrayCoord[1]);
+    coordinates[1] = Double.parseDouble(arrayCoord[2]);
+    
+    Log.d("vvnx", "les coordonnees dans le fichier /sdcard/gps.txt = " + coordinates[0] + " " + coordinates[1]);
+
+    }
 
 }
