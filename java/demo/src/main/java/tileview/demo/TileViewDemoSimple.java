@@ -37,8 +37,10 @@ public class TileViewDemoSimple extends Activity {
   public static final double SOUTH = 43.51270490464819;
   public static final double EAST = 3.93859863281250;
   //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
-  double[] coordinate = new double[]{43.5196571350098,3.91340827941895};
+  double[] coordinates = new double[]{43.5196571350098,3.91340827941895};
   
+  TileView tileView;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +74,11 @@ public class TileViewDemoSimple extends Activity {
 
     Log.d("vvnx", "contenu du fichier=" + text);
     
-    String[] monArray = text.toString().split(" ");
-    coordinate[0] = Double.parseDouble(monArray[1]);
-    coordinate[1] = Double.parseDouble(monArray[2]);
+    String[] arrayCoord = text.toString().split(" ");
+    coordinates[0] = Double.parseDouble(arrayCoord[1]);
+    coordinates[1] = Double.parseDouble(arrayCoord[2]);
     
-    Log.d("vvnx", "les coordonnees quon va utiliser pr le marker = " + coordinate[0] + " " + coordinate[1]);
+    Log.d("vvnx", "les coordonnees dans le fichier /sdcard/gps.txt = " + coordinates[0] + " " + coordinates[1]);
      
     
 	 /**
@@ -88,7 +90,7 @@ public class TileViewDemoSimple extends Activity {
 	 * 5*256 = 1280
 	 */
 
-    TileView tileView = findViewById(R.id.tileview);
+    tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
 //        .setSize(17934, 13452) //pour 69 col par 52 row
 			.setSize(1792, 1280) //pour 7 col par 5 row
@@ -100,14 +102,14 @@ public class TileViewDemoSimple extends Activity {
 		  .setRow0(23948) //pal
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
-		.addReadyListener(this::onReady)
+//		.addReadyListener(this::onReady)
         .build();
 
   }
   
   
   
-    private void onReady(TileView tileView) {
+    /*private void onReady(TileView tileView) {
     CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
 	int x = coordinatePlugin.longitudeToX(coordinate[1]);
@@ -116,6 +118,21 @@ public class TileViewDemoSimple extends Activity {
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
+  }*/
+  
+	@Override
+    protected void onResume() {
+	super.onResume();
+	Log.d("vvnx", "onResume");
+	CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+    MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
+	int x = coordinatePlugin.longitudeToX(coordinates[1]);
+	int y = coordinatePlugin.latitudeToY(coordinates[0]);
+	Log.d("vvnx", "le marker a x=" + x + " et y=" + y);
+	ImageView marker = new ImageView(this);
+	marker.setImageResource(R.drawable.marker);
+	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
+	
   }
 
 }
