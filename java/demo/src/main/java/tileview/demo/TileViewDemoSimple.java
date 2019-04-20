@@ -29,15 +29,16 @@ import android.content.Context;
 public class TileViewDemoSimple extends Activity {
 	
   //coordonnées: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames --> en python, mon script latlong, 
-  //palavas
   //upper left tile : COL0=33478 ROW0=23948 43.53262042681010 3.90014648437500
-  //angle bas droite j'ai tile max bas à dte 33484 23952 donc je calcule upper left corner de 33484+1 23952+1 43.51270490464819 3.93859863281250
-  public static final double NORTH = 43.53262042681010;
-  public static final double WEST = 3.90014648437500;
-  public static final double SOUTH = 43.51270490464819;
-  public static final double EAST = 3.93859863281250;
+  //si j'ai n tiles en horizontal (x, col) et m tiles en vertical (y, row), pour calculer les coordonnées en bas à droite il me faut les coordonnées
+  //upper left (ce que latlng donne) de la tile de coordonnées x' y' avec x'=x+(n-1) et y'=y+(m-1) (pourquoi -1? parce que la première tile est incluse dans le lot (COL0 ROW0)
+  public static final double NORTH = 43.95723647202563;//43.53262042681010;
+  public static final double WEST = 3.68041992187500;//3.90014648437500;
+  public static final double SOUTH = 43.91768033000405;//43.51270490464819;
+  public static final double EAST = 3.73535156250000;//3.93859863281250;
   //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
-  double[] coordinates = new double[]{43.5196571350098,3.91340827941895};
+  //43.9341011047363,3.70944619178772 12 ru portail laroque
+  double[] coordinates = new double[]{43.9341011047363,3.70944619178772};
   
   TileView tileView;
 
@@ -65,13 +66,14 @@ public class TileViewDemoSimple extends Activity {
     tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
 //        .setSize(17934, 13452) //pour 69 col par 52 row
-			.setSize(1792, 1280) //pour 7 col par 5 row
+//		  .setSize(1792, 1280) //pour 7 col par 5 row
+		  .setSize(2560, 2560)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
-//		  .setRow0(23820) //ganges
-//		  .setCol0(33408) //ganges
-		  .setCol0(33478) //pal
-		  .setRow0(23948) //pal
+		  .setCol0(33438) //ganges
+		  .setRow0(23841) //ganges
+//		  .setCol0(33478) //pal
+//		  .setRow0(23948) //pal
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
