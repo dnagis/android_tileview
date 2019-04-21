@@ -95,6 +95,20 @@ public MarkerPlugin(Context context) {
         absoluteAnchorLeft, absoluteAnchorTop);
     addView(view, layoutParams);
   }
+  
+  public void updateMarkerPos(int x, int y) {
+	for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      if (child.getVisibility() != GONE) {
+        LayoutParams layoutParams = populateLayoutParams(child);
+        layoutParams.x = x;
+        layoutParams.y = y;
+		child.setLayoutParams(layoutParams);
+      }
+    }
+
+
+  }
 
   public static class LayoutParams extends ViewGroup.LayoutParams {
 

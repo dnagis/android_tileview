@@ -34,14 +34,15 @@ public class TileViewDemoSimple extends Activity {
   //upper left (ce que latlng donne) de la tile de coordonnées x' y' avec x'=x+(n-1) et y'=y+(m-1) (pourquoi -1? parce que la première tile est incluse dans le lot (COL0 ROW0)
   public static final double NORTH = 43.95723647202563;//43.53262042681010;
   public static final double WEST = 3.68041992187500;//3.90014648437500;
-  public static final double SOUTH = 43.91768033000405;//43.51270490464819;
-  public static final double EAST = 3.73535156250000;//3.93859863281250;
+  public static final double SOUTH = 43.86225752441793;//43.91768033000405;//43.51270490464819;
+  public static final double EAST = 3.81225585937500;//3.73535156250000;//3.93859863281250;
   //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
   //43.9341011047363,3.70944619178772 12 ru portail laroque
   double[] coordinates = new double[]{43.9341011047363,3.70944619178772};
   
   TileView tileView;
-
+  MarkerPlugin markerPlugin;
+  CoordinatePlugin coordinatePlugin;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class TileViewDemoSimple extends Activity {
     new TileView.Builder(tileView)
 //        .setSize(17934, 13452) //pour 69 col par 52 row
 //		  .setSize(1792, 1280) //pour 7 col par 5 row
-		  .setSize(2560, 2560)			
+		  .setSize(6400, 6400)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
 		  .setCol0(33438) //ganges
@@ -76,8 +77,17 @@ public class TileViewDemoSimple extends Activity {
 //		  .setRow0(23948) //pal
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
-//		.addReadyListener(this::onReady)
+		//.addReadyListener(this::onReady)
         .build();
+        
+    coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+    markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
+	int x = coordinatePlugin.longitudeToX(coordinates[1]);
+	int y = coordinatePlugin.latitudeToY(coordinates[0]);
+	Log.d("vvnx", "onReady, le marker a x=" + x + " et y=" + y);
+	ImageView marker = new ImageView(this);
+	marker.setImageResource(R.drawable.marker);
+	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
 
   }
   
@@ -85,10 +95,10 @@ public class TileViewDemoSimple extends Activity {
   
     /*private void onReady(TileView tileView) {
     CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
-    MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
-	int x = coordinatePlugin.longitudeToX(coordinate[1]);
-	int y = coordinatePlugin.latitudeToY(coordinate[0]);
-	Log.d("vvnx", "le marker a x=" + x + " et y=" + y);
+    markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
+	int x = coordinatePlugin.longitudeToX(coordinates[1]);
+	int y = coordinatePlugin.latitudeToY(coordinates[0]);
+	Log.d("vvnx", "onReady, le marker a x=" + x + " et y=" + y);
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
@@ -97,16 +107,19 @@ public class TileViewDemoSimple extends Activity {
 	@Override
     protected void onResume() {
 	super.onResume();
-	Log.d("vvnx", "onResume");
 	recup_latlng_fichier();
-	CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+	int x = coordinatePlugin.longitudeToX(coordinates[1]);
+	int y = coordinatePlugin.latitudeToY(coordinates[0]);
+	Log.d("vvnx", "onResume, on va mettre le marker a x=" + x + " et y=" + y);
+	markerPlugin.updateMarkerPos(x, y);
+	/*CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
 	int x = coordinatePlugin.longitudeToX(coordinates[1]);
 	int y = coordinatePlugin.latitudeToY(coordinates[0]);
 	Log.d("vvnx", "le marker a x=" + x + " et y=" + y);
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
-	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);
+	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);*/
 	
   }
   
