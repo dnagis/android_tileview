@@ -39,6 +39,9 @@ public class TileViewDemoSimple extends Activity {
   //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
   //43.9341011047363,3.70944619178772 12 ru portail laroque
   double[] coordinates = new double[]{43.9341011047363,3.70944619178772};
+  //size: setSize(17934, 13452) //pour 69 col par 52 row, setSize(1792, 1280) //pour 7 col par 5 row, ...
+  int sizePixelW = 6400;
+  int sizePixelH = 6400;
   
   TileView tileView;
   MarkerPlugin markerPlugin;
@@ -66,9 +69,7 @@ public class TileViewDemoSimple extends Activity {
 
     tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
-//        .setSize(17934, 13452) //pour 69 col par 52 row
-//		  .setSize(1792, 1280) //pour 7 col par 5 row
-		  .setSize(6400, 6400)			
+		  .setSize(sizePixelW, sizePixelH)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
 		  .setCol0(33438) //ganges
@@ -77,14 +78,18 @@ public class TileViewDemoSimple extends Activity {
 //		  .setRow0(23948) //pal
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
-		//.addReadyListener(this::onReady)
+//		.addReadyListener(this::onReady)
         .build();
-        
-    coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+     
+    if(coordinatePlugin == null) {   
+		Log.d("vvnx", "onCreate, coordinatePlugin null donc on le crée");
+		coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+		coordinatePlugin.updateWidthHeightVvnx(sizePixelW, sizePixelH);
+	}
     markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
 	int x = coordinatePlugin.longitudeToX(coordinates[1]);
 	int y = coordinatePlugin.latitudeToY(coordinates[0]);
-	Log.d("vvnx", "onReady, le marker a x=" + x + " et y=" + y);
+	Log.d("vvnx", "onCreate, le marker a x=" + x + " et y=" + y);
 	ImageView marker = new ImageView(this);
 	marker.setImageResource(R.drawable.marker);
 	markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
@@ -93,9 +98,10 @@ public class TileViewDemoSimple extends Activity {
   
   
   
-    /*private void onReady(TileView tileView) {
-    CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
-    markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
+/*    private void onReady(TileView tileView) {
+    coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
+    markerPlugin = tileView.getPlugin(MarkerPlugin.class);
+    recup_latlng_fichier();    
 	int x = coordinatePlugin.longitudeToX(coordinates[1]);
 	int y = coordinatePlugin.latitudeToY(coordinates[0]);
 	Log.d("vvnx", "onReady, le marker a x=" + x + " et y=" + y);
@@ -106,11 +112,16 @@ public class TileViewDemoSimple extends Activity {
   
 	@Override
     protected void onResume() {
+	int x = 1;
+	int y = 1;
 	super.onResume();
 	recup_latlng_fichier();
-	int x = coordinatePlugin.longitudeToX(coordinates[1]);
-	int y = coordinatePlugin.latitudeToY(coordinates[0]);
-	Log.d("vvnx", "onResume, on va mettre le marker a x=" + x + " et y=" + y);
+	if(coordinatePlugin != null) {
+	recup_latlng_fichier();
+	x = coordinatePlugin.longitudeToX(coordinates[1]);
+	y = coordinatePlugin.latitudeToY(coordinates[0]);
+	} 
+	Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
 	markerPlugin.updateMarkerPos(x, y);
 	/*CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
@@ -150,7 +161,7 @@ public class TileViewDemoSimple extends Activity {
     coordinates[0] = Double.parseDouble(arrayCoord[1]);
     coordinates[1] = Double.parseDouble(arrayCoord[2]);
     
-    Log.d("vvnx", "les coordonnees dans le fichier /sdcard/gps.txt = " + coordinates[0] + " " + coordinates[1]);
+    //Log.d("vvnx", "les coordonnees dans le fichier /sdcard/gps.txt = " + coordinates[0] + " " + coordinates[1]);
 
     }
 

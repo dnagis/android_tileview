@@ -2,6 +2,8 @@ package com.qozix.tileview.plugins;
 
 import com.qozix.tileview.TileView;
 
+import android.util.Log;
+
 /**
  * Note that coordinates are generally expressed as lat, lng
  * while 2D space is generally x, y
@@ -28,6 +30,11 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
     mDistanceLongitude = east - west;
     mDistanceLatitude = south - north;
   }
+  
+  public void updateWidthHeightVvnx(int w, int h) {
+	  mPixelWidth = w;
+	  mPixelHeight = h;
+	}
 
   @Override
   public void install(TileView tileView) {
@@ -39,6 +46,7 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
   public void onReady(TileView tileView) {
     mPixelWidth = tileView.getContentWidth();
     mPixelHeight = tileView.getContentHeight();
+    //Log.d("vvnx", "coordPlugin mPixelWidth=" + mPixelWidth);
   }
 
   // coordinate to pixel is multiplied by scale, pixel to coordinate is divided by scale
@@ -55,6 +63,7 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
    */
   public int longitudeToX(double longitude) {
     double factor = (longitude - mWest) / mDistanceLongitude;
+    //Log.d("vvnx", "coordPlugin mPixelWidth=" + mPixelWidth);
     return (int) ((mPixelWidth * factor) * mScale);
   }
 
