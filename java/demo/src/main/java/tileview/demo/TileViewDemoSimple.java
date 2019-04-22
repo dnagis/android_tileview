@@ -15,6 +15,7 @@ import java.io.File;
 import java.lang.StringBuilder;
 import java.lang.String;
 import java.lang.Double;
+import java.lang.Math;
 import android.content.Context;
 
 import android.widget.ImageView;
@@ -36,12 +37,15 @@ public class TileViewDemoSimple extends Activity {
   public static final double WEST = 3.68041992187500;//3.90014648437500;
   public static final double SOUTH = 43.85829677916184;//43.91768033000405;//43.51270490464819;
   public static final double EAST = 3.81774902343750;//3.73535156250000;//3.93859863281250;
+  double essai_WEST;
+  double essai_EAST;
+  double essai_NORTH;
+  double essai_SOUTH;
   //43.5196571350098,3.91340827941895 marine du prevost au bout de la promenade 
   //43.9341011047363,3.70944619178772 12 ru portail laroque
   double[] coordinates = new double[]{43.9341011047363,3.70944619178772};
   //size: setSize(17934, 13452) //pour 69 col par 52 row, setSize(1792, 1280) //pour 7 col par 5 row, ...
-  int sizePixelW = 6400;
-  int sizePixelH = 6400;
+  int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH;
   
   TileView tileView;
   MarkerPlugin markerPlugin;
@@ -66,16 +70,28 @@ public class TileViewDemoSimple extends Activity {
 	 * 7*256 = 1792
 	 * 5*256 = 1280
 	 */
+	 
+	 int zoom = 65536; // 2^16
+	 n_tiles_x = 25;
+	 n_tiles_y = 25;
+	 col_0 = 33438; //ganges
+	 row_0 = 23841; //ganges
+	 sizePixelW = n_tiles_x*256;
+	 sizePixelH = n_tiles_y*256;
+	 essai_WEST = (double)col_0/zoom*360.0-180.0;
+	 essai_EAST = (double)(col_0+n_tiles_x)/zoom*360.0-180.0;
+	 essai_NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
+	 essai_SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
+	 
+	 Log.d("vvnx", "onCreate, essai_WEST=" + essai_WEST + " essai_EAST=" + essai_EAST + " essai_NORTH=" + essai_NORTH + " essai_SOUTH=" + essai_SOUTH);
 
     tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
 		  .setSize(sizePixelW, sizePixelH)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
-		  .setCol0(33438) //ganges
-		  .setRow0(23841) //ganges
-//		  .setCol0(33478) //pal
-//		  .setRow0(23948) //pal
+		  .setCol0(col_0) 
+		  .setRow0(row_0) 
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
