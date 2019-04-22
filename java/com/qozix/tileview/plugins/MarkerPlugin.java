@@ -101,6 +101,7 @@ public MarkerPlugin(Context context) {
       View child = getChildAt(i);
       if (child.getVisibility() != GONE) {
         LayoutParams layoutParams = populateLayoutParams(child);
+        //LayoutParams layoutParams = new MarkerPlugin.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT, x, y,-0.5f,-1f,0,0);
         layoutParams.x = x;
         layoutParams.y = y;
 		child.setLayoutParams(layoutParams);

@@ -63,7 +63,7 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
    */
   public int longitudeToX(double longitude) {
     double factor = (longitude - mWest) / mDistanceLongitude;
-    //Log.d("vvnx", "coordPlugin mPixelWidth=" + mPixelWidth);
+    Log.d("vvnx", "coordPlugin mScale=" + mScale + " et factor=" + factor);
     return (int) ((mPixelWidth * factor) * mScale);
   }
 
