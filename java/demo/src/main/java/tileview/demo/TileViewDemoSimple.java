@@ -84,7 +84,7 @@ public class TileViewDemoSimple extends Activity {
     new TileView.Builder(tileView)
 		  .setSize(sizePixelW, sizePixelH)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
-		  .defineZoomLevel("/tiles_pal/16/ign-%1$d_%2$d.jpg") //obb
+		  .defineZoomLevel("/tiles_pal/16/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
 		  .setCol0(col_0) 
 		  .setRow0(row_0) 
 		.installPlugin(new MarkerPlugin(this))

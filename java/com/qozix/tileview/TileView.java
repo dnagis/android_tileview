@@ -27,6 +27,8 @@ import java.util.Set;
 
 import android.util.Log;
 
+import java.util.concurrent.TimeUnit;
+
 public class TileView extends ScalingScrollView implements
     Handler.Callback,
     ScalingScrollView.ScaleChangedListener,
@@ -700,6 +702,15 @@ public class TileView extends ScalingScrollView implements
       MemoryCache memoryCache = new MemoryCache(mMemoryCacheSize);
       mTileView.mMemoryCache = memoryCache;
       mTileView.mBitmapPool = memoryCache;
+      
+      //attendre que l'obb soit monté
+		try 
+		{
+		TimeUnit.SECONDS.sleep(2);
+		} catch(InterruptedException ex) {
+		Log.d("vvnx", "interr except");
+		}
+      
       // if the policy is to cache something and the size is not 0, try to create a disk cache
       if (mTileView.mDiskCachePolicy != DiskCachePolicy.CACHE_NONE && mDiskCacheSize > 0) {
         try {

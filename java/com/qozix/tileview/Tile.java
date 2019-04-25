@@ -12,6 +12,8 @@ import com.qozix.tileview.io.StreamProvider;
 import java.io.InputStream;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import android.util.Log;
+
 public class Tile implements Runnable {
 
   enum State {
@@ -188,15 +190,27 @@ public class Tile implements Runnable {
         }
       }
       // no strong disk cache policy, go ahead and decode
+      //Log.d("vvnx", "tile on va getstream li 191");
       InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx, mRow + mRow0_vvnx , context, mDetail.getData());
       if (stream != null) {
+        //Log.d("vvnx", "tile le stream est pas null on est li 196");
+        stream.mark(0);//pour faire un reset après
         // measure it and populate measure options to pass to cache
         BitmapFactory.decodeStream(stream, null, mMeasureOptions);
+        Log.d("vvnx", "tile li 199 mMeasureOptions width=" + mMeasureOptions.outWidth + " et height=" + mMeasureOptions.outHeight);
         // if we made it this far, the exact bitmap wasn't in memory, but let's grab the least recently used bitmap from the cache and draw over it
         mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
         // the measurement moved the stream's position - it must be reset to use the same stream to draw pixels
-        stream.reset();
+        if(stream.markSupported()) Log.d("vvnx", "tile li 203 markSupported");
+        Log.d("vvnx", "tile li 204");
+        stream.reset();//*****c'est ici le crux!!!!*****
+        Log.d("vvnx", "tile li 206");
         Bitmap bitmap = BitmapFactory.decodeStream(stream, null, mDrawingOptions);
+        Log.d("vvnx", "tile li 208 (bitmap decoded) width=" + bitmap.getWidth() + " et height=" + bitmap.getHeight() + " et bytes=" + bitmap.getByteCount());
+ 
+        
+        
+        
         setDecodedBitmap(bitmap);
         if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
           mDiskCache.put(key, bitmap);
@@ -226,6 +240,7 @@ public class Tile implements Runnable {
           if (mState != State.DECODING) {
             return;
           }
+          //Log.d("vvnx", "tile on va getstream li 230");
           InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i, context, mDetail.getData());
           if (stream != null) {
             Bitmap piece = BitmapFactory.decodeStream(stream, null, mDrawingOptions);
