@@ -89,6 +89,7 @@ public class TileViewDemoSimple extends Activity {
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
+		.setStreamProvider(new StreamProviderFiles())
         .build();
      
     if(coordinatePlugin == null) {   
