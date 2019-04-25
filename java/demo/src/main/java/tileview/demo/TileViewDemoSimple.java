@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.os.Bundle;
 //import android.support.annotation.Nullable;
 import com.qozix.tileview.io.StreamProvider;
-import com.qozix.tileview.io.StreamProviderFiles;
+import com.qozix.tileview.io.StreamProviderObbVvnx;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -89,7 +89,7 @@ public class TileViewDemoSimple extends Activity {
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
-		.setStreamProvider(new StreamProviderFiles())
+		.setStreamProvider(new StreamProviderObbVvnx(this))
         .build();
      
     if(coordinatePlugin == null) {   
