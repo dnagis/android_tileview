@@ -66,10 +66,11 @@ public class TileViewDemoSimple extends Activity {
 	 */
 	 
 	 int zoom = 65536; // 2^16
-	 n_tiles_x = 25;
-	 n_tiles_y = 25;
-	 col_0 = 33438; //ganges
-	 row_0 = 23841; //ganges
+	 n_tiles_x = 8; //25;
+	 n_tiles_y = 6; //25;
+	 col_0 = 33478; //33438; //ganges
+	 row_0 = 23947; //23841; //ganges
+	 
 	 sizePixelW = n_tiles_x*256;
 	 sizePixelH = n_tiles_y*256;
 	 WEST = (double)col_0/zoom*360.0-180.0;
@@ -83,7 +84,7 @@ public class TileViewDemoSimple extends Activity {
     new TileView.Builder(tileView)
 		  .setSize(sizePixelW, sizePixelH)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
-		  .defineZoomLevel("tiles/ign-%1$d_%2$d.jpg")
+		  .defineZoomLevel("/tiles_pal/16/ign-%1$d_%2$d.jpg") //obb
 		  .setCol0(col_0) 
 		  .setRow0(row_0) 
 		.installPlugin(new MarkerPlugin(this))

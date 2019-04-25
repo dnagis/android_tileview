@@ -26,13 +26,14 @@ public class StreamProviderObbVvnx implements StreamProvider {
   
   private static String mObbPath;
   private StorageManager mSM;
+  private String obbMountedPath;
 
   
     OnObbStateChangeListener mEventListener = new OnObbStateChangeListener() {
         @Override
-        public void onObbStateChange(String path, int state) {
-            Log.d("vvnx", "onObbStateChange path=" + path + "; state=" + state);
-
+        public void onObbStateChange(String path, int state) {            
+            obbMountedPath = mSM.getMountedObbPath(mObbPath);
+            Log.d("vvnx", "onObbStateChange obbMountedPath=" + obbMountedPath + "; state=" + state);
         }
     }; 
   
@@ -47,6 +48,7 @@ public class StreamProviderObbVvnx implements StreamProvider {
         mObbPath = new File(Environment.getExternalStorageDirectory(), "tiles.obb").getPath();
 		Log.d("vvnx", "StreamProviderObbVvnx constructor mObbPath=" + mObbPath);
 		mSM.mountObb(mObbPath, null, mEventListener);
+		
 		}
   
 
@@ -54,7 +56,11 @@ public class StreamProviderObbVvnx implements StreamProvider {
   
   @Override
   public InputStream getStream(int column, int row, Context context, Object data) throws Exception {
-    String file = String.format(Locale.US, (String) data, column, row);
+	
+	String mData =  obbMountedPath + (String) data;
+	Log.d("vvnx", "data:" + mData);
+	  
+    String file = String.format(Locale.US, mData, column, row);
     
     FileInputStream is = null;
     
