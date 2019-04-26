@@ -14,6 +14,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 import android.util.Log;
 
+import java.util.Locale;
+
 public class Tile implements Runnable {
 
   enum State {
@@ -189,15 +191,14 @@ public class Tile implements Runnable {
           return;
         }
       }
+      
+      /**
       // no strong disk cache policy, go ahead and decode
-      //Log.d("vvnx", "tile on va getstream li 191");
       InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx, mRow + mRow0_vvnx , context, mDetail.getData());
       if (stream != null) {
-        //Log.d("vvnx", "tile le stream est pas null on est li 196");
-        stream.mark(0);//pour faire un reset après
+        stream.mark(0);//pour pouvoir faire un reset après, sur mon inputstream indispensable, pas avec celui renvoyé par getAssets
         // measure it and populate measure options to pass to cache
         BitmapFactory.decodeStream(stream, null, mMeasureOptions);
-        Log.d("vvnx", "tile li 199 mMeasureOptions width=" + mMeasureOptions.outWidth + " et height=" + mMeasureOptions.outHeight);
         // if we made it this far, the exact bitmap wasn't in memory, but let's grab the least recently used bitmap from the cache and draw over it
         mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
         // the measurement moved the stream's position - it must be reset to use the same stream to draw pixels
@@ -207,15 +208,26 @@ public class Tile implements Runnable {
         Log.d("vvnx", "tile li 206");
         Bitmap bitmap = BitmapFactory.decodeStream(stream, null, mDrawingOptions);
         Log.d("vvnx", "tile li 208 (bitmap decoded) width=" + bitmap.getWidth() + " et height=" + bitmap.getHeight() + " et bytes=" + bitmap.getByteCount());
- 
-        
-        
-        
         setDecodedBitmap(bitmap);
         if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
           mDiskCache.put(key, bitmap);
         }
-      }
+      }**/
+      
+      
+      //je refais à ma sauce car l'input stream me donne des images garbled
+      String maData =  "/mnt/obb/dd20969154fdef9467fecebdfe91ac31" + (String) mDetail.getData(); //j'ai l'impression que la path de montage de l'obb est la même à chaque fois...
+      String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx, mRow + mRow0_vvnx); 
+      //Log.d("vvnx", "maFile=" + maFile);     
+      Bitmap bitmap = BitmapFactory.decodeFile(maFile);
+      setDecodedBitmap(bitmap);
+      
+      if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
+          mDiskCache.put(key, bitmap);
+        }
+      
+      
+      
     // we don't have a defined zoom level, so we need to use image sub-sampling and disk cache even if reading files locally
     } else {
       cached = mDiskCache.get(key);
