@@ -66,10 +66,21 @@ public class TileViewDemoSimple extends Activity {
 	 */
 	 
 	 int zoom = 65536; // 2^16
-	 n_tiles_x = 8; //25;
-	 n_tiles_y = 6; //25;
-	 col_0 = 33478; //33438; //ganges
-	 row_0 = 23947; //23841; //ganges
+	 
+	 
+	 //ganges
+	 n_tiles_x = 25;
+	 n_tiles_y = 25;
+	 col_0 = 33438; 
+	 row_0 = 23841; 	 
+	 
+	 
+	 
+	 //palavas
+	 //n_tiles_x = 8; 
+	 //n_tiles_y = 6; 
+	 //col_0 = 33478; 
+	 //row_0 = 23947; 
 	 
 	 sizePixelW = n_tiles_x*256;
 	 sizePixelH = n_tiles_y*256;
@@ -84,13 +95,14 @@ public class TileViewDemoSimple extends Activity {
     new TileView.Builder(tileView)
 		  .setSize(sizePixelW, sizePixelH)			
 //        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
-		  .defineZoomLevel("/tiles_pal/16/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
+		  .defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
 		  .setCol0(col_0) 
 		  .setRow0(row_0) 
 		.installPlugin(new MarkerPlugin(this))
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
-		.setStreamProvider(new StreamProviderObbVvnx(this))
+//		.setStreamProvider(new StreamProviderObbVvnx(this))
+//		.setDiskCachePolicity(TileView.DiskCachePolicy.CACHE_ALL)
         .build();
      
     if(coordinatePlugin == null) {   

@@ -216,10 +216,14 @@ public class Tile implements Runnable {
       
       
       //je refais à ma sauce car l'input stream me donne des images garbled
-      String maData =  "/mnt/obb/dd20969154fdef9467fecebdfe91ac31" + (String) mDetail.getData(); //j'ai l'impression que la path de montage de l'obb est la même à chaque fois...
+      //String maData =  "/mnt/obb/dd20969154fdef9467fecebdfe91ac31" + (String) mDetail.getData(); //j'ai l'impression que la path de montage de l'obb est la même à chaque fois...
+      
+      //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
+      String maData = (String) mDetail.getData(); 
       String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx, mRow + mRow0_vvnx); 
-      //Log.d("vvnx", "maFile=" + maFile);     
+      Log.d("vvnx", "li 222 maFile=" + maFile); 
       Bitmap bitmap = BitmapFactory.decodeFile(maFile);
+      //Bitmap bitmap = BitmapFactory.decodeFile(maFile, mDrawingOptions);
       setDecodedBitmap(bitmap);
       
       if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
@@ -252,12 +256,22 @@ public class Tile implements Runnable {
           if (mState != State.DECODING) {
             return;
           }
-          //Log.d("vvnx", "tile on va getstream li 230");
-          InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i, context, mDetail.getData());
+          Log.d("vvnx", "tile li 256");
+          
+          
+          
+          /**InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i, context, mDetail.getData());
           if (stream != null) {
-            Bitmap piece = BitmapFactory.decodeStream(stream, null, mDrawingOptions);
-            canvas.drawBitmap(piece, j * size, i * size, null);
-          }
+            Bitmap piece = BitmapFactory.decodeStream(stream, null, mDrawingOptions);            
+          }**/
+          String maData = (String) mDetail.getData(); 
+		  String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i); 
+          Log.d("vvnx", "li 267 maFile=" + maFile);     
+          Bitmap piece = BitmapFactory.decodeFile(maFile);
+          
+          canvas.drawBitmap(piece, j * size, i * size, null);
+          
+          
         }
       }
       setDecodedBitmap(bitmap);
