@@ -219,15 +219,15 @@ public class Tile implements Runnable {
       //je refais à ma sauce car l'input stream me donne des images garbled
       //String maData =  "/mnt/obb/dd20969154fdef9467fecebdfe91ac31" + (String) mDetail.getData(); //j'ai l'impression que la path de montage de l'obb est la même à chaque fois...
       
-      //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
+
       String maData = (String) mDetail.getData(); 
       String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx, mRow + mRow0_vvnx); 
-      //Log.d("vvnx", "li 222 maFile=" + maFile); 
-      //BitmapFactory.decodeFile(maFile, mMeasureOptions);
+
+
+
       //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
-      mMeasureOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
-      Bitmap bitmap = BitmapFactory.decodeFile(maFile, mMeasureOptions);
-      
+      Bitmap bitmap = BitmapFactory.decodeFile(maFile, mDrawingOptions);
+      mDrawingOptions.inBitmap = bitmap;
 
       setDecodedBitmap(bitmap);
       
@@ -237,9 +237,11 @@ public class Tile implements Runnable {
       
       
       
+    // on a dézoomé et ya pas de tiles pour ce zoom level: création d'un canvas avec plein de bébé bitmaps dedans: utilisation de BitmapFactory.Options#inSampleSize
+    // ce qui crée des mini bitmaps
     // we don't have a defined zoom level, so we need to use image sub-sampling and disk cache even if reading files locally
     } else {
-	  Log.d("vvnx", "tile image sample > 1");
+	  //Log.d("vvnx", "tile image sample > 1");
       //cached = mDiskCache.get(key); //bloque, je suppose quand j'ai CACHE_NONE
       cached = null; //vvnx -> du coup je remplace par ça pour débloquer
       if (cached != null) {
@@ -270,7 +272,6 @@ public class Tile implements Runnable {
           }**/
           String maData = (String) mDetail.getData(); 
 		  String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i); 
-          Log.d("vvnx", "li 270 maFile=" + maFile);     
           Bitmap piece = BitmapFactory.decodeFile(maFile, mDrawingOptions);
           
           canvas.drawBitmap(piece, j * size, i * size, null);
