@@ -168,6 +168,7 @@ public class Tile implements Runnable {
       return;
     }
     mState = State.DECODING;
+    //if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_NONE) Log.d("vvnx", "Tile decode() CACHE_NONE");
     // this line is critical on some devices - we're doing so much work off thread that anything higher priority causes jank
     Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
     // putting a thread.sleep of even 100ms here shows that maybe we're doing work off screen that we should not be doing
@@ -184,7 +185,7 @@ public class Tile implements Runnable {
     if (mImageSample == 1) {
       // if we cache everything to disk (usually because we're fetching from remote sources)
       // check the disk cache now and return out if we can
-      if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
+      if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {         
         cached = mDiskCache.get(key);
         if (cached != null) {
           setDecodedBitmap(cached);
@@ -221,20 +222,26 @@ public class Tile implements Runnable {
       //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
       String maData = (String) mDetail.getData(); 
       String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx, mRow + mRow0_vvnx); 
-      Log.d("vvnx", "li 222 maFile=" + maFile); 
-      Bitmap bitmap = BitmapFactory.decodeFile(maFile);
-      //Bitmap bitmap = BitmapFactory.decodeFile(maFile, mDrawingOptions);
+      //Log.d("vvnx", "li 222 maFile=" + maFile); 
+      //BitmapFactory.decodeFile(maFile, mMeasureOptions);
+      //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
+      mMeasureOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
+      Bitmap bitmap = BitmapFactory.decodeFile(maFile, mMeasureOptions);
+      
+
       setDecodedBitmap(bitmap);
       
-      if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
+      /*if (mDiskCachePolicy == TileView.DiskCachePolicy.CACHE_ALL) {
           mDiskCache.put(key, bitmap);
-        }
+        }*/
       
       
       
     // we don't have a defined zoom level, so we need to use image sub-sampling and disk cache even if reading files locally
     } else {
-      cached = mDiskCache.get(key);
+	  Log.d("vvnx", "tile image sample > 1");
+      //cached = mDiskCache.get(key); //bloque, je suppose quand j'ai CACHE_NONE
+      cached = null; //vvnx -> du coup je remplace par ça pour débloquer
       if (cached != null) {
         setDecodedBitmap(cached);
         return;
@@ -256,18 +263,15 @@ public class Tile implements Runnable {
           if (mState != State.DECODING) {
             return;
           }
-          Log.d("vvnx", "tile li 256");
-          
-          
-          
+
           /**InputStream stream = mStreamProvider.getStream(mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i, context, mDetail.getData());
           if (stream != null) {
             Bitmap piece = BitmapFactory.decodeStream(stream, null, mDrawingOptions);            
           }**/
           String maData = (String) mDetail.getData(); 
 		  String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx + j, mRow + mRow0_vvnx + i); 
-          Log.d("vvnx", "li 267 maFile=" + maFile);     
-          Bitmap piece = BitmapFactory.decodeFile(maFile);
+          Log.d("vvnx", "li 270 maFile=" + maFile);     
+          Bitmap piece = BitmapFactory.decodeFile(maFile, mDrawingOptions);
           
           canvas.drawBitmap(piece, j * size, i * size, null);
           
@@ -362,9 +366,9 @@ public class Tile implements Runnable {
     TileOptions(boolean measure) {
       inMutable = true;
       inPreferredConfig = Bitmap.Config.RGB_565;
-      inTempStorage = sInTempStorage;
+      //inTempStorage = sInTempStorage;
       inSampleSize = 1;
-      inJustDecodeBounds = measure;
+      //inJustDecodeBounds = measure;
     }
 
   }

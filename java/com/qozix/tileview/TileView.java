@@ -473,6 +473,7 @@ public class TileView extends ScalingScrollView implements
   @Override
   public void onTileDecodeError(Tile tile, Exception e) {
     // no op for now, probably expose this to the user
+    //Log.d("vvnx", "Tileview onTileDecodeError" + e);
   }
 
   public void destroy() {
@@ -710,6 +711,8 @@ public class TileView extends ScalingScrollView implements
 		} catch(InterruptedException ex) {
 		Log.d("vvnx", "interr except");
 		}*/
+		
+	  //if (mTileView.mDiskCachePolicy == DiskCachePolicy.CACHE_NONE) Log.d("vvnx", "TileView build() CACHE_NONE");
       
       // if the policy is to cache something and the size is not 0, try to create a disk cache
       if (mTileView.mDiskCachePolicy != DiskCachePolicy.CACHE_NONE && mDiskCacheSize > 0) {

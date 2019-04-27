@@ -89,7 +89,7 @@ public class TileViewDemoSimple extends Activity {
 	 NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 	 SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 	 
-	 Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
+	 //Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 
     tileView = findViewById(R.id.tileview);
     new TileView.Builder(tileView)
@@ -102,7 +102,7 @@ public class TileViewDemoSimple extends Activity {
 		.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 //		.addReadyListener(this::onReady)
 //		.setStreamProvider(new StreamProviderObbVvnx(this))
-//		.setDiskCachePolicity(TileView.DiskCachePolicy.CACHE_ALL)
+		.setDiskCachePolicity(TileView.DiskCachePolicy.CACHE_NONE)
         .build();
      
     if(coordinatePlugin == null) {   
