@@ -174,12 +174,15 @@ public class Tile implements Runnable {
     // putting a thread.sleep of even 100ms here shows that maybe we're doing work off screen that we should not be doing
     updateDestinationRect();
     String key = getCacheKey();
+    Log.d("vvnx", "la key dans tile.decode()  " + key );
     Bitmap cached = mMemoryCache.get(key);
+    //Log.d("vvnx", "column, row, ds tile.decode()  " + mColumn + "   "  + mRow );
     if (cached != null) {
       mMemoryCache.remove(key);
       setDecodedBitmap(cached);
       return;
     }
+    //Log.d("vvnx", "column, row, ds tile.decode()  " + mColumn + "   "  + mRow ); //on a déjà sauté une partie
     Context context = mDrawingView.getContext();
     // garden path - image sample size is 1, we have a detail level defined for this zoom
     if (mImageSample == 1) {
@@ -219,7 +222,7 @@ public class Tile implements Runnable {
       //je refais à ma sauce car l'input stream me donne des images garbled
       //String maData =  "/mnt/obb/dd20969154fdef9467fecebdfe91ac31" + (String) mDetail.getData(); //j'ai l'impression que la path de montage de l'obb est la même à chaque fois...
       
-
+	  //Log.d("vvnx", "tile image sample = 1, column, row,  dans tile.decode()  " + mColumn + "   "  + mRow );
       String maData = (String) mDetail.getData(); 
       String maFile = String.format(Locale.US, maData, mColumn + mCol0_vvnx, mRow + mRow0_vvnx); 
 
@@ -227,7 +230,7 @@ public class Tile implements Runnable {
 
       //mDrawingOptions.inBitmap = mBitmapPool.getBitmapForReuse(this);
       Bitmap bitmap = BitmapFactory.decodeFile(maFile, mDrawingOptions);
-      mDrawingOptions.inBitmap = bitmap;
+      //mDrawingOptions.inBitmap = bitmap;
 
       setDecodedBitmap(bitmap);
       

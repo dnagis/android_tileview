@@ -4,6 +4,8 @@ import java.lang.ref.SoftReference;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import android.util.Log;
+
 public class TilePool {
 
   private final Queue<SoftReference<Tile>> mQueue = new ArrayDeque<>();
@@ -17,6 +19,7 @@ public class TilePool {
     if (mQueue.peek() != null) {
       Tile tile = mQueue.poll().get();
       if (tile != null) {
+		//Log.d("vvnx", "TilePool() on réuitlise une tile existante (tile != null) dont column=" + tile.getColumn() + "   et row=" + tile.getRow());
         return tile;
       }
     }

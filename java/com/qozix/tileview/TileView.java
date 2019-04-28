@@ -421,6 +421,7 @@ public class TileView extends ScalingScrollView implements
     mGrid.rows.end = Maths.roundUpWithStep(mViewport.bottom / tileSize, mImageSample);
     mGrid.columns.start = Maths.roundDownWithStep(mViewport.left / tileSize, mImageSample);
     mGrid.columns.end = Maths.roundUpWithStep(mViewport.right / tileSize, mImageSample);
+    //Log.d("vvnx", "populateTileGridFromViewport: tilesize, column start, col end , row start, row end:   " + tileSize + "  ,  " + mGrid.columns.start + "  ,  " + mGrid.columns.end + "  ,  " + mGrid.rows.start + "  ,  " + mGrid.rows.end);  
   }
 
   public Tile createTile() {
@@ -430,10 +431,11 @@ public class TileView extends ScalingScrollView implements
   private void computeAndRenderTilesInViewport() {
     // determine which tiles should be showing.  use sample size for patching very small tiles together
     mNewlyVisibleTiles.clear();
-    populateTileGridFromViewport();
+    populateTileGridFromViewport(); //
     //Log.d("vvnx", "grid rows.start=" + mGrid.rows.start + "grid rows.end=" + mGrid.rows.end); //variables modifiées à chaque move/zoom event
     for (int row = mGrid.rows.start; row < mGrid.rows.end; row += mImageSample) {
       for (int column = mGrid.columns.start; column < mGrid.columns.end; column += mImageSample) {
+		//Log.d("vvnx", "computeAndRenderTilesInViewport: column, row:   " + column + "  ,  " + row);  
         Tile tile = mTilePool.get();
         tile.setColumn(column);
         tile.setRow(row);

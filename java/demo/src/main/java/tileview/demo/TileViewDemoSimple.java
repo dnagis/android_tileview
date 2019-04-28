@@ -147,8 +147,9 @@ public class TileViewDemoSimple extends Activity {
 	}
 	//Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
 	markerPlugin.updateMarkerPos(x, y);
+	
 	//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-	tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);	
+	//tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);	
 	
   }
   
