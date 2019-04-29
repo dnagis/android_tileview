@@ -149,7 +149,7 @@ public class TileViewDemoSimple extends Activity {
 	markerPlugin.updateMarkerPos(x, y);
 	
 	//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-	//tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);	
+	tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);	
 	
   }
   

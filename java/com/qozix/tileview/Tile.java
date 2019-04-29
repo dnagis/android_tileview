@@ -146,7 +146,8 @@ public class Tile implements Runnable {
 
   private String getCacheKey() {
     if (mCacheKey == null) {
-      mCacheKey = String.valueOf(mColumn) + String.valueOf(mRow) + String.valueOf(mImageSample) + String.valueOf(mDetail.getZoom());
+	  //vvnx: sans les "_" 21810 pouvait aussi bien être 2*18 que 21*8 j'avais donc des doublons de tile au mauvais endroit		
+      mCacheKey = String.valueOf(mColumn) + "_" + String.valueOf(mRow) + "_" + String.valueOf(mImageSample) + String.valueOf(mDetail.getZoom());
     }
     return mCacheKey;
   }
@@ -174,15 +175,13 @@ public class Tile implements Runnable {
     // putting a thread.sleep of even 100ms here shows that maybe we're doing work off screen that we should not be doing
     updateDestinationRect();
     String key = getCacheKey();
-    Log.d("vvnx", "la key dans tile.decode()  " + key );
+    //Log.d("vvnx", "la key dans tile.decode()  " + key );
     Bitmap cached = mMemoryCache.get(key);
-    //Log.d("vvnx", "column, row, ds tile.decode()  " + mColumn + "   "  + mRow );
     if (cached != null) {
       mMemoryCache.remove(key);
       setDecodedBitmap(cached);
       return;
     }
-    //Log.d("vvnx", "column, row, ds tile.decode()  " + mColumn + "   "  + mRow ); //on a déjà sauté une partie
     Context context = mDrawingView.getContext();
     // garden path - image sample size is 1, we have a detail level defined for this zoom
     if (mImageSample == 1) {
