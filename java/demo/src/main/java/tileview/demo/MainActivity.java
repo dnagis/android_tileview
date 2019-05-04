@@ -1,6 +1,9 @@
 /*
+
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
+
+sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME/1000, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
  
 */
 package tileview.demo;
@@ -55,6 +58,8 @@ public class MainActivity extends Activity implements LocationListener {
 	MarkerPlugin markerPlugin;
 	CoordinatePlugin coordinatePlugin;
 	public LocationManager mLocationManager;
+	private BaseDeDonnees maBDD;
+	
 	
 	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
     private static final int MIN_DIST = 1; //float: minimum distance between location updates, in meters
@@ -69,6 +74,7 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
+		maBDD = new BaseDeDonnees(this);
 		
 		//accéder à mon espace perso en espérant que ce soit plus rapide qu'external storage...
 		//Context mContext = getApplicationContext();    
@@ -178,10 +184,10 @@ public class MainActivity extends Activity implements LocationListener {
     @Override	
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
         int x = coordinatePlugin.longitudeToX(location.getLongitude());
         int y = coordinatePlugin.latitudeToY(location.getLatitude());
-        markerPlugin.updateMarkerPos(x, y);	
-        
+        markerPlugin.updateMarkerPos(x, y);	        
     }
         
 	@Override
