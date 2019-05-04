@@ -27,7 +27,7 @@ public class ScalingScrollView extends ScrollView implements
 
   private MinimumScaleMode mMinimumScaleMode = MinimumScaleMode.COVER;
 
-  private float mScale = 1f;
+  private float mScale = 1f; 
   private float mMinScale = 0f;
   private float mMaxScale = 1f;
   private float mEffectiveMinScale = 0f;

@@ -146,12 +146,25 @@ public class MainActivity extends Activity {
 	x = coordinatePlugin.longitudeToX(coordinates[1]);
 	y = coordinatePlugin.latitudeToY(coordinates[0]);
 	}
+	
+
+	
+	//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
+	//méthode provient de ScalingScrollView.java
+	tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);		
+	
 	//Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
 	markerPlugin.updateMarkerPos(x, y);
 	
-	//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-	tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);	
+
 	
+  }
+  
+  @Override
+  protected void onPause() {
+	  super.onPause();
+	  //revenir au zoom le plus fort sinon à onResume() j'ai le marker n'importe où: x et y dépendent du scale...
+	  tileView.setScale(1f);
   }
   
   
