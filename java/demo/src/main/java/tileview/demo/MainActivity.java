@@ -1,3 +1,8 @@
+/*
+pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
+ 
+*/
 package tileview.demo;
 
 
@@ -28,7 +33,11 @@ import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 
-public class MainActivity extends Activity {
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+public class MainActivity extends Activity implements LocationListener {
 	
 	//coordonnées: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames --> en python, mon script latlong, 
 	//upper left tile : COL0=33478 ROW0=23948 43.53262042681010 3.90014648437500
@@ -39,12 +48,17 @@ public class MainActivity extends Activity {
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	double[] coordinates = new double[]{43.9341011047363,3.70944619178772};
+	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH;
 	
 	TileView tileView;
 	MarkerPlugin markerPlugin;
 	CoordinatePlugin coordinatePlugin;
+	public LocationManager mLocationManager;
+	
+	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
+    private static final int MIN_DIST = 1; //float: minimum distance between location updates, in meters
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +66,9 @@ public class MainActivity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_demos_tileview);
+		
+		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		
 		//accéder à mon espace perso en espérant que ce soit plus rapide qu'external storage...
 		//Context mContext = getApplicationContext();    
@@ -123,9 +140,15 @@ public class MainActivity extends Activity {
   
 	@Override
 	protected void onResume() {
-		super.onResume();		
-		int x = 1;
-		int y = 1;
+		super.onResume();	
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
+		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			int x = 1;
+			int y = 1;		
+		if (lastKnownLocationGPS != null) {
+			coordinates[0] = lastKnownLocationGPS.getLatitude();
+			coordinates[1] = lastKnownLocationGPS.getLongitude();
+		}
 
 		if(coordinatePlugin != null) {		
 		x = coordinatePlugin.longitudeToX(coordinates[1]);
@@ -138,6 +161,8 @@ public class MainActivity extends Activity {
 		
 		//Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
 		markerPlugin.updateMarkerPos(x, y);	
+		
+		
 	}
   
 	@Override
@@ -145,6 +170,30 @@ public class MainActivity extends Activity {
 		super.onPause();
 		//revenir au zoom le plus fort sinon à onResume() j'ai le marker n'importe où: x et y dépendent du scale...
 		tileView.setScale(1f);
+	}
+	
+	
+	
+	//implements LocationListener --> il faut les 4 méthodes     
+    @Override	
+    public void onLocationChanged(Location location) {
+        Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        int x = coordinatePlugin.longitudeToX(location.getLongitude());
+        int y = coordinatePlugin.latitudeToY(location.getLatitude());
+        markerPlugin.updateMarkerPos(x, y);	
+        
+    }
+        
+	@Override
+	public void onProviderDisabled(String provider) {
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
   
 
