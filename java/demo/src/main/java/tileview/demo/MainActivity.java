@@ -47,11 +47,13 @@ public class MainActivity extends Activity implements LocationListener {
 	//si j'ai n tiles en horizontal (x, col) et m tiles en vertical (y, row), il faut calculer les coordonnées upper left (ce que latlng donne) de la première tile out of range en bas à droite
 	// c'est à dire la tile n° x' y' avec x'=x+n et y'=y+m 
 	/*public static final double NORTH = 43.95723647202563 ... WEST = 3.68041992187500 ... SOUTH = 43.85829677916184 EAST = 3.81774902343750;*/
+	//
 	double WEST;
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
+	//43.9161529541016,3.73525381088257   
+	double[] coordinates = new double[]{43.93421087,3.71005111};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH;
 	
 	TileView tileView;
@@ -166,7 +168,7 @@ public class MainActivity extends Activity implements LocationListener {
 		tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);		
 		
 		//Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
-		markerPlugin.updateMarkerPos(x, y);	
+		markerPlugin.updateMarkerPos(x, y);	//attention x et y tiennent déjà compte de scale!
 		
 		
 	}
