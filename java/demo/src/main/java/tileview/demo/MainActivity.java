@@ -152,32 +152,34 @@ public class MainActivity extends Activity implements LocationListener {
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			int x = 1;
-			int y = 1;		
+			int y = 1;	
+			int x_at_scale_1 = 1;
+			int y_at_scale_1 = 1;	
 		if (lastKnownLocationGPS != null) {
 			coordinates[0] = lastKnownLocationGPS.getLatitude();
 			coordinates[1] = lastKnownLocationGPS.getLongitude();
 		}
-
+		
+		//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
 		if(coordinatePlugin != null) {		
 		x = coordinatePlugin.longitudeToX(coordinates[1]);
 		y = coordinatePlugin.latitudeToY(coordinates[0]);
+		x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates[1]);
+		y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates[0]);		
 		}
 		
 		//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
 		//méthode provient de ScalingScrollView.java
-		tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);		
+		tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);			
 		
-		//Log.d("vvnx", "onResume, coordinates[1]="+coordinates[1]+" coordinates[0]="+coordinates[0]+"et on va mettre le marker a x=" + x + " et y=" + y);
-		markerPlugin.updateMarkerPos(x, y);	//attention x et y tiennent déjà compte de scale!
-		
-		
+		markerPlugin.updateMarkerPos(x_at_scale_1, y_at_scale_1);			
 	}
   
 	@Override
 	protected void onPause() {
 		super.onPause();
 		//revenir au zoom le plus fort sinon à onResume() j'ai le marker n'importe où: x et y dépendent du scale...
-		tileView.setScale(1f);
+		//tileView.setScale(1f);
 	}
 	
 	
@@ -187,8 +189,8 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
-        int x = coordinatePlugin.longitudeToX(location.getLongitude());
-        int y = coordinatePlugin.latitudeToY(location.getLatitude());
+        int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
+        int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(location.getLatitude());
         markerPlugin.updateMarkerPos(x, y);	        
     }
         

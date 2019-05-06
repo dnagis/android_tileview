@@ -77,6 +77,19 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
     double factor = (latitude - mNorth) / mDistanceLatitude;
     return (int) ((mPixelHeight * factor) * mScale);
   }
+  
+    /**
+	* latlng -> xy sans tenir compte de scale, pour passer à markerplugin qui applique déjà la correction scale
+   */
+  public int longitudeToX_at_scale_1_vvnx(double longitude) {
+    double factor = (longitude - mWest) / mDistanceLongitude;
+    return (int) (mPixelWidth * factor);
+  }
+
+  public int latitudeToY_at_scale_1_vvnx(double latitude) {
+    double factor = (latitude - mNorth) / mDistanceLatitude;
+    return (int) (mPixelHeight * factor);
+  }
 
   /**
    * Translate an x pixel value to a longitude.
