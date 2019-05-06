@@ -95,9 +95,9 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//ganges
 		n_tiles_x = 25;
-		n_tiles_y = 25;
-		col_0 = 33438; 
-		row_0 = 23841;
+		n_tiles_y = n_tiles_x;
+		//col_0 = 33438; 
+		//row_0 = 23841;
 		
 		//palavas
 		//n_tiles_x = 8; 
@@ -108,18 +108,21 @@ public class MainActivity extends Activity implements LocationListener {
 		sizePixelW = n_tiles_x*256;
 		sizePixelH = n_tiles_y*256;
 		
-		//coordonnées -> x_tile, y_tile (geofabrik)
+		//coordonnées -> x_tile, y_tile (pour voir les tiles avec leur n°: http://tools.geofabrik.de/map/#16/43.9174/3.7322&type=Geofabrik_Standard&grid=1)
 		tile_loc_x = (int)((coordinates[1] + 180.0) / 360 * zoom);
 		double lat_rad = Math.toRadians(coordinates[0]);
 		tile_loc_y = (int)((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * zoom);
 		
-		//col_0 row_0 -> coordonnées
+		col_0 = tile_loc_x - (n_tiles_x / 2);
+		row_0 = tile_loc_y - (n_tiles_y / 2);
+		
+		//col_0 row_0 -> coordonnées pour coordinates plugin
 		WEST = (double)col_0/zoom*360.0-180.0;
 		EAST = (double)(col_0+n_tiles_x)/zoom*360.0-180.0;
 		NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 		SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 		
-		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y);
+		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
 		tileView = findViewById(R.id.tileview);
