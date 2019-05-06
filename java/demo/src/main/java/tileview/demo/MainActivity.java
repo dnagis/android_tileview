@@ -133,43 +133,47 @@ public class MainActivity extends Activity implements LocationListener {
 			coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
 			coordinatePlugin.updateWidthHeightVvnx(sizePixelW, sizePixelH);
 		}
-		markerPlugin = tileView.getPlugin(MarkerPlugin.class);    
+		
+		
+		markerPlugin = tileView.getPlugin(MarkerPlugin.class); 
+		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView   
 		int x = coordinatePlugin.longitudeToX(coordinates[1]);
 		int y = coordinatePlugin.latitudeToY(coordinates[0]);
-		//Log.d("vvnx", "onCreate, le marker a x=" + x + " et y=" + y);
+		
 		ImageView marker = new ImageView(this);
-		marker.setImageResource(R.drawable.marker);
+		marker.setImageResource(R.drawable.marker); //le png
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 	
 	}
-  
-  
-  
 
   
 	@Override
 	protected void onResume() {
 		super.onResume();	
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
-		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			int x = 1;
 			int y = 1;	
 			int x_at_scale_1 = 1;
-			int y_at_scale_1 = 1;	
+			int y_at_scale_1 = 1;			
+		
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
+		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	
 		if (lastKnownLocationGPS != null) {
 			coordinates[0] = lastKnownLocationGPS.getLatitude();
 			coordinates[1] = lastKnownLocationGPS.getLongitude();
 		}
 		
-		//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
+		
 		if(coordinatePlugin != null) {		
-		x = coordinatePlugin.longitudeToX(coordinates[1]);
-		y = coordinatePlugin.latitudeToY(coordinates[0]);
-		x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates[1]);
-		y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates[0]);		
+			x = coordinatePlugin.longitudeToX(coordinates[1]);
+			y = coordinatePlugin.latitudeToY(coordinates[0]);
+			//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
+			x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates[1]);
+			y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates[0]);		
 		}
 		
 		//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
 		//méthode provient de ScalingScrollView.java
+		//on utilise x et y avec correction scale
 		tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);			
 		
 		markerPlugin.updateMarkerPos(x_at_scale_1, y_at_scale_1);			
@@ -189,6 +193,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
+        //il faut envoyer x et y "at scale 1" pour ne pas cumuler la correction scale (zoom) de markerplugin et celle de coordinateplugin
         int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
         int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(location.getLatitude());
         markerPlugin.updateMarkerPos(x, y);	        
