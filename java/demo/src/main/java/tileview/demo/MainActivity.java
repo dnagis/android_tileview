@@ -52,9 +52,9 @@ public class MainActivity extends Activity implements LocationListener {
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//43.9161529541016,3.73525381088257   
-	double[] coordinates = new double[]{43.93421087,3.71005111};
-	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH;
+	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257   
+	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
+	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 	TileView tileView;
 	MarkerPlugin markerPlugin;
@@ -107,11 +107,19 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		sizePixelW = n_tiles_x*256;
 		sizePixelH = n_tiles_y*256;
+		
+		//coordonnées -> x_tile, y_tile (geofabrik)
+		tile_loc_x = (int)((coordinates[1] + 180.0) / 360 * zoom);
+		double lat_rad = Math.toRadians(coordinates[0]);
+		tile_loc_y = (int)((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math.PI) / 2.0 * zoom);
+		
+		//col_0 row_0 -> coordonnées
 		WEST = (double)col_0/zoom*360.0-180.0;
 		EAST = (double)(col_0+n_tiles_x)/zoom*360.0-180.0;
 		NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 		SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 		
+		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
 		tileView = findViewById(R.id.tileview);
