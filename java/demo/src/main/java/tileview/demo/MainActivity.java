@@ -78,35 +78,21 @@ public class MainActivity extends Activity implements LocationListener {
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		maBDD = new BaseDeDonnees(this);
 		
-		//accéder à mon espace perso en espérant que ce soit plus rapide qu'external storage...
-		//Context mContext = getApplicationContext();    
-		//Log.d("vvnx", "getfilesdir=" + mContext.getFilesDir()); //me donne /data/user/0/tileview.demo/files
-		
-		/**
-		* les tiles de 256*256 dans assets/ au format phi-1000000-[0-69]_[0-52].jpg  
-		* 69*256 = 17920
-		* 52*256 = 13312
-		* 
-		* 7*256 = 1792
-		* 5*256 = 1280
-		*/
-		
 		int zoom = 65536; // 2^16
 		
-		//ganges
 		n_tiles_x = 25;
 		n_tiles_y = n_tiles_x;
-		//col_0 = 33438; 
-		//row_0 = 23841;
-		
-		//palavas
-		//n_tiles_x = 8; 
-		//n_tiles_y = 6; 
-		//col_0 = 33478; 
-		//row_0 = 23947; 
 		
 		sizePixelW = n_tiles_x*256;
 		sizePixelH = n_tiles_y*256;
+		
+		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	
+		if (lastKnownLocationGPS != null) {
+			coordinates[0] = lastKnownLocationGPS.getLatitude();
+			coordinates[1] = lastKnownLocationGPS.getLongitude();
+			//Log.d("vvnx", "onCreate, on a une lastKnownLoc lat=" + coordinates[0] + " lng=" + coordinates[1] );
+		}
 		
 		//coordonnées -> x_tile, y_tile (pour voir les tiles avec leur n°: http://tools.geofabrik.de/map/#16/43.9174/3.7322&type=Geofabrik_Standard&grid=1)
 		tile_loc_x = (int)((coordinates[1] + 180.0) / 360 * zoom);
@@ -122,7 +108,7 @@ public class MainActivity extends Activity implements LocationListener {
 		NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 		SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 		
-		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
+		//Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
 		tileView = findViewById(R.id.tileview);
