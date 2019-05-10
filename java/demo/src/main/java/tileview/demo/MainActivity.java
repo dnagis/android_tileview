@@ -25,12 +25,18 @@ import java.lang.String;
 import java.lang.Double;
 import java.lang.Math;
 import android.content.Context;
+import android.graphics.Color;
 
 import android.widget.ImageView;
+import android.widget.Button;
+import android.view.ViewGroup.LayoutParams;
+import android.view.View;
+import android.widget.TextView;
 
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
 import com.qozix.tileview.plugins.MarkerPlugin;
+import com.qozix.tileview.plugins.InfoWindowPlugin;
 
 import android.util.Log;
 import android.content.Context;
@@ -58,6 +64,7 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	TileView tileView;
 	MarkerPlugin markerPlugin;
+	Button myButton;
 	CoordinatePlugin coordinatePlugin;
 	public LocationManager mLocationManager;
 	private BaseDeDonnees maBDD;
@@ -108,7 +115,7 @@ public class MainActivity extends Activity implements LocationListener {
 		NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 		SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 		
-		//Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
+		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
 		tileView = findViewById(R.id.tileview);
@@ -122,6 +129,7 @@ public class MainActivity extends Activity implements LocationListener {
 			.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 			//		.addReadyListener(this::onReady)
 			//		.setStreamProvider(new StreamProviderObbVvnx(this))
+			//.installPlugin(new InfoWindowPlugin(infoView))
 			.setDiskCachePolicity(TileView.DiskCachePolicy.CACHE_NONE)
 			.build();
 		 
@@ -139,8 +147,22 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		ImageView marker = new ImageView(this);
 		marker.setImageResource(R.drawable.marker); //le png
-		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 	
-	}
+		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
+		
+		/*myButton = new Button(this); 
+		myButton.setLayoutParams(new LayoutParams(3, 2));
+		myButton.setText("bouton");	
+		myButton.setId(34250);
+		myButton.setOnClickListener(new View.OnClickListener() {
+             public void onClick(View v) {
+                Log.d("vvnx", "onClick");
+                updateMarker();
+             }
+         });
+		tileView.addView(myButton);*/
+		
+		    
+}
 
   
 	@Override
@@ -168,12 +190,19 @@ public class MainActivity extends Activity implements LocationListener {
 			y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates[0]);		
 		}
 		
-		//on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-		//méthode provient de ScalingScrollView.java
-		//on utilise x et y avec correction scale
-		tileView.scrollTo(x-tileView.getWidth()/2,y-tileView.getMeasuredHeight()/2);			
 		
-		markerPlugin.updateMarkerPos(x_at_scale_1, y_at_scale_1);			
+		//si pas scale 1 quand addmarker j'ai parfois comportement chelou: modif scale avec scrollTo
+		tileView.setScale(1f);
+		/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
+		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/
+		
+		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);	
+		
+		
+		markerPlugin.delMarkers_vvnx();
+        ImageView marker = new ImageView(this);
+		marker.setImageResource(R.drawable.marker);
+		markerPlugin.addMarker(marker, x_at_scale_1, y_at_scale_1, -0.5f, -1f, 0, 0);	
 	}
   
 	@Override
@@ -183,6 +212,14 @@ public class MainActivity extends Activity implements LocationListener {
 		//tileView.setScale(1f);
 	}
 	
+	public void updateMarker() {
+		Log.d("vvnx", "updateMarker");
+		markerPlugin.delMarkers_vvnx();
+        ImageView marker = new ImageView(this);
+		marker.setImageResource(R.drawable.marker);
+		markerPlugin.addMarker(marker, 3000, 3000, -0.5f, -1f, 0, 0);
+	}
+	
 	
 	
 	//implements LocationListener --> il faut les 4 méthodes     
@@ -190,10 +227,16 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
+        
         //il faut envoyer x et y "at scale 1" pour ne pas cumuler la correction scale (zoom) de markerplugin et celle de coordinateplugin
-        int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
+        
+        /*int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
         int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(location.getLatitude());
-        markerPlugin.updateMarkerPos(x, y);	        
+        
+        markerPlugin.delMarkers_vvnx();
+        ImageView marker = new ImageView(this);
+		marker.setImageResource(R.drawable.marker);
+		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);*/       
     }
         
 	@Override

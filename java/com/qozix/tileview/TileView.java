@@ -238,6 +238,7 @@ public class TileView extends ScalingScrollView implements
 
   @Override
   public boolean onTouchEvent(MotionEvent event) {
+	//Log.d("vvnx", "onTouchEvent: " + event.toString());
     boolean result = super.onTouchEvent(event);
     if (!mTouchListeners.isEmpty()) {
       for (TouchListener touchListener : mTouchListeners) {
@@ -284,6 +285,7 @@ public class TileView extends ScalingScrollView implements
       }
     }
   }
+
 
   private void determineCurrentDetail() {
     // if zoom from scale is greater than the number of defined detail levels, we definitely don't have it

@@ -10,6 +10,8 @@ import android.view.animation.Interpolator;
 
 import java.lang.ref.WeakReference;
 
+import android.util.Log;
+
 /**
  * @author Mike Dunn, 2/2/18.
  */
@@ -78,12 +80,15 @@ public class ScalingScrollView extends ScrollView implements
   }
 
   public void setScale(float scale) {
+	//Log.d("vvnx", "scalingscrollview setScale() au début de la fonction avec arg scale=" + scale + " et mScale =" + mScale);
     scale = getConstrainedDestinationScale(scale);
+    //Log.d("vvnx", "scalingscrollview  après getConstrainedDestinationScale scale=" + scale);
     if (mScale != scale) {
       float previous = mScale;
       mScale = scale;
       resetScrollPositionToWithinLimits();
       if (mShouldVisuallyScaleContents && hasContent()) {
+		//Log.d("vvnx", "scalingscrollview  setScale juste avant les setpivot"); //hélàs c'est pas ici qu'on passe quand il y a le scrollto qui me plait pas
         getChild().setPivotX(0);
         getChild().setPivotY(0);  // TODO: this is a hassle to prefab but would be more efficient
         getChild().setScaleX(mScale);
@@ -109,7 +114,8 @@ public class ScalingScrollView extends ScrollView implements
     if (recalculatedMinScale != mEffectiveMinScale) {
       mEffectiveMinScale = recalculatedMinScale;
       if (mScale < mEffectiveMinScale) {
-        setScale(mEffectiveMinScale);
+		//Log.d("vvnx", "scalingscrollview calculateMinimumScaleToFit setScale"); 
+        setScale(mEffectiveMinScale); //si je commente plus de scrollTo qd addMarker, par contre pb de dezoom (080519)
       }
     }
   }
@@ -127,6 +133,7 @@ public class ScalingScrollView extends ScrollView implements
   public void setScaleLimits(float min, float max) {
     mMinScale = min;
     mMaxScale = max;
+    //Log.d("vvnx", "scalingscrollview setScaleLimits setScale");
     setScale(mScale);
   }
 
@@ -152,7 +159,8 @@ public class ScalingScrollView extends ScrollView implements
   }
 
   private void resetScrollPositionToWithinLimits() {
-    scrollTo(getScrollX(), getScrollY());
+	//Log.d("vvnx", "scalingscrollview resetScrollPositionToWithinLimits"); 
+    scrollTo(getScrollX(), getScrollY()); //candidat n°1 
   }
 
   public void setShouldLoopScale(boolean shouldLoopScale) {
@@ -195,12 +203,12 @@ public class ScalingScrollView extends ScrollView implements
     }
     int x = getOffsetScrollXFromScale(offsetX, scale, mScale);
     int y = getOffsetScrollYFromScale(offsetY, scale, mScale);
-
+	//Log.d("vvnx", "saclingscrollview setScaleFromPosition setScale");
     setScale(scale);
 
     x = getConstrainedScrollX(x);
     y = getConstrainedScrollY(y);
-
+	  
     scrollTo(x, y);
   }
 
@@ -343,11 +351,13 @@ public class ScalingScrollView extends ScrollView implements
         float progress = (float) animation.getAnimatedValue();
         if (mHasPendingZoomUpdates) {
           float scale = mStartState.scale + (mEndState.scale - mStartState.scale) * progress;
+          //Log.d("vvnx", "scalingscrollview onAnimationUpdate setScale");
           scalingScrollView.setScale(scale);
         }
         if (mHasPendingScrollUpdates) {
           int x = (int) (mStartState.x + (mEndState.x - mStartState.x) * progress);
           int y = (int) (mStartState.y + (mEndState.y - mStartState.y) * progress);
+            
           scalingScrollView.scrollTo(x, y);
         }
       }

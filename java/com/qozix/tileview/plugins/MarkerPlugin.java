@@ -87,27 +87,24 @@ public MarkerPlugin(Context context) {
     }
   }
   
+  public void delMarkers_vvnx() {
+	for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      removeView(child);
+		}
+	}
+  
   public void updateMarkerPos(int x, int y) {
-	//Log.d("vvnx", "MarkerPlugin.updateMarkerPos() x y" + x + " " + y);
 	for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
       if (child.getVisibility() != GONE) {
 		  
-		MarkerPlugin.LayoutParams layoutParams = (MarkerPlugin.LayoutParams) child.getLayoutParams();
+		/*MarkerPlugin.LayoutParams layoutParams = (MarkerPlugin.LayoutParams) child.getLayoutParams();
 		layoutParams.x = x;
         layoutParams.y = y;       
         child.setLayoutParams(layoutParams);
-        reposition();		 
+        reposition();*/		 
 
-        //LayoutParams layoutParams = new MarkerPlugin.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT, x, y,-0.5f,-1f,0,0);
-        
-        /*MarkerPlugin.LayoutParams layoutParams = (MarkerPlugin.LayoutParams) child.getLayoutParams();
-
-        LayoutParams layoutParams2 = populateLayoutParams(child);
-        child.setLeft(layoutParams2.mLeft);
-        child.setTop(layoutParams2.mTop);
-        child.setRight(layoutParams2.mRight);
-        child.setBottom(layoutParams2.mBottom);*/	
       }
     }
     }

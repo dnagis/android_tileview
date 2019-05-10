@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.qozix.tileview.TileView android:id="@+id/tileview"
-                                     xmlns:android="http://schemas.android.com/apk/res/android"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="match_parent"
-                                     android:background="#FFe7e7e7" />
+
+<!-- https://developer.android.com/guide/topics/ui/custom-components  voir en bas la déclaration " declare the View component with the XML element name, and exclude the class attribute" -->
+
+<com.qozix.tileview.TileView 
+	android:id="@+id/tileview" 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="#FFe7e7e7" 
+/>
+                                     
+                                      
+

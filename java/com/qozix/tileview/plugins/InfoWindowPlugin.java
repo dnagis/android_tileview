@@ -4,6 +4,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import android.util.Log;
+
 import com.qozix.tileview.TileView;
 
 public class InfoWindowPlugin extends FrameLayout implements TileView.Plugin, TileView.Listener, TileView.TouchListener {
@@ -47,11 +49,13 @@ public class InfoWindowPlugin extends FrameLayout implements TileView.Plugin, Ti
 
   @Override
   public void onTouch(MotionEvent event) {
+	Log.d("vvnx", "InfoWindowPlugin, onTouch");
     hide();
   }
 
   @Override
   public void onScaleChanged(float scale, float previous) {
+	Log.d("vvnx", "InfoWindowPlugin, onScaleChanged");
     hide();
   }
 

@@ -20,6 +20,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
+import android.util.Log;
+
 //import com.qozix.tileview.R;
 import tileview.demo.R;
 
@@ -121,6 +123,7 @@ public class ScrollView extends FrameLayout {
   }
 
   protected boolean hasContent() {
+	//Log.d("vvnx", "scrollview childcount=" + getChildCount()); //j'ai toujours childcount=1, même quand scroll non désiré
     return getChildCount() > 0;
   }
 
@@ -286,6 +289,7 @@ public class ScrollView extends FrameLayout {
 
   @Override
   public void scrollTo(int x, int y) {
+	//Log.d("vvnx", "scrollview");  
     if (hasContent()) {
       x = getConstrainedScrollX(x);
       y = getConstrainedScrollY(y);
@@ -297,6 +301,7 @@ public class ScrollView extends FrameLayout {
 
   @Override
   public void scrollBy(int x, int y) {
+	//Log.d("vvnx", "scrollview");
     scrollTo(getScrollX() + x, getScrollY() + y);
   }
 
@@ -305,6 +310,7 @@ public class ScrollView extends FrameLayout {
     if (mScroller.computeScrollOffset()) {
       int x = mScroller.getCurrX();
       int y = mScroller.getCurrY();
+      //Log.d("vvnx", "scrollview");
       scrollTo(x, y);
       if (!awakenScrollBars()) {
         postInvalidateOnAnimation();
@@ -515,6 +521,7 @@ public class ScrollView extends FrameLayout {
     int deltaX = computeScrollXDeltaToGetChildRectOnScreen(mTempRect);
     int deltaY = computeScrollYDeltaToGetChildRectOnScreen(mTempRect);
     if (deltaY != 0 || deltaX != 0) {
+	  //Log.d("vvnx", "scrollview");
       scrollBy(deltaX, deltaY);
     }
   }
@@ -524,6 +531,7 @@ public class ScrollView extends FrameLayout {
     final int deltaY = computeScrollYDeltaToGetChildRectOnScreen(rect);
     final boolean scroll = deltaY != 0 || deltaX != 0;
     if (scroll) {
+		//Log.d("vvnx", "scrollview");
       if (immediate) {
         scrollBy(deltaX, deltaY);
       } else {
@@ -748,6 +756,7 @@ public class ScrollView extends FrameLayout {
         mSavedState = null;
       }
     }
+    //Log.d("vvnx", "scrollview");
     scrollTo(getScrollX(), getScrollY());
   }
 
@@ -795,7 +804,9 @@ public class ScrollView extends FrameLayout {
 
   @Override
   public void requestChildFocus(View child, View focused) {
+	  //Log.d("vvnx", "scrollview");
     if (!mIsLayoutDirty) {
+		//Log.d("vvnx", "scrollview");
       scrollToChild(focused);
     } else {
       mChildToScrollTo = focused;
@@ -863,6 +874,7 @@ public class ScrollView extends FrameLayout {
                 newScrollX = horizontalScrollRange;
               }
               if (newScrollY != oldScrollY || newScrollX != oldScrollX) {
+				  //Log.d("vvnx", "scrollview");
                 super.scrollTo(newScrollX, newScrollY);
                 return true;
               }
