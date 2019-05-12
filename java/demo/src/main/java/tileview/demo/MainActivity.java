@@ -202,7 +202,7 @@ public class MainActivity extends Activity implements LocationListener {
 		markerPlugin.delMarkers_vvnx();
         ImageView marker = new ImageView(this);
 		marker.setImageResource(R.drawable.marker);
-		markerPlugin.addMarker(marker, x_at_scale_1, y_at_scale_1, -0.5f, -1f, 0, 0);	
+		markerPlugin.addMarker(marker, x_at_scale_1, y_at_scale_1, -0.5f, -1f, 0, 0);
 	}
   
 	@Override

@@ -587,6 +587,7 @@ public class TileView extends ScalingScrollView implements
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout() childCount=" + getChildCount());
       for (int i = 0; i < getChildCount(); i++) {
         View child = getChildAt(i);
         child.layout(0, 0, mWidth, mHeight);
