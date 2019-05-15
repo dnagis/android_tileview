@@ -25,6 +25,17 @@
 		android:layout_alignParentRight="true"	
 		android:onClick="ActionPressBouton1"	
 	/>
+	
+    <TextView
+		android:id="@+id/textview1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentRight="true"	
+		android:text="@string/init_txtview"
+		android:textColor="#000000"
+		android:background="#80FFFFFF"
+	/>
 
                                      
 </RelativeLayout>                              

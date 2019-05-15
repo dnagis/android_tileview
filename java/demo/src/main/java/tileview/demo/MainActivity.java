@@ -26,6 +26,8 @@ import java.lang.StringBuilder;
 import java.lang.String;
 import java.lang.Double;
 import java.lang.Math;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import android.content.Context;
 import android.graphics.Color;
 
@@ -70,6 +72,7 @@ public class MainActivity extends Activity implements LocationListener {
 	CoordinatePlugin coordinatePlugin;
 	public LocationManager mLocationManager;
 	private BaseDeDonnees maBDD;
+	TextView infoTextView;
 	
 	
 	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
@@ -82,6 +85,7 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_demos_tileview);
+		infoTextView = (TextView) findViewById(R.id.textview1);
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
@@ -190,6 +194,10 @@ public class MainActivity extends Activity implements LocationListener {
 		/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
 		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
 		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);
+		
+
+		
+		
 	}
 	
 	
@@ -197,7 +205,7 @@ public class MainActivity extends Activity implements LocationListener {
 	//implements LocationListener --> il faut les 4 méthodes     
     @Override	
     public void onLocationChanged(Location location) {
-        Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + 	location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
+        Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
         
         //il faut envoyer x et y "at scale 1" pour ne pas cumuler la correction scale (zoom) de markerplugin et celle de coordinateplugin
@@ -209,6 +217,12 @@ public class MainActivity extends Activity implements LocationListener {
         
         coordinates[0] = location.getLatitude();
 		coordinates[1] = location.getLongitude();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		//Log.d("vvnx", "essai time="+sdf.format(location.getTime()));
+		
+		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
         
      
     }

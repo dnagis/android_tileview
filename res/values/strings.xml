@@ -1,5 +1,7 @@
 <resources>
-  <string name="app_name">TileView3</string>
+  <string name="app_name">TileView</string>
+  <string name="init_txtview">Pas encore d\'infos</string>  
   <string name="bgcl">Background color</string>
   <string name="fgcl">Foreground color</string>
+
 </resources>
