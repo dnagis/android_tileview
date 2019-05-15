@@ -156,20 +156,27 @@ public class MainActivity extends Activity implements LocationListener {
   
 	@Override
 	protected void onResume() {
-		super.onResume();	
-			int x = 1;
-			int y = 1;	
-			int x_at_scale_1 = 1;
-			int y_at_scale_1 = 1;			
-		
+		super.onResume();		
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
-		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	}
 	
-		if (lastKnownLocationGPS != null) {
-			coordinates[0] = lastKnownLocationGPS.getLatitude();
-			coordinates[1] = lastKnownLocationGPS.getLongitude();
-		}
-		
+  
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+	
+
+	
+	public void ActionPressBouton1(View v) {
+		int x = 1;
+		int y = 1;	
+		int x_at_scale_1 = 1;
+		int y_at_scale_1 = 1;
+		/*Log.d("vvnx", "bouton 1 pressé x=" + x_r + " et y=" + y_r);
+		int x_r = (int)(Math.random()*((2000)+1))+2000;
+		int y_r = (int)(Math.random()*((2000)+1))+2000;		
+		markerPlugin.updateMarkerPos(x_r, y_r);*/
 		
 		if(coordinatePlugin != null) {		
 			x = coordinatePlugin.longitudeToX(coordinates[1]);
@@ -178,48 +185,11 @@ public class MainActivity extends Activity implements LocationListener {
 			x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates[1]);
 			y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates[0]);		
 		}
-		
-		
-		//si pas scale 1 quand addmarker j'ai parfois comportement chelou: modif scale avec scrollTo
+
 		tileView.setScale(1f);
 		/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/
-		
-		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);	
-		
-		
-		markerPlugin.delMarkers_vvnx();
-        ImageView marker = new ImageView(this);
-		marker.setImageResource(R.drawable.marker);
-		markerPlugin.addMarker(marker, x_at_scale_1, y_at_scale_1, -0.5f, -1f, 0, 0);
-	}
-  
-	@Override
-	protected void onPause() {
-		super.onPause();
-		//revenir au zoom le plus fort sinon à onResume() j'ai le marker n'importe où: x et y dépendent du scale...
-		//tileView.setScale(1f);
-	}
-	
-	public void updateMarker() {
-		Log.d("vvnx", "updateMarker");
-		markerPlugin.delMarkers_vvnx();
-        ImageView marker = new ImageView(this);
-		marker.setImageResource(R.drawable.marker);
-		markerPlugin.addMarker(marker, 3000, 3000, -0.5f, -1f, 0, 0);
-	}
-	
-	public void ActionPressBouton1(View v) {
-		int x_r = (int)(Math.random()*((2000)+1))+2000;
-		int y_r = (int)(Math.random()*((2000)+1))+2000;
-		//Log.d("vvnx", "bouton 1 pressé x=" + x_r + " et y=" + y_r);
-		markerPlugin.updateMarkerPos(x_r, y_r);
-		
-		
-		
-		
-		
-		
+		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
+		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);
 	}
 	
 	
@@ -237,10 +207,10 @@ public class MainActivity extends Activity implements LocationListener {
         
         markerPlugin.updateMarkerPos(x, y);
         
-        /*markerPlugin.delMarkers_vvnx();
-        ImageView marker = new ImageView(this);
-		marker.setImageResource(R.drawable.marker);
-		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);*/       
+        coordinates[0] = location.getLatitude();
+		coordinates[1] = location.getLongitude();
+        
+     
     }
         
 	@Override
