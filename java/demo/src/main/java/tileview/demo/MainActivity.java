@@ -1,4 +1,6 @@
 /*
+ * 
+le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView(R.layout.activity_demos_tileview);
 
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
@@ -218,6 +220,10 @@ public class MainActivity extends Activity implements LocationListener {
         ImageView marker = new ImageView(this);
 		marker.setImageResource(R.drawable.marker);
 		markerPlugin.addMarker(marker, 3000, 3000, -0.5f, -1f, 0, 0);
+	}
+	
+	public void ActionPressBouton1(View v) {
+		Log.d("vvnx", "bouton 1 pressé");
 	}
 	
 	

@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	
   <declare-styleable name="ScrollView">
     <attr name="fillViewport" format="boolean" />
   </declare-styleable>
+  
+  <declare-styleable name="Options">
+	<attr name="titleText" format="string" localization="suggested" />
+	<attr name="valueColor" format="color" />
+  </declare-styleable>
+  
 </resources>

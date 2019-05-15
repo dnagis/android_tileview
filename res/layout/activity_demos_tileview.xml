@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- https://developer.android.com/guide/topics/ui/custom-components  voir en bas la déclaration " declare the View component with the XML element name, and exclude the class attribute" -->
 
-<com.qozix.tileview.TileView 
-	android:id="@+id/tileview" 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:background="#FFe7e7e7" 
-/>
+<!-- https://developer.android.com/reference/android/widget/RelativeLayout.LayoutParams -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+<!-- https://developer.android.com/guide/topics/ui/custom-components voir en bas la déclaration "declare the View component with the XML element name, and exclude the class attribute" -->
+	<com.qozix.tileview.TileView 
+		android:id="@+id/tileview" 
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#FFe7e7e7" 
+	/>
+<!-- layout_centerInParent -->	
+    <Button
+		android:id="@+id/bouton1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="BoutonTxt"				
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"	
+		android:onClick="ActionPressBouton1"	
+	/>
+
                                      
-                                      
+</RelativeLayout>                              
 

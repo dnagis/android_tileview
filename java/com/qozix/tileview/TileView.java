@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+//import android.widget.Button; //vvnx
+
 import com.qozix.tileview.io.StreamProvider;
 import com.qozix.tileview.io.StreamProviderAssets;
 import com.qozix.utils.Maths;
@@ -68,6 +70,7 @@ public class TileView extends ScalingScrollView implements
   private StreamProvider mStreamProvider;
   private Bitmap.Config mBitmapConfig = Bitmap.Config.RGB_565;
   private DiskCachePolicy mDiskCachePolicy = DiskCachePolicy.CACHE_PATCHES;
+//  private MaViewCustomVvnx mViewVvnx; //vvnx
 
   // final
   private final Grid mGrid = new Grid();
@@ -114,7 +117,9 @@ public class TileView extends ScalingScrollView implements
     mContainer = new FixedSizeViewGroup(context);
     // we'll draw bitmaps to this view
     mTilingBitmapView = new TilingBitmapView(this);
+//    mViewVvnx = new MaViewCustomVvnx(context); //vvnx
     mContainer.addView(mTilingBitmapView);
+//    mContainer.addView(mViewVvnx); //vvnx
     // call the full signature, otherwise one overloaded signature may call another
     // e.g., ViewGroup.addView(child) will call ViewGroup.addView(child, -1, ...)
     // which will end up placing the child in the TileView rather than the container
@@ -587,12 +592,19 @@ public class TileView extends ScalingScrollView implements
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout() childCount=" + getChildCount());
+		Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childCount=" + getChildCount());
       for (int i = 0; i < getChildCount(); i++) {
         View child = getChildAt(i);
-        child.layout(0, 0, mWidth, mHeight);
+        Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childId=" + child.getId());
+			if (child.getId() == 3419){
+			  Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  mon child id");
+			  child.layout(0, 0, 500, 1000);
+			} else {
+			child.layout(0, 0, mWidth, mHeight); //le pristine layout de FixedSizeViewGroup -> étale tout le monde sur la totalité...
+			}
       }
     }
+    
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -603,6 +615,22 @@ public class TileView extends ScalingScrollView implements
     }
 
   }
+  
+/*  private static class MaViewCustomVvnx extends Button {
+	  
+	public MaViewCustomVvnx(Context context) {
+      super(context);
+      Log.d("vvnx", "TileView MaViewCustomVvnx constructeur");
+      setId(3419); //permet de l'identifier ailleurs avec child.getId()...
+    }
+    
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		Log.d("vvnx", "TileView MaViewCustomVvnx onLayout");
+
+    }
+	  
+  }*/
 
   public static class Builder {
 

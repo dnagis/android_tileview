@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">TileView3</string>
+  <string name="bgcl">Background color</string>
+  <string name="fgcl">Foreground color</string>
 </resources>
