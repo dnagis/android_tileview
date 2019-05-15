@@ -151,19 +151,6 @@ public class MainActivity extends Activity implements LocationListener {
 		marker.setImageResource(R.drawable.marker); //le png
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
 		
-		/*myButton = new Button(this); 
-		myButton.setLayoutParams(new LayoutParams(3, 2));
-		myButton.setText("bouton");	
-		myButton.setId(34250);
-		myButton.setOnClickListener(new View.OnClickListener() {
-             public void onClick(View v) {
-                Log.d("vvnx", "onClick");
-                updateMarker();
-             }
-         });
-		tileView.addView(myButton);*/
-		
-		    
 }
 
   
@@ -223,7 +210,16 @@ public class MainActivity extends Activity implements LocationListener {
 	}
 	
 	public void ActionPressBouton1(View v) {
-		Log.d("vvnx", "bouton 1 pressé");
+		int x_r = (int)(Math.random()*((2000)+1))+2000;
+		int y_r = (int)(Math.random()*((2000)+1))+2000;
+		//Log.d("vvnx", "bouton 1 pressé x=" + x_r + " et y=" + y_r);
+		markerPlugin.updateMarkerPos(x_r, y_r);
+		
+		
+		
+		
+		
+		
 	}
 	
 	
@@ -236,10 +232,12 @@ public class MainActivity extends Activity implements LocationListener {
         
         //il faut envoyer x et y "at scale 1" pour ne pas cumuler la correction scale (zoom) de markerplugin et celle de coordinateplugin
         
-        /*int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
+        int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
         int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(location.getLatitude());
         
-        markerPlugin.delMarkers_vvnx();
+        markerPlugin.updateMarkerPos(x, y);
+        
+        /*markerPlugin.delMarkers_vvnx();
         ImageView marker = new ImageView(this);
 		marker.setImageResource(R.drawable.marker);
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0);*/       

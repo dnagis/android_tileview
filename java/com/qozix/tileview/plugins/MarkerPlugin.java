@@ -95,18 +95,18 @@ public MarkerPlugin(Context context) {
 	}
   
   public void updateMarkerPos(int x, int y) {
+	 
 	for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
-      if (child.getVisibility() != GONE) {
-		  
-		/*MarkerPlugin.LayoutParams layoutParams = (MarkerPlugin.LayoutParams) child.getLayoutParams();
-		layoutParams.x = x;
-        layoutParams.y = y;       
-        child.setLayoutParams(layoutParams);
-        reposition();*/		 
-
-      }
-    }
+		Log.d("vvnx", "updateMarkerPos avec x=" + x + " et y=" + y + " scale=" + mScale); 
+		int left = (int) ((x * mScale) - 63.0) ;
+		int top = (int) ((y * mScale) - 180.0) ;
+		child.setLeft(left);
+        child.setTop(top);
+        child.setRight(left + 126);
+        child.setBottom(top + 180);
+		child.invalidate();      
+		}
     }
     
     
