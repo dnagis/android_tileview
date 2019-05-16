@@ -13,6 +13,8 @@ import com.qozix.tileview.TileView;
 public class MarkerPlugin extends ViewGroup implements TileView.Plugin, TileView.Listener {
 
   private float mScale = 1;
+  public int x_mp; //vvnx: mp = marker plugin
+  public int y_mp;
 
 public MarkerPlugin(Context context) {
 //  public MarkerPlugin(@NonNull Context context) {
@@ -60,8 +62,8 @@ public MarkerPlugin(Context context) {
       float widthOffset = actualWidth * layoutParams.relativeAnchorX + layoutParams.absoluteAnchorX; //-63.0 = 126 * -0.5f
       float heightOffset = actualHeight * layoutParams.relativeAnchorY + layoutParams.absoluteAnchorY; //-180.0 = 180 * -1f
       // get offset position
-      int scaledX = (int) (layoutParams.x * mScale);
-      int scaledY = (int) (layoutParams.y * mScale);
+      int scaledX = (int) (x_mp * mScale); //et non plus (int) (layoutParams.x * mScale)
+      int scaledY = (int) (y_mp * mScale); //idem
       // par défaut android cale en haut à gauche, mais nous ce qui nous intéresse c'est la pointe du pinpoint, qui est au milieu en bas, donc ...
       layoutParams.mLeft = (int) (scaledX + widthOffset); //... à x, on enlève la moitié de la largeur...
       layoutParams.mTop = (int) (scaledY + heightOffset); //... et à y, on enlève la totalité de la hauteur, comme ça le x et le y correspondent au milieu en bas = pointe du pinpoint
@@ -89,7 +91,11 @@ public MarkerPlugin(Context context) {
   
 
   
-  public void updateMarkerPos(int x, int y) {	 
+  public void updateMarkerPos(int x, int y) {
+	//on a reçu de nouvelles coordonnées, les garder.  
+	x_mp = x;
+	y_mp = y;  
+		 
 	for (int i = 0; i < getChildCount(); i++) {
 			View child = getChildAt(i);
 			//Log.d("vvnx", "updateMarkerPos avec x=" + x + " et y=" + y + " scale=" + mScale); 
@@ -119,6 +125,9 @@ public MarkerPlugin(Context context) {
         relativeAnchorLeft, relativeAnchorTop,
         absoluteAnchorLeft, absoluteAnchorTop);
     addView(view, layoutParams);
+    //les premières coordonnées, on les garde
+    x_mp = left;
+    y_mp = top;
   }
   
 
