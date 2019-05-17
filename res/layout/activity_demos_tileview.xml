@@ -29,6 +29,20 @@
 		android:layout_margin="10dp"
 	/>
 	
+	<ToggleButton
+		android:id="@+id/bouton2"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:textOn=""
+        android:textOff=""
+        android:checked="true"
+		android:background="@drawable/bouton2_sel"	
+		android:onClick="ActionPressBouton2"	
+		android:layout_margin="10dp"
+	/>
+	
     <TextView
 		android:id="@+id/textview1"
 		android:layout_width="wrap_content"
@@ -39,7 +53,6 @@
 		android:textColor="#000000"
 		android:background="#80FFFFFF"
 	/>
-
                                      
 </RelativeLayout>                              
 

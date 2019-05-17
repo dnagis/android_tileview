@@ -33,6 +33,7 @@ import android.graphics.Color;
 
 import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.ToggleButton;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
 import android.widget.TextView;
@@ -68,7 +69,7 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	TileView tileView;
 	MarkerPlugin markerPlugin;
-	Button myButton;
+	ToggleButton myButton;
 	CoordinatePlugin coordinatePlugin;
 	public LocationManager mLocationManager;
 	private BaseDeDonnees maBDD;
@@ -86,6 +87,7 @@ public class MainActivity extends Activity implements LocationListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
+		myButton = (ToggleButton)  findViewById(R.id.bouton2);
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
@@ -201,20 +203,25 @@ public class MainActivity extends Activity implements LocationListener {
 	}
 	
 	
+	public void ActionPressBouton2(View v) {
+		if ( myButton.isChecked() == true ) { Log.d("vvnx", "bouton 2 on");
+		} else { Log.d("vvnx", "bouton 2 off");
+		}		
+	}
+	
+	
 	
 	//implements LocationListener --> il faut les 4 méthodes     
     @Override	
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
         maBDD.logFix(location.getTime(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), location.getAltitude());
-        
+                
         //il faut envoyer x et y "at scale 1" pour ne pas cumuler la correction scale (zoom) de markerplugin et celle de coordinateplugin
         
         int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(location.getLongitude());
         int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(location.getLatitude());
-        
-        markerPlugin.updateMarkerPos(x, y);
-        
+                
         coordinates[0] = location.getLatitude();
 		coordinates[1] = location.getLongitude();
 		
@@ -223,6 +230,9 @@ public class MainActivity extends Activity implements LocationListener {
 		//Log.d("vvnx", "essai time="+sdf.format(location.getTime()));
 		
 		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
+		
+		//update markerpos seulement si bouton gps on, parce que fait sauter tileview quand redraw, chiant pour browser.
+		if ( myButton.isChecked() == true ) markerPlugin.updateMarkerPos(x, y);
         
      
     }
