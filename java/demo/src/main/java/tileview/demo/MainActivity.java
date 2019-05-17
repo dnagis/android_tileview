@@ -10,8 +10,6 @@ sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME/1000,
 */
 package tileview.demo;
 
-
-
 import android.app.Activity;
 import android.os.Bundle;
 //import android.support.annotation.Nullable;
@@ -28,8 +26,15 @@ import java.lang.Double;
 import java.lang.Math;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.CornerPathEffect;
+import android.util.DisplayMetrics;
 
 import android.widget.ImageView;
 import android.widget.Button;
@@ -42,7 +47,9 @@ import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
 import com.qozix.tileview.plugins.MarkerPlugin;
 import com.qozix.tileview.plugins.InfoWindowPlugin;
+import com.qozix.tileview.plugins.PathPlugin;
 
+import android.util.TypedValue;
 import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
@@ -66,6 +73,13 @@ public class MainActivity extends Activity implements LocationListener {
 	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257   
 	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
+	
+	private ArrayList<double[]> sites = new ArrayList<>();
+	 {
+	    sites.add(new double[]{43.9430, 3.7241});
+	    sites.add(new double[]{43.9458, 3.6952});
+	    sites.add(new double[]{43.92403, 3.71364});
+	  }
 	
 	TileView tileView;
 	MarkerPlugin markerPlugin;
@@ -134,6 +148,7 @@ public class MainActivity extends Activity implements LocationListener {
 			.setCol0(col_0) 
 			.setRow0(row_0) 
 			.installPlugin(new MarkerPlugin(this))
+			.installPlugin(new PathPlugin())
 			.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 			//		.addReadyListener(this::onReady)
 			//		.setStreamProvider(new StreamProviderObbVvnx(this))
@@ -147,6 +162,7 @@ public class MainActivity extends Activity implements LocationListener {
 			coordinatePlugin.updateWidthHeightVvnx(sizePixelW, sizePixelH);
 		}
 		
+		//MarkerPlugin pour location mark
 		
 		markerPlugin = tileView.getPlugin(MarkerPlugin.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView   
@@ -156,6 +172,33 @@ public class MainActivity extends Activity implements LocationListener {
 		ImageView marker = new ImageView(this);
 		marker.setImageResource(R.drawable.marker); //le png
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
+		
+		// draw a path
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(0xFF4286f4);
+		paint.setStrokeWidth(0);
+		paint.setAntiAlias(true);
+		
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		paint.setShadowLayer(
+			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, metrics),
+			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics),
+			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics),
+			0x66000000);
+		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
+		paint.setPathEffect(new CornerPathEffect(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics)));
+		
+		List<Point> points = new ArrayList<>();
+		for (double[] coordinate : sites) {
+		  Point point = new Point();
+		  point.x = coordinatePlugin.longitudeToX(coordinate[1]);
+		  point.y = coordinatePlugin.latitudeToY(coordinate[0]);
+		  points.add(point);
+		}
+		
+		PathPlugin pathPlugin = tileView.getPlugin(PathPlugin.class);
+		pathPlugin.drawPath(points, paint);
 		
 }
 
