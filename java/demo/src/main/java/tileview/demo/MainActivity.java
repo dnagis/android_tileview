@@ -26,6 +26,7 @@ import java.lang.Double;
 import java.lang.Math;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,13 +75,7 @@ public class MainActivity extends Activity implements LocationListener {
 	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
-	private ArrayList<double[]> sites = new ArrayList<>();
-	 {
-	    sites.add(new double[]{43.9430, 3.7241});
-	    sites.add(new double[]{43.9458, 3.6952});
-	    sites.add(new double[]{43.92403, 3.71364});
-	  }
-	
+
 	TileView tileView;
 	MarkerPlugin markerPlugin;
 	ToggleButton myButton;
@@ -190,6 +185,10 @@ public class MainActivity extends Activity implements LocationListener {
 		paint.setPathEffect(new CornerPathEffect(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics)));
 		
 		List<Point> points = new ArrayList<>();
+		
+		GpxReader gpxReader = new GpxReader(this);
+		ArrayList<double[]> sites = gpxReader.getgpx();
+		
 		for (double[] coordinate : sites) {
 		  Point point = new Point();
 		  point.x = coordinatePlugin.longitudeToX(coordinate[1]);
@@ -247,9 +246,9 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	
 	public void ActionPressBouton2(View v) {
-		if ( myButton.isChecked() == true ) { Log.d("vvnx", "bouton 2 on");
+		/*if ( myButton.isChecked() == true ) { Log.d("vvnx", "bouton 2 on");
 		} else { Log.d("vvnx", "bouton 2 off");
-		}		
+		}*/		
 	}
 	
 	
@@ -291,6 +290,8 @@ public class MainActivity extends Activity implements LocationListener {
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
+	
+
   
 
 
