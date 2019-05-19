@@ -17,11 +17,16 @@
 						 <ele>1094</ele>
 						</trkpt>
 					
-						<trkpt lat="43.92403" lon="3.71364">
+						<trkpt lat="43.92403" lon="3.1234">
 						 <ele>1105</ele>
 						</trkpt>
+					
+					
 					</trkseg>
-			  </trk>
+			  
+			  
+			  
+			   </trk>
 			   
 			   
 			   

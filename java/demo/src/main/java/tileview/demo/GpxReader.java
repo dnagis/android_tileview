@@ -56,14 +56,6 @@ public class GpxReader {
 		Log.d("vvnx", "GpxReader.getgpx");	 
 		
 	 
-	 
-	 
-	 {
-	    sites.add(new double[]{43.9430, 3.7241});
-	    sites.add(new double[]{43.9458, 3.6952});
-	    sites.add(new double[]{43.92403, 3.71364});
-	  }
-	  
 	  return sites;
 		
 		
@@ -77,23 +69,16 @@ public class GpxReader {
 		parser.require(XmlPullParser.START_TAG, null, "gpx"); //tu peux pas mettre directos trkseg hélas...
     
 	    while (parser.next() != XmlPullParser.END_DOCUMENT) {
-			Log.d("vvnx", "GpxReader.readFeed 1 ");
 			//tant qu'on a pas de start tag on avance...
 	        if (parser.getEventType() != XmlPullParser.START_TAG) {
 	            continue;
 	        }
-	        Log.d("vvnx", "GpxReader.readFeed 2 ");
-	        
 	        String name = parser.getName();
-			Log.d("vvnx", "GpxReader.readFeed name=" + name);
+			Log.d("vvnx", "GpxReader.readFichierGpx name=" + name);
 			//et on catche celui qui contient tout les points
 	        if (name.equals("trkseg")) points_du_trek = readTrkSeg(parser);
 
-	    }
-	    
-	    
-	    
-	    
+	    }	    
 	    return points_du_trek;
 	}
 	
@@ -105,26 +90,52 @@ public class GpxReader {
 		
 	ArrayList<double[]> points_du_trek = new ArrayList();	
 	
-	Log.d("vvnx", "GpxReader.readTrkSeg");	
+	Log.d("vvnx", "GpxReader.readTrkSeg start");	
 	
 
     
     
-	
-    while (parser.next() != XmlPullParser.END_TAG) {
-        if (parser.getEventType() != XmlPullParser.START_TAG) {
-            continue;
-        }
-        String name = parser.getName();
-        if (name.equals("trkpt")) {
-            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
-            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
-            points_du_trek.add(new double[]{lat, lon});  
-            Log.d("vvnx", "GpxReader.readTrkSeg lat=" + parser.getAttributeValue(null, "lat"));	      
-            
-        }
-        
-    }
+		int eventType = parser.getEventType();
+	    while (eventType != XmlPullParser.END_DOCUMENT) {
+			
+			
+			switch (eventType) {
+				case XmlPullParser.START_TAG:
+						String name = parser.getName(); //name est null!! https://stackoverflow.com/questions/25360955/xmlpullparser-getname-returns-null
+						
+				        if (name.equals("trkpt")) {
+				            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
+				            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
+				            points_du_trek.add(new double[]{lat, lon});  
+				            Log.d("vvnx", "GpxReader.readTrkSeg lat=" + parser.getAttributeValue(null, "lat") + " lon=" + parser.getAttributeValue(null, "lon"));					            
+				        }
+						
+
+				        
+				        
+				case XmlPullParser.TEXT:
+					break;
+				
+				case XmlPullParser.END_TAG:
+					break;
+					
+				
+                default:
+                    break;
+				        
+				 
+	        
+	        
+			}
+	        
+	        
+	        
+	        eventType = parser.next();
+	    }
+    
+    
+    Log.d("vvnx", "GpxReader.readTrkSeg end");	
+    
     return points_du_trek;
 	}
 	
