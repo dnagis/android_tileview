@@ -5,10 +5,9 @@
 		 xmlns="http://www.topografix.com/GPX/1/0"
 		 xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"
 		 creator="http://www.openrunner.com">
-			  <trk>
-				  <name>le nom du trek</name>
-				  <trkseg>
-		
+				<trk>
+					<name>3 points autour de ganges</name>
+					<trkseg>		
 						<trkpt lat="43.9430" lon="3.7241">
 						 <ele>1092</ele>
 						</trkpt>
@@ -17,17 +16,35 @@
 						 <ele>1094</ele>
 						</trkpt>
 					
-						<trkpt lat="43.92403" lon="3.1234">
+						<trkpt lat="43.92403" lon="3.71364">
 						 <ele>1105</ele>
+						</trkpt>					
+					</trkseg>
+				</trk>
+				
+				<trk>
+					<name>4 points Thaurac</name>
+					<trkseg>		
+						<trkpt lat="43.92387" lon="3.73004">
+						 <ele>1092</ele>
 						</trkpt>
 					
+						<trkpt lat="43.9248" lon="3.7538">
+						 <ele>1094</ele>
+						</trkpt>
 					
+						<trkpt lat="43.9176" lon="3.7539">
+						 <ele>1105</ele>
+						</trkpt>					
+						
+						<trkpt lat="43.9176" lon="3.7330">
+						 <ele>1105</ele>
+						</trkpt>	
 					</trkseg>
-			  
-			  
-			  
-			   </trk>
-			   
+				</trk>
+	
+	
+	   
 			   
 			   
 			   

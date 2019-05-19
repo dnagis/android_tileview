@@ -23,10 +23,12 @@ public class GpxReader {
 	private XmlPullParserFactory factory;
 	private XmlPullParser parser;
 	private Context contextMain;
+	private double[] mCoordinates;
 	
 	
-	public GpxReader(Context context) {
-		contextMain = context;		
+	public GpxReader(Context context, double[] coordinates) {
+		contextMain = context;	
+		mCoordinates = coordinates;
 		init();
     }
     
@@ -53,10 +55,10 @@ public class GpxReader {
 		
 		} catch(IOException | XmlPullParserException e) { Log.d("vvnx", "GpxReader.getgpx exception" + e.getMessage());}
 		
-		Log.d("vvnx", "GpxReader.getgpx");	 
+		Log.d("vvnx", "GpxReader.getgpx on va retourner un array de taille=" + sites.size());	 
 		
-	 
-	  return sites;
+		calcul_trkpt_distances(sites);
+		return sites;
 		
 		
 	}
@@ -73,9 +75,10 @@ public class GpxReader {
 	        if (parser.getEventType() != XmlPullParser.START_TAG) {
 	            continue;
 	        }
+	        //c'est un start tag donc ça a un nom (dans d'autres cas name est null)
 	        String name = parser.getName();
 			Log.d("vvnx", "GpxReader.readFichierGpx name=" + name);
-			//et on catche celui qui contient tout les points
+			//quand on chope un trkseg on récupère les trkpt lat lon dans un array
 	        if (name.equals("trkseg")) points_du_trek = readTrkSeg(parser);
 
 	    }	    
@@ -96,14 +99,16 @@ public class GpxReader {
     
     
 		int eventType = parser.getEventType();
+		
+		label_outer_loop: //ça s'appelle un label ça mec! ça permet de faire un pseudo goto...
 	    while (eventType != XmlPullParser.END_DOCUMENT) {
 			
 			
 			switch (eventType) {
 				case XmlPullParser.START_TAG:
-						String name = parser.getName(); //name est null!! https://stackoverflow.com/questions/25360955/xmlpullparser-getname-returns-null
+						//String name = parser.getName(); //name est null!! https://stackoverflow.com/questions/25360955/xmlpullparser-getname-returns-null
 						
-				        if (name.equals("trkpt")) {
+				        if (parser.getName().equals("trkpt")) {
 				            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
 				            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
 				            points_du_trek.add(new double[]{lat, lon});  
@@ -117,6 +122,8 @@ public class GpxReader {
 					break;
 				
 				case XmlPullParser.END_TAG:
+					Log.d("vvnx", "GpxReader.readTrkSeg end tag avec name=" + parser.getName());
+					if (parser.getName().equals("trk")) break label_outer_loop; //permet de sortir des deux loops!!!
 					break;
 					
 				
@@ -137,6 +144,37 @@ public class GpxReader {
     Log.d("vvnx", "GpxReader.readTrkSeg end");	
     
     return points_du_trek;
+	}
+	
+	
+	
+	public void calcul_trkpt_distances(ArrayList<double[]> sites) {
+		
+		Log.d("vvnx", "GpxReader.calcul_trkpt_distances");	
+		
+		for (double[] trkpt : sites) {
+			double d = distance(mCoordinates[0], trkpt[0], mCoordinates[1], trkpt[1]);
+           
+           Log.d("vvnx", "GpxReader.calcul_trkpt_distances pour le site " + trkpt[0] + " " + trkpt[1] + "  =" + d);		
+		}
+		
+	}
+	
+	public double distance(double lat1, double lat2, double lon1, double lon2) {
+
+    final int R = 6371; // Radius of the earth
+
+    double latDistance = Math.toRadians(lat2 - lat1);
+    double lonDistance = Math.toRadians(lon2 - lon1);
+    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+            + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    double distance = R * c * 1000; // convert to meters
+
+    distance = Math.pow(distance, 2);
+
+    return Math.sqrt(distance);
 	}
 	
 	

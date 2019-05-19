@@ -186,7 +186,7 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		List<Point> points = new ArrayList<>();
 		
-		GpxReader gpxReader = new GpxReader(this);
+		GpxReader gpxReader = new GpxReader(this, coordinates);
 		ArrayList<double[]> sites = gpxReader.getgpx();
 		
 		for (double[] coordinate : sites) {
