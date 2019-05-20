@@ -1,10 +1,39 @@
 TileView remasterisé pour passer dans l'aosp
 
+format gpx: assets/traces.gpx
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+		<gpx
+		 ... attributs gpx à la con...>
+		 
+				<trk>
+					<name>3 points autour vers sumène</name>
+					<trkseg>		
+						<trkpt lat="43.9797" lon="3.7094">
+						 <ele>1092</ele>
+						</trkpt>
+					
+						<trkpt lat="43.9821" lon="3.7371">
+						 <ele>1094</ele>
+						</trkpt>
+						...
+					</trkseg>
+				</trk>	
+				
+				<trk>
+					<name>4 points Thaurac</name>
+						
+						
+						
+						
+
 adb uninstall tileview.demo
 adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 
-j'ai enlevé les jpg de assets/tiles/ of course, je vais pas bloater mon github
+
+
 
 HOWTO passer du projet tileview vers qq chose qui compile dans l'aosp/development/samples/
 

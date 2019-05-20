@@ -10,6 +10,8 @@ import android.content.Context;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import android.util.Log;
 import java.lang.Double;
 
@@ -66,8 +68,6 @@ public class GpxReader {
 	
 	private ArrayList<double[]> readFichierGpx(XmlPullParser parser) throws XmlPullParserException, IOException {
     
-		//ArrayList<double[]> points_du_trek = new ArrayList();
-		
 		ArrayList<OneTrek> treks = new ArrayList();
 
 		parser.require(XmlPullParser.START_TAG, null, "gpx"); //tu peux pas mettre directos trkseg hélas...
@@ -79,19 +79,28 @@ public class GpxReader {
 	        }
 	        //c'est un start tag donc ça a un nom (dans d'autres cas name est null)
 	        String name = parser.getName();
-			Log.d("vvnx", "GpxReader.readFichierGpx name=" + name);
-			//quand on chope un trkseg on récupère les trkpt lat lon dans un array
-	        if (name.equals("trk")) {
-				
+			//Log.d("vvnx", "GpxReader.readFichierGpx name=" + name);
+			//création d'un objet onetrek
+	        if (name.equals("trk")) {				
 				OneTrek onetrek = readOneTrk(parser);
-				treks.add(onetrek);
-				
+				treks.add(onetrek);				
 				}
 
 	    }
 	    
-	    //je renvoie le premier en attendant mieux
-	    Log.d("vvnx", "GpxReader.readFichierGpx nombre de treks lus=" + treks.size());	    
+
+	    //Log.d("vvnx", "GpxReader.readFichierGpx nombre de treks lus=" + treks.size());	  
+	    
+	    
+	    //On sort les treks par mean_dist (impossible d'avoir deux équivalents je pense)    
+	    Collections.sort(treks, new Comparator<OneTrek>(){
+             public int compare(OneTrek t1, OneTrek t2) {
+               //return t1.getMeanDist().compareTo(t2.getMeanDist());
+               return Integer.compare(t1.mean_dist, t2.mean_dist);
+            }
+        });
+ 	    //on renvoie l'arraylist des points du trek le plus proche: premier dans l'array (0)       
+	    Log.d("vvnx", "GpxReader.readFichierGpx le trek le plus proche = " + treks.get(0).mName + "    comporte " + treks.get(0).mTrkpts.size() + " points" );	   
 	    return treks.get(0).mTrkpts;
 	}
 	
@@ -117,21 +126,21 @@ public class GpxReader {
 							if (parser.getName().equals("name")) {
 								parser.next(); //on est à une balise name, on veut le text qui est après
 								nom_du_trek = parser.getText();
-								Log.d("vvnx", "GpxReader.readOneTrk text de la balise name=" + nom_du_trek);								
+								//Log.d("vvnx", "GpxReader.readOneTrk text de la balise name=" + nom_du_trek);								
 								break;
 								}
 					        if (parser.getName().equals("trkpt")) {
 					            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
 					            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
 					            points_du_trek.add(new double[]{lat, lon});  
-					            Log.d("vvnx", "GpxReader.readOneTrk lat=" + parser.getAttributeValue(null, "lat") + " lon=" + parser.getAttributeValue(null, "lon"));					            
+					            //Log.d("vvnx", "GpxReader.readOneTrk lat=" + parser.getAttributeValue(null, "lat") + " lon=" + parser.getAttributeValue(null, "lon"));					            
 					        }
 						        
 					case XmlPullParser.TEXT:
 						break;
 					
 					case XmlPullParser.END_TAG:
-						Log.d("vvnx", "GpxReader.readOneTrk end tag dont name=" + parser.getName());
+						//Log.d("vvnx", "GpxReader.readOneTrk end tag dont name=" + parser.getName());
 						if (parser.getName().equals("trk")) break label_outer_loop; //permet de sortir des deux loops!!!
 						break;
 							
@@ -158,6 +167,10 @@ public class GpxReader {
 			mName = name;
 			mTrkpts = trkpts;
 			mean_dist = calcul_trkpt_distances(trkpts);
+		}
+		
+		public int getMeanDist() {
+			return mean_dist;
 		}
 		
 	}
