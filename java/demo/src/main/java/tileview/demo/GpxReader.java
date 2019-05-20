@@ -66,7 +66,9 @@ public class GpxReader {
 	
 	private ArrayList<double[]> readFichierGpx(XmlPullParser parser) throws XmlPullParserException, IOException {
     
-		ArrayList<double[]> points_du_trek = new ArrayList();
+		//ArrayList<double[]> points_du_trek = new ArrayList();
+		
+		ArrayList<OneTrek> treks = new ArrayList();
 
 		parser.require(XmlPullParser.START_TAG, null, "gpx"); //tu peux pas mettre directos trkseg hélas...
     
@@ -79,88 +81,119 @@ public class GpxReader {
 	        String name = parser.getName();
 			Log.d("vvnx", "GpxReader.readFichierGpx name=" + name);
 			//quand on chope un trkseg on récupère les trkpt lat lon dans un array
-	        if (name.equals("trkseg")) points_du_trek = readTrkSeg(parser);
+	        if (name.equals("trk")) {
+				
+				OneTrek onetrek = readOneTrk(parser);
+				treks.add(onetrek);
+				
+				}
 
-	    }	    
-	    return points_du_trek;
+	    }
+	    
+	    //je renvoie le premier en attendant mieux
+	    Log.d("vvnx", "GpxReader.readFichierGpx nombre de treks lus=" + treks.size());	    
+	    return treks.get(0).mTrkpts;
 	}
 	
 	
 	
 	
 
-	private ArrayList<double[]> readTrkSeg(XmlPullParser parser) throws XmlPullParserException, IOException {
+	private OneTrek readOneTrk(XmlPullParser parser) throws XmlPullParserException, IOException {
 		
-	ArrayList<double[]> points_du_trek = new ArrayList();	
+		ArrayList<double[]> points_du_trek = new ArrayList();
+		String nom_du_trek = null;	
 	
-	Log.d("vvnx", "GpxReader.readTrkSeg start");	
-	
-
-    
+		//Log.d("vvnx", "GpxReader.readOneTrk start");    
     
 		int eventType = parser.getEventType();
 		
 		label_outer_loop: //ça s'appelle un label ça mec! ça permet de faire un pseudo goto...
 	    while (eventType != XmlPullParser.END_DOCUMENT) {
-			
-			
-			switch (eventType) {
-				case XmlPullParser.START_TAG:
-						//String name = parser.getName(); //name est null!! https://stackoverflow.com/questions/25360955/xmlpullparser-getname-returns-null
-						
-				        if (parser.getName().equals("trkpt")) {
-				            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
-				            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
-				            points_du_trek.add(new double[]{lat, lon});  
-				            Log.d("vvnx", "GpxReader.readTrkSeg lat=" + parser.getAttributeValue(null, "lat") + " lon=" + parser.getAttributeValue(null, "lon"));					            
-				        }
-						
-
-				        
-				        
-				case XmlPullParser.TEXT:
-					break;
-				
-				case XmlPullParser.END_TAG:
-					Log.d("vvnx", "GpxReader.readTrkSeg end tag avec name=" + parser.getName());
-					if (parser.getName().equals("trk")) break label_outer_loop; //permet de sortir des deux loops!!!
-					break;
 					
-				
-                default:
-                    break;
-				        
-				 
-	        
-	        
-			}
-	        
-	        
-	        
+				switch (eventType) {
+					case XmlPullParser.START_TAG:
+							//String name = parser.getName(); //name est null!! https://stackoverflow.com/questions/25360955/xmlpullparser-getname-returns-null
+							if (parser.getName().equals("name")) {
+								parser.next(); //on est à une balise name, on veut le text qui est après
+								nom_du_trek = parser.getText();
+								Log.d("vvnx", "GpxReader.readOneTrk text de la balise name=" + nom_du_trek);								
+								break;
+								}
+					        if (parser.getName().equals("trkpt")) {
+					            double lat = Double.parseDouble(parser.getAttributeValue(null, "lat"));
+					            double lon = Double.parseDouble(parser.getAttributeValue(null, "lon")); 
+					            points_du_trek.add(new double[]{lat, lon});  
+					            Log.d("vvnx", "GpxReader.readOneTrk lat=" + parser.getAttributeValue(null, "lat") + " lon=" + parser.getAttributeValue(null, "lon"));					            
+					        }
+						        
+					case XmlPullParser.TEXT:
+						break;
+					
+					case XmlPullParser.END_TAG:
+						Log.d("vvnx", "GpxReader.readOneTrk end tag dont name=" + parser.getName());
+						if (parser.getName().equals("trk")) break label_outer_loop; //permet de sortir des deux loops!!!
+						break;
+							
+	                default:
+	                    break;
+				}
 	        eventType = parser.next();
 	    }
     
     
-    Log.d("vvnx", "GpxReader.readTrkSeg end");	
-    
-    return points_du_trek;
+    //Log.d("vvnx", "GpxReader.readTrkSeg end");	
+
+
+    OneTrek trek = new OneTrek(nom_du_trek, points_du_trek);        
+    return trek;
 	}
 	
-	
-	
-	public void calcul_trkpt_distances(ArrayList<double[]> sites) {
+	public class OneTrek {
+		String mName;
+		ArrayList<double[]> mTrkpts;
+		int mean_dist;
 		
-		Log.d("vvnx", "GpxReader.calcul_trkpt_distances");	
-		
-		for (double[] trkpt : sites) {
-			double d = distance(mCoordinates[0], trkpt[0], mCoordinates[1], trkpt[1]);
-           
-           Log.d("vvnx", "GpxReader.calcul_trkpt_distances pour le site " + trkpt[0] + " " + trkpt[1] + "  =" + d);		
+		public OneTrek(String name, ArrayList<double[]> trkpts) {
+			mName = name;
+			mTrkpts = trkpts;
+			mean_dist = calcul_trkpt_distances(trkpts);
 		}
 		
 	}
 	
-	public double distance(double lat1, double lat2, double lon1, double lon2) {
+	
+	
+	
+	
+	/**
+	 * Calcul de la moyenne des distances des points d'une arraylist par rapport à mCoordinates (lastlocation)
+	 * 
+	 * 
+	 * 
+	 * 
+	 **/
+	public int calcul_trkpt_distances(ArrayList<double[]> sites) {		
+		int somme_distances = 0;
+		int moyenne;		
+		for (double[] trkpt : sites) {
+			double d = distance_latlong(mCoordinates[0], trkpt[0], mCoordinates[1], trkpt[1]);
+			somme_distances += Math.round(d);          
+			//Log.d("vvnx", "GpxReader.calcul_trkpt_distances pour le site " + trkpt[0] + " " + trkpt[1] + "  =" + d + "  somme_dist=" + somme_distances);		
+		}		
+		moyenne = somme_distances / sites.size();
+		//Log.d("vvnx", "GpxReader.calcul_trkpt_distances moyenne=" + moyenne);
+		return moyenne;
+	}
+	
+	
+	/**
+	 * Helper calcul de distances (j'ai enlevé la partie qui tient compte de l'altitude 'height, elevation' mais possible de l'avoir
+	 * 
+	 * 
+	 * 
+	 **/	
+	public double distance_latlong(double lat1, double lat2, double lon1, double lon2) {
 
     final int R = 6371; // Radius of the earth
 
