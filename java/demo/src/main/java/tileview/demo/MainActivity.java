@@ -251,6 +251,10 @@ public class MainActivity extends Activity implements LocationListener {
 		}*/		
 	}
 	
+	public void ActionPressBouton3(View v) {
+		Log.d("vvnx", "bouton 3");	
+	}
+	
 	
 	
 	//implements LocationListener --> il faut les 4 méthodes     

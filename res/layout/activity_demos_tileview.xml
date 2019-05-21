@@ -43,6 +43,20 @@
 		android:layout_margin="10dp"
 	/>
 	
+	<ToggleButton
+		android:id="@+id/bouton3"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true"
+		android:textOn=""
+        android:textOff=""
+        android:checked="true"
+		android:background="@drawable/bouton3_sel"	
+		android:onClick="ActionPressBouton3"	
+		android:layout_margin="10dp"
+	/>
+	
     <TextView
 		android:id="@+id/textview1"
 		android:layout_width="wrap_content"

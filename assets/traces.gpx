@@ -6,22 +6,6 @@
 		 xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"
 		 creator="http://www.openrunner.com">
 		 
-				<trk>
-					<name>3 points autour vers sumène</name>
-					<trkseg>		
-						<trkpt lat="43.9797" lon="3.7094">
-						 <ele>1092</ele>
-						</trkpt>
-					
-						<trkpt lat="43.9821" lon="3.7371">
-						 <ele>1094</ele>
-						</trkpt>
-					
-						<trkpt lat="43.9821" lon="3.7371">
-						 <ele>1105</ele>
-						</trkpt>					
-					</trkseg>
-				</trk>	
 				
 				<trk>
 					<name>4 points Thaurac</name>
@@ -41,6 +25,10 @@
 						<trkpt lat="43.9176" lon="3.7330">
 						 <ele>1105</ele>
 						</trkpt>	
+						
+						<trkpt lat="43.9282" lon="3.5848">
+						 <ele>1105</ele>
+						</trkpt>						
 					</trkseg>
 				</trk>
 	

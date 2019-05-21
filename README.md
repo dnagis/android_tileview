@@ -32,10 +32,16 @@ adb uninstall tileview.demo
 adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 
+****HOWTO récupérer des png pour les boutons
+https://developer.android.com/design/downloads
+
+	https://material.io/tools/icons/?style=baseline
+		selection l'icone et à gauche bouton selected choisir png
+		ne pas prendre juste 18dp prendre android
+		prendre le 96x96 (*48.png) dans drawable-xhdpi
 
 
-
-HOWTO passer du projet tileview vers qq chose qui compile dans l'aosp/development/samples/
+****HOWTO passer du projet tileview vers qq chose qui compile dans l'aosp/development/samples/
 
 point de départ -> https://github.com/moagrius/TileView.git
 le coeur fonctionnel de ce projet est dans tileview/src/main -> je passe son contenu dans un nouveau dossier de development/samples/
