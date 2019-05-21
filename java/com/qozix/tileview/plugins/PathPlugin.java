@@ -10,14 +10,18 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.util.Log;
+
 public class PathPlugin implements TileView.Plugin, TileView.CanvasDecorator {
 
   private static final int DEFAULT_STROKE_COLOR = 0xFF000000;
   private static final int DEFAULT_STROKE_WIDTH = 10;
 
   private Path mRecyclerPath = new Path();
+  private Paint mRecyclerPaint = new Paint();
   private Paint mDefaultPaint = new Paint();
   private Set<DrawablePath> mDrawablePaths = new LinkedHashSet<>();
+  
 
   {
     mDefaultPaint.setStyle(Paint.Style.STROKE);
@@ -32,12 +36,23 @@ public class PathPlugin implements TileView.Plugin, TileView.CanvasDecorator {
   }
 
   @Override
-  public void decorate(Canvas canvas) {
+  public void decorate(Canvas canvas) { //on y passe à chaque mouvement...
     for (DrawablePath drawablePath : mDrawablePaths) {
       mRecyclerPath.set(drawablePath.getPath());
       canvas.drawPath(mRecyclerPath, drawablePath.getPaint());
     }
   }
+  
+  public void toggle_transparent(boolean visible) {
+	 for (DrawablePath drawablePath : mDrawablePaths) {
+      mRecyclerPaint.set(drawablePath.getPaint());
+      if (visible) { mRecyclerPaint.setColor(0xFF4286f4);
+		} else { mRecyclerPaint.setColor(0x004286f4);	
+		}      
+      drawablePath.setPaint(mRecyclerPaint);
+		}
+    
+	}
 
   public DrawablePath drawPath(List<Point> positions, Paint paint) {
     Path path = new Path();
@@ -84,7 +99,12 @@ public class PathPlugin implements TileView.Plugin, TileView.CanvasDecorator {
     }
 
     public Paint getPaint() {
+		
       return mPaint;
+    }
+    
+    public void setPaint(Paint paint) {
+      mPaint = paint;
     }
   }
 

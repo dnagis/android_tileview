@@ -78,8 +78,9 @@ public class MainActivity extends Activity implements LocationListener {
 
 	TileView tileView;
 	MarkerPlugin markerPlugin;
-	ToggleButton myButton;
+	ToggleButton myButton, trkButton;
 	CoordinatePlugin coordinatePlugin;
+	PathPlugin pathPlugin;
 	public LocationManager mLocationManager;
 	private BaseDeDonnees maBDD;
 	TextView infoTextView;
@@ -97,6 +98,7 @@ public class MainActivity extends Activity implements LocationListener {
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
 		myButton = (ToggleButton)  findViewById(R.id.bouton2);
+		trkButton = (ToggleButton)  findViewById(R.id.bouton3);
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
@@ -196,7 +198,7 @@ public class MainActivity extends Activity implements LocationListener {
 		  points.add(point);
 		}
 		
-		PathPlugin pathPlugin = tileView.getPlugin(PathPlugin.class);
+		pathPlugin = tileView.getPlugin(PathPlugin.class);
 		pathPlugin.drawPath(points, paint);
 		
 }
@@ -252,7 +254,11 @@ public class MainActivity extends Activity implements LocationListener {
 	}
 	
 	public void ActionPressBouton3(View v) {
-		Log.d("vvnx", "bouton 3");	
+		//Log.d("vvnx", "bouton 3");
+		if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on");
+		} else { Log.d("vvnx", "bouton 3 off");
+		}
+		pathPlugin.toggle_transparent(trkButton.isChecked());	
 	}
 	
 	
