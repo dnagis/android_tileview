@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		int zoom = 65536; // 2^16 avec 16=niveau de zoom des tiles
 		
-		n_tiles_x = 25;
+		n_tiles_x = 50;
 		n_tiles_y = n_tiles_x;
 		
 		sizePixelW = n_tiles_x*256;
