@@ -16,15 +16,14 @@
 		android:background="#FFe7e7e7" 
 	/>
 <!-- layout_centerInParent -->	
-    <Button
+    <ImageButton
 		android:id="@+id/bouton1"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="@string/button_txt"				
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"	
 		android:onClick="ActionPressBouton1"	
-		android:background="#800966e8"
+		android:background="@drawable/bouton1_sel"
 		android:textSize="40sp"
 		android:layout_margin="10dp"
 	/>

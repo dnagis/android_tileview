@@ -592,12 +592,12 @@ public class TileView extends ScalingScrollView implements
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childCount=" + getChildCount());
+		//Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childCount=" + getChildCount());
       for (int i = 0; i < getChildCount(); i++) {
         View child = getChildAt(i);
-        Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childId=" + child.getId());
+        //Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  childId=" + child.getId());
 			if (child.getId() == 3419){
-			  Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  mon child id");
+			  //Log.d("vvnx", "TileView.FixedSizeViewGroup.onLayout()  mon child id");
 			  child.layout(0, 0, 500, 1000);
 			} else {
 			child.layout(0, 0, mWidth, mHeight); //le pristine layout de FixedSizeViewGroup -> étale tout le monde sur la totalité...
@@ -616,21 +616,6 @@ public class TileView extends ScalingScrollView implements
 
   }
   
-/*  private static class MaViewCustomVvnx extends Button {
-	  
-	public MaViewCustomVvnx(Context context) {
-      super(context);
-      Log.d("vvnx", "TileView MaViewCustomVvnx constructeur");
-      setId(3419); //permet de l'identifier ailleurs avec child.getId()...
-    }
-    
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Log.d("vvnx", "TileView MaViewCustomVvnx onLayout");
-
-    }
-	  
-  }*/
 
   public static class Builder {
 

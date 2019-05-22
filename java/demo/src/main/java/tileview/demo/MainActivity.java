@@ -39,6 +39,7 @@ import android.util.DisplayMetrics;
 
 import android.widget.ImageView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ToggleButton;
 import android.view.ViewGroup.LayoutParams;
 import android.view.View;
@@ -104,7 +105,7 @@ public class MainActivity extends Activity implements LocationListener {
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		maBDD = new BaseDeDonnees(this);
 		
-		int zoom = 65536; // 2^16
+		int zoom = 65536; // 2^16 avec 16=niveau de zoom des tiles
 		
 		n_tiles_x = 25;
 		n_tiles_y = n_tiles_x;
@@ -170,7 +171,7 @@ public class MainActivity extends Activity implements LocationListener {
 		marker.setImageResource(R.drawable.marker); //le png
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
 		
-		// draw a path
+		//PathPlugin pour gpx. Il faut Paint et Points
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(0xFF4286f4);
@@ -216,7 +217,9 @@ public class MainActivity extends Activity implements LocationListener {
 		super.onPause();
 	}
 	
-
+	/**
+	 * Bouton pour recentrer sur le marker et passer à scale 1
+	 */
 	
 	public void ActionPressBouton1(View v) {
 		int x = 1;
@@ -246,19 +249,19 @@ public class MainActivity extends Activity implements LocationListener {
 		
 	}
 	
-	
+	/**
+	 * Le state de ce bouton est utilisé pour décider si le marker est actualisé au location received (parce que j'ai l'impression
+	 * que ça peut faire sauter la view)
+	 */	
 	public void ActionPressBouton2(View v) {
-		/*if ( myButton.isChecked() == true ) { Log.d("vvnx", "bouton 2 on");
-		} else { Log.d("vvnx", "bouton 2 off");
-		}*/		
+			//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 	}
 	
 	public void ActionPressBouton3(View v) {
-		//Log.d("vvnx", "bouton 3");
-		if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on");
-		} else { Log.d("vvnx", "bouton 3 off");
-		}
-		pathPlugin.toggle_transparent(trkButton.isChecked());	
+		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
+		pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
+		//si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
+		tileView.setDirty(); //dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'
 	}
 	
 	

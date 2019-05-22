@@ -43,6 +43,7 @@ public class PathPlugin implements TileView.Plugin, TileView.CanvasDecorator {
     }
   }
   
+  //vvnx brewed: toggle le transparency byte de la couleur (premier byte d'une couleur en HEX)
   public void toggle_transparent(boolean visible) {
 	 for (DrawablePath drawablePath : mDrawablePaths) {
       mRecyclerPaint.set(drawablePath.getPaint());
