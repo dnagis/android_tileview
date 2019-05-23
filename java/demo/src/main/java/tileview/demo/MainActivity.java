@@ -142,7 +142,8 @@ public class MainActivity extends Activity implements LocationListener {
 		new TileView.Builder(tileView)
 			.setSize(sizePixelW, sizePixelH)			
 			//        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
-			.defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
+			//.defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
+			.defineZoomLevel("/storage/BCC1-1AEC/tiles/ign-%1$d_%2$d.jpg") // storage/BCC1-1AEC/ c'est la carte sd removable
 			.setCol0(col_0) 
 			.setRow0(row_0) 
 			.installPlugin(new MarkerPlugin(this))
