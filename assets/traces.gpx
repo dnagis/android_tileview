@@ -6,31 +6,176 @@
 		 xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd"
 		 creator="http://www.openrunner.com">
 		 
-				
 				<trk>
-					<name>4 points Thaurac</name>
-					<trkseg>		
-						<trkpt lat="43.92387" lon="3.73004">
-						 <ele>1092</ele>
-						</trkpt>
-					
-						<trkpt lat="43.9248" lon="3.7538">
-						 <ele>1094</ele>
-						</trkpt>
-					
-						<trkpt lat="43.9176" lon="3.7539">
-						 <ele>1105</ele>
-						</trkpt>					
-						
-						<trkpt lat="43.9176" lon="3.7330">
-						 <ele>1105</ele>
-						</trkpt>	
-						
-						<trkpt lat="43.9282" lon="3.5848">
-						 <ele>1105</ele>
-						</trkpt>						
-					</trkseg>
-				</trk>
+			    <name>--Concoules-- OR-4180563:mont lozere nord</name>
+			    <trkseg>
+	
+			<trkpt lat="44.38576" lon="3.8751">
+			 <ele>1431</ele>
+			</trkpt>
+		
+
+
+		
+
+		
+
+
+
+		
+
+		
+			<trkpt lat="44.39585" lon="3.86506">
+			 <ele>1555</ele>
+			</trkpt>
+		
+
+
+
+
+		
+
+		
+
+		
+			<trkpt lat="44.39977" lon="3.8482">
+			 <ele>1654</ele>
+			</trkpt>
+		
+
+
+	
+		
+
+		
+			<trkpt lat="44.40787" lon="3.83751">
+			 <ele>1670</ele>
+			</trkpt>
+		
+
+
+		
+
+
+		
+
+		
+			<trkpt lat="44.40186" lon="3.82451">
+			 <ele>1436</ele>
+			</trkpt>
+		
+
+
+
+
+		
+			<trkpt lat="44.39379" lon="3.82266">
+			 <ele>1398</ele>
+			</trkpt>
+		
+
+
+		
+
+		
+
+		
+			<trkpt lat="44.38573" lon="3.82142">
+			 <ele>1368</ele>
+			</trkpt>
+		
+
+	
+
+		
+			<trkpt lat="44.38024" lon="3.83485">
+			 <ele>1359</ele>
+			</trkpt>
+		
+
+		
+
+
+
+		
+
+		
+			<trkpt lat="44.37346" lon="3.82296">
+			 <ele>1331</ele>
+			</trkpt>
+		
+
+
+		
+			<trkpt lat="44.36297" lon="3.8288">
+			 <ele>1371</ele>
+			</trkpt>
+	
+		
+
+		
+
+	
+
+			<trkpt lat="44.35312" lon="3.84382">
+			 <ele>1284</ele>
+			</trkpt>
+
+
+
+		
+
+		
+			<trkpt lat="44.3525" lon="3.85858">
+			 <ele>1291</ele>
+			</trkpt>
+		
+
+
+		
+
+		
+			<trkpt lat="44.35496" lon="3.86747">
+			 <ele>1346</ele>
+			</trkpt>
+		
+
+
+		
+
+
+		
+
+		
+			<trkpt lat="44.35692" lon="3.88111">
+			 <ele>1259</ele>
+			</trkpt>
+
+
+
+		
+			<trkpt lat="44.37343" lon="3.88721">
+			 <ele>1299</ele>
+			</trkpt>
+
+
+
+
+
+		
+			<trkpt lat="44.3853" lon="3.87558">
+			 <ele>1417</ele>
+			</trkpt>
+
+		
+				</trkseg>
+			   </trk>
+				
+			   
+			  
+			   
+			   
+			
 	
 
 			   

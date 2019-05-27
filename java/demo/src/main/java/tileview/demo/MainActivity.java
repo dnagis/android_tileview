@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements LocationListener {
 	double NORTH;
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257   
-	double[] coordinates = new double[]{43.9161529541016,3.73525381088257};
+	double[] coordinates = new double[]{44.4017,3.8456};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -258,11 +258,18 @@ public class MainActivity extends Activity implements LocationListener {
 			//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 	}
 	
+	//bouton pour la path
 	public void ActionPressBouton3(View v) {
 		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
-		pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
+		
+		
+		//pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
 		//si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
-		tileView.setDirty(); //dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'
+		//tileView.setDirty(); //dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'
+		
+		//soucis lors du test avant Lozère: si path étendue: perte fluidité que c'est rien de le dire. 
+		//donc en attendant mieux: workaround moche mais efficace (destruction de la path)
+		pathPlugin.clear();
 	}
 	
 	
