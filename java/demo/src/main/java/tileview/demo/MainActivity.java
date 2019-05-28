@@ -47,7 +47,8 @@ import android.widget.TextView;
 
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
-import com.qozix.tileview.plugins.MarkerPlugin;
+import com.qozix.tileview.plugins.MarkerPluginLoc;
+import com.qozix.tileview.plugins.MarkerPluginGpx;
 import com.qozix.tileview.plugins.InfoWindowPlugin;
 import com.qozix.tileview.plugins.PathPlugin;
 
@@ -78,7 +79,8 @@ public class MainActivity extends Activity implements LocationListener {
 	
 
 	TileView tileView;
-	MarkerPlugin markerPlugin;
+	MarkerPluginLoc markerPluginLoc;
+	MarkerPluginGpx markerPluginGpx;
 	ToggleButton myButton, trkButton;
 	CoordinatePlugin coordinatePlugin;
 	PathPlugin pathPlugin;
@@ -146,7 +148,8 @@ public class MainActivity extends Activity implements LocationListener {
 			.defineZoomLevel("/storage/BCC1-1AEC/tiles/ign-%1$d_%2$d.jpg") // storage/BCC1-1AEC/ c'est la carte sd removable
 			.setCol0(col_0) 
 			.setRow0(row_0) 
-			.installPlugin(new MarkerPlugin(this))
+			.installPlugin(new MarkerPluginLoc(this))
+			.installPlugin(new MarkerPluginGpx(this))
 			.installPlugin(new PathPlugin())
 			.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 			//		.addReadyListener(this::onReady)
@@ -163,28 +166,19 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//MarkerPlugin pour location mark
 		
-		markerPlugin = tileView.getPlugin(MarkerPlugin.class); 
+		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView   
 		int x = coordinatePlugin.longitudeToX(coordinates[1]);
 		int y = coordinatePlugin.latitudeToY(coordinates[0]);
 		
-		ImageView marker = new ImageView(this);
-		marker.setImageResource(R.drawable.marker); //le png
-		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
+		ImageView markerLocation = new ImageView(this);
+		markerLocation.setImageResource(R.drawable.marker); //le png
+		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); 
 		
-		/*PathPlugin pour gpx. Il faut Paint et Points
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(0xFF4286f4);
-		paint.setStrokeWidth(0);
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
-		
-		List<Point> points = new ArrayList<>();
-		
+		//Creation de la liste des points en x et y a partir de gpx (assets/traces.gpx) voir la classe GPXReader
+		List<Point> points = new ArrayList<>();		
 		GpxReader gpxReader = new GpxReader(this, coordinates);
-		ArrayList<double[]> sites = gpxReader.getgpx();
-		
+		ArrayList<double[]> sites = gpxReader.getgpx();		
 		for (double[] coordinate : sites) {
 		  Point point = new Point();
 		  point.x = coordinatePlugin.longitudeToX(coordinate[1]);
@@ -192,8 +186,32 @@ public class MainActivity extends Activity implements LocationListener {
 		  points.add(point);
 		}
 		
+		/*PathPlugin pour gpx.
+		Paint paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(0xFF4286f4);
+		paint.setStrokeWidth(0);
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
 		pathPlugin = tileView.getPlugin(PathPlugin.class);
 		pathPlugin.drawPath(points, paint);*/
+		
+		//MarkerPluginGpx pour remplacer pathplugin qui rame
+		markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
+		
+		//ImageView markerGpx = new ImageView(this);
+		//markerGpx.setImageResource(R.drawable.dot); //le png
+		
+		//markerPluginGpx.addMarker(markerGpx, 300, 300, -0.5f, -1f, 0, 0);
+		//markerPluginGpx.addPoints(markerGpx, points); //pas possible dutiliser plusieurs fois la même view
+		for (Point point : points) {
+		  Log.d("vvnx", "add point x=" + point.x + " et y=" + point.y);
+		  ImageView markerGpx = new ImageView(this);
+		  markerGpx.setImageResource(R.drawable.dot);
+		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
+
+		}
+		
 		
 }
 
@@ -288,7 +306,7 @@ public class MainActivity extends Activity implements LocationListener {
 		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
 		
 		//update markerpos seulement si bouton gps on, parce que fait sauter tileview quand redraw, chiant pour browser.
-		if ( myButton.isChecked() == true ) markerPlugin.updateMarkerPos(x, y);
+		if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);
         
      
     }

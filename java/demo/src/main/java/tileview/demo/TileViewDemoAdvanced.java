@@ -18,7 +18,7 @@ import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
 import com.qozix.tileview.plugins.HotSpotPlugin;
 import com.qozix.tileview.plugins.InfoWindowPlugin;
-import com.qozix.tileview.plugins.MarkerPlugin;
+import com.qozix.tileview.plugins.MarkerPluginLoc;
 import com.qozix.tileview.plugins.PathPlugin;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class TileViewDemoAdvanced extends Activity {
         .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
         .defineZoomLevel(1, "tiles/phi-500000-%1$d_%2$d.jpg")
         .defineZoomLevel(2, "tiles/phi-250000-%1$d_%2$d.jpg")
-        .installPlugin(new MarkerPlugin(this))
+        .installPlugin(new MarkerPluginLoc(this))
         .installPlugin(new InfoWindowPlugin(infoView))
         .installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
         .installPlugin(new HotSpotPlugin())
@@ -77,7 +77,7 @@ public class TileViewDemoAdvanced extends Activity {
     CoordinatePlugin coordinatePlugin = tileView.getPlugin(CoordinatePlugin.class);
     InfoWindowPlugin infoWindowPlugin = tileView.getPlugin(InfoWindowPlugin.class);
     HotSpotPlugin hotSpotPlugin = tileView.getPlugin(HotSpotPlugin.class);
-    MarkerPlugin markerPlugin = tileView.getPlugin(MarkerPlugin.class);
+    MarkerPluginLoc markerPlugin = tileView.getPlugin(MarkerPluginLoc.class);
 
     // drop some markers, with info window expansions
     String template = "Clicked marker at:\n%1$f\n%2$f";
