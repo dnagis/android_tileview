@@ -27,7 +27,7 @@ public class PathPlugin implements TileView.Plugin, TileView.CanvasDecorator {
     mDefaultPaint.setStyle(Paint.Style.STROKE);
     mDefaultPaint.setColor(DEFAULT_STROKE_COLOR);
     mDefaultPaint.setStrokeWidth(DEFAULT_STROKE_WIDTH);
-    mDefaultPaint.setAntiAlias(true);
+    //mDefaultPaint.setAntiAlias(true);
   }
 
   @Override

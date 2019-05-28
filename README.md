@@ -1,5 +1,11 @@
 TileView remasterisé pour passer dans l'aosp
 
+problème de performance pour les paths de grande taille: (pathplugin: canvas.drawpath()
+
+https://stackoverflow.com/questions/15039829/drawing-paths-and-hardware-acceleration
+
+
+
 format gpx: assets/traces.gpx
 
 

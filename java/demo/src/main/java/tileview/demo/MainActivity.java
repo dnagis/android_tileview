@@ -172,21 +172,13 @@ public class MainActivity extends Activity implements LocationListener {
 		marker.setImageResource(R.drawable.marker); //le png
 		markerPlugin.addMarker(marker, x, y, -0.5f, -1f, 0, 0); 
 		
-		//PathPlugin pour gpx. Il faut Paint et Points
+		/*PathPlugin pour gpx. Il faut Paint et Points
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(0xFF4286f4);
 		paint.setStrokeWidth(0);
-		paint.setAntiAlias(true);
-		
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		paint.setShadowLayer(
-			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, metrics),
-			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics),
-			TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics),
-			0x66000000);
 		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
-		paint.setPathEffect(new CornerPathEffect(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics)));
 		
 		List<Point> points = new ArrayList<>();
 		
@@ -201,7 +193,7 @@ public class MainActivity extends Activity implements LocationListener {
 		}
 		
 		pathPlugin = tileView.getPlugin(PathPlugin.class);
-		pathPlugin.drawPath(points, paint);
+		pathPlugin.drawPath(points, paint);*/
 		
 }
 
@@ -260,7 +252,7 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	//bouton pour la path
 	public void ActionPressBouton3(View v) {
-		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
+		if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 		
 		
 		//pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
@@ -269,7 +261,8 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//soucis lors du test avant Lozère: si path étendue: perte fluidité que c'est rien de le dire. 
 		//donc en attendant mieux: workaround moche mais efficace (destruction de la path)
-		pathPlugin.clear();
+		
+		//pathPlugin.clear();
 	}
 	
 	
