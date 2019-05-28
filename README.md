@@ -38,13 +38,18 @@ adb uninstall tileview.demo
 adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 
-****HOWTO récupérer des png pour les boutons
+****HOWTO res/drawables -> trouver, créer
+
+récupérer des png pour les boutons
 https://developer.android.com/design/downloads
 
 	https://material.io/tools/icons/?style=baseline
 		selection l'icone et à gauche bouton selected choisir png
 		ne pas prendre juste 18dp prendre android
 		prendre le 96x96 (*48.png) dans drawable-xhdpi
+		
+https://www.favicon-generator.org/image-editor/ pour les créer soi même avec fond transparents (astuce: trim au save)
+	convert dot_.png -resize x40 dot.png --> taille qui va bien
 
 
 ****HOWTO passer du projet tileview vers qq chose qui compile dans l'aosp/development/samples/
