@@ -73,8 +73,8 @@ public class MainActivity extends Activity implements LocationListener {
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257   
-	double[] coordinates = new double[]{44.4017,3.8456};
+	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
+	double[] coordinates = new double[]{43.93421087,3.71005111};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -185,8 +185,19 @@ public class MainActivity extends Activity implements LocationListener {
 		  point.y = coordinatePlugin.latitudeToY(coordinate[0]);
 		  points.add(point);
 		}
+				
 		
-		/*PathPlugin pour gpx.
+		//Affichage des points gpx
+		markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
+		for (Point point : points) {
+		  //Log.d("vvnx", "add point x=" + point.x + " et y=" + point.y);
+		  ImageView markerGpx = new ImageView(this); //car pas possible dutiliser plusieurs fois la même view (erreur runtime this child already has a parent)
+		  markerGpx.setImageResource(R.drawable.dot);
+		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
+		}
+		
+		
+		/*PathPlugin pour gpx --> obligé d'abandonner car strong impact sur performance quand trop grand (pas lié au nombre de points juste à la taille)
 		Paint paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(0xFF4286f4);
@@ -194,25 +205,7 @@ public class MainActivity extends Activity implements LocationListener {
 		DisplayMetrics metrics = getResources().getDisplayMetrics();
 		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
 		pathPlugin = tileView.getPlugin(PathPlugin.class);
-		pathPlugin.drawPath(points, paint);*/
-		
-		//MarkerPluginGpx pour remplacer pathplugin qui rame
-		markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
-		
-		//ImageView markerGpx = new ImageView(this);
-		//markerGpx.setImageResource(R.drawable.dot); //le png
-		
-		//markerPluginGpx.addMarker(markerGpx, 300, 300, -0.5f, -1f, 0, 0);
-		//markerPluginGpx.addPoints(markerGpx, points); //pas possible dutiliser plusieurs fois la même view
-		for (Point point : points) {
-		  Log.d("vvnx", "add point x=" + point.x + " et y=" + point.y);
-		  ImageView markerGpx = new ImageView(this);
-		  markerGpx.setImageResource(R.drawable.dot);
-		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
-
-		}
-		
-		
+		pathPlugin.drawPath(points, paint);*/		
 }
 
   
@@ -268,20 +261,19 @@ public class MainActivity extends Activity implements LocationListener {
 			//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 	}
 	
-	//bouton pour la path
+	//bouton pour toggle gpx
 	public void ActionPressBouton3(View v) {
-		if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
+		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 		
+		markerPluginGpx.toggleVisibility(trkButton.isChecked());
 		
-		//pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
-		//si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
-		//tileView.setDirty(); //dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'
-		
-		//soucis lors du test avant Lozère: si path étendue: perte fluidité que c'est rien de le dire. 
-		//donc en attendant mieux: workaround moche mais efficace (destruction de la path)
-		
-		//pathPlugin.clear();
-	}
+		/**pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
+		si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
+		tileView.setDirty(); dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'		
+		soucis lors du test avant Lozère: si path de grande taille: perte fluidité que cest rien de le dire ("performance canvas ondraw path")
+		donc en attendant mieux: workaround moche mais efficace (destruction de la path)		
+		pathPlugin.clear();**/
+		}
 	
 	
 	

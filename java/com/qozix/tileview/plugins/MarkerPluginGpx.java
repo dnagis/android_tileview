@@ -100,14 +100,14 @@ public class MarkerPluginGpx extends ViewGroup implements TileView.Plugin, TileV
     addView(view, layoutParams);
   }
   
-  public void addPoints(View view, List<Point> points) {
-	  
-	  for (Point point : points) {
-		  Log.d("vvnx", "MarkerPluginGpx add point x=" + point.x + " et y=" + point.y);
-		  LayoutParams layoutParams = new MarkerPluginGpx.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT,point.x,point.y,-0.5f, -1f, 0, 0);
-		addView(view, layoutParams);
-		}
-	  
+  public void toggleVisibility(boolean rx) {
+	//if ( rx ) { Log.d("vvnx", "MarkerPluginGpx true"); } else { Log.d("vvnx", "MarkerPluginGpx false"); }
+	int vis_wanted;
+	if ( rx ) { vis_wanted = VISIBLE; } else { vis_wanted = INVISIBLE; }
+	for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      child.setVisibility(vis_wanted);
+	}
   }
   
 
@@ -128,6 +128,8 @@ public class MarkerPluginGpx extends ViewGroup implements TileView.Plugin, TileV
     view.setLeft(lp.mLeft);
     view.setTop(lp.mTop);
   }
+  
+  
 
   public static class LayoutParams extends ViewGroup.LayoutParams {
 

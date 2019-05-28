@@ -42,7 +42,7 @@ public MarkerPluginLoc(Context context) {
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
-	Log.d("vvnx", "MarkerPlugin.onLayout() l t r b" + l + " " + t + " "  + r + " "  + b);
+	//Log.d("vvnx", "MarkerPlugin.onLayout() l t r b" + l + " " + t + " "  + r + " "  + b);
     for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
       if (child.getVisibility() != GONE) {
