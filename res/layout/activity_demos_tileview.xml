@@ -16,6 +16,8 @@
 		android:background="#FFe7e7e7" 
 	/>
 <!-- layout_centerInParent -->	
+
+
     <ImageButton
 		android:id="@+id/bouton1"
 		android:layout_width="wrap_content"
@@ -55,6 +57,19 @@
 		android:onClick="ActionPressBouton3"	
 		android:layout_margin="10dp"
 	/>
+	
+	<ImageButton
+		android:id="@+id/bouton4"
+		android:layout_width="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		android:onClick="ActionPressBouton4"
+		android:layout_height="wrap_content"
+		android:background="@drawable/bouton4_sel"	
+		android:layout_margin="10dp"
+	/>
+	
+
 	
     <TextView
 		android:id="@+id/textview1"

@@ -74,7 +74,7 @@ public class MainActivity extends Activity implements LocationListener {
 	double NORTH;
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
-	double[] coordinates = new double[]{44.4295,3.7285};
+	double[] coordinates = new double[]{43.93421087,3.71005111};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -96,12 +96,13 @@ public class MainActivity extends Activity implements LocationListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//protected void onCreate(@Nullable Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
 		myButton = (ToggleButton)  findViewById(R.id.bouton2);
 		trkButton = (ToggleButton)  findViewById(R.id.bouton3);
+
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
@@ -194,17 +195,6 @@ public class MainActivity extends Activity implements LocationListener {
 		  markerGpx.setImageResource(R.drawable.dot);
 		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
 		}
-		
-		
-		/*PathPlugin pour gpx --> obligé d'abandonner car strong impact sur performance quand trop grand (pas lié au nombre de points juste à la taille)
-		Paint paint = new Paint();
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(0xFF4286f4);
-		paint.setStrokeWidth(0);
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		paint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, metrics));
-		pathPlugin = tileView.getPlugin(PathPlugin.class);
-		pathPlugin.drawPath(points, paint);*/		
 }
 
   
@@ -273,6 +263,11 @@ public class MainActivity extends Activity implements LocationListener {
 		donc en attendant mieux: workaround moche mais efficace (destruction de la path)		
 		pathPlugin.clear();**/
 		}
+		
+	public void ActionPressBouton4(View v) {
+		Log.d("vvnx", "press bouton 4");
+
+	}
 	
 	
 	
