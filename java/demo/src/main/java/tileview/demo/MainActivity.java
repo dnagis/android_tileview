@@ -108,20 +108,28 @@ public class MainActivity extends Activity implements LocationListener {
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
 		maBDD = new BaseDeDonnees(this);
 		
-		int zoom = 65536; // 2^16 avec 16=niveau de zoom des tiles
-		
-		n_tiles_x = 50;
-		n_tiles_y = n_tiles_x;
-		
-		sizePixelW = n_tiles_x*256;
-		sizePixelH = n_tiles_y*256;
-		
 		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	
 		if (lastKnownLocationGPS != null) {
 			coordinates[0] = lastKnownLocationGPS.getLatitude();
 			coordinates[1] = lastKnownLocationGPS.getLongitude();
 		}
+		
+		createTileviewMain();
+		
+		
+		
+}
+
+	public void createTileviewMain() {
+		Log.d("vvnx", "createTileviewMain");
+		
+		//Définitions pour créer la grid
+		int zoom = 65536; // 2^16 avec 16=niveau de zoom des tiles		
+		n_tiles_x = 50;
+		n_tiles_y = n_tiles_x;		
+		sizePixelW = n_tiles_x*256;
+		sizePixelH = n_tiles_y*256;				
 		
 		//coordonnées -> x_tile, y_tile (pour voir les tiles avec leur n°: http://tools.geofabrik.de/map/#16/43.9174/3.7322&type=Geofabrik_Standard&grid=1)
 		tile_loc_x = (int)((coordinates[1] + 180.0) / 360 * zoom);
@@ -184,8 +192,7 @@ public class MainActivity extends Activity implements LocationListener {
 		  point.x = coordinatePlugin.longitudeToX(coordinate[1]);
 		  point.y = coordinatePlugin.latitudeToY(coordinate[0]);
 		  points.add(point);
-		}
-				
+		}				
 		
 		//Affichage des points gpx
 		markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
@@ -195,7 +202,7 @@ public class MainActivity extends Activity implements LocationListener {
 		  markerGpx.setImageResource(R.drawable.dot);
 		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
 		}
-}
+	}
 
   
 	@Override
