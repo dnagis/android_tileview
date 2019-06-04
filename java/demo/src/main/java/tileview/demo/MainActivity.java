@@ -148,6 +148,8 @@ public class MainActivity extends Activity implements LocationListener {
 		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
+		if (tileView == null) Log.d("vvnx", "createTileViewMain tileview est null...");
+		
 		tileView = findViewById(R.id.tileview);
 		new TileView.Builder(tileView)
 			.setSize(sizePixelW, sizePixelH)			
@@ -242,11 +244,7 @@ public class MainActivity extends Activity implements LocationListener {
 		tileView.setScale(1f);
 		/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
 		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
-		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);
-		
-
-		
-		
+		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);		
 	}
 	
 	/**
@@ -270,10 +268,18 @@ public class MainActivity extends Activity implements LocationListener {
 		donc en attendant mieux: workaround moche mais efficace (destruction de la path)		
 		pathPlugin.clear();**/
 		}
-		
+	
+	//re-création tileview	
 	public void ActionPressBouton4(View v) {
 		Log.d("vvnx", "press bouton 4");
 
+		tileView = null;
+		coordinates[0] = 44.0246;
+		coordinates[1] = 3.5757;
+		createTileviewMain();
+		//si je bouge pas jai des sticky bitmaps faut donc bouger... au centre de tileview...
+		tileView.setScale(1f);
+		tileView.scrollTo(6400,6400);
 	}
 	
 	
