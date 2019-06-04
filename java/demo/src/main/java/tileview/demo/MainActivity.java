@@ -74,7 +74,7 @@ public class MainActivity extends Activity implements LocationListener {
 	double NORTH;
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
-	double[] coordinates = new double[]{43.93421087,3.71005111};
+	double[] coordinates = new double[]{44.4295,3.7285};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -120,7 +120,6 @@ public class MainActivity extends Activity implements LocationListener {
 		if (lastKnownLocationGPS != null) {
 			coordinates[0] = lastKnownLocationGPS.getLatitude();
 			coordinates[1] = lastKnownLocationGPS.getLongitude();
-			//Log.d("vvnx", "onCreate, on a une lastKnownLoc lat=" + coordinates[0] + " lng=" + coordinates[1] );
 		}
 		
 		//coordonnées -> x_tile, y_tile (pour voir les tiles avec leur n°: http://tools.geofabrik.de/map/#16/43.9174/3.7322&type=Geofabrik_Standard&grid=1)
