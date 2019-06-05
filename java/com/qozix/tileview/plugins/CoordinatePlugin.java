@@ -110,5 +110,15 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
   public double yToLatitude(int y) {
     return mNorth + (y / mScale) * mDistanceLatitude / mPixelHeight;
   }
+  
+  
+  public double xToLongitude_at_scale_1_vvnx(int x) {
+	Log.d("vvnx", "coordPlugin mPixelWidth=" + mPixelWidth + " " + mScale);
+    return mWest + x * mDistanceLongitude / mPixelWidth;
+  }
+  
+  public double yToLatitude_at_scale_1_vvnx(int y) {
+    return mNorth + y * mDistanceLatitude / mPixelHeight;
+  }
 
 }

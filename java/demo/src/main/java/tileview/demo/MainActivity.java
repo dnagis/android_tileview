@@ -271,15 +271,40 @@ public class MainActivity extends Activity implements LocationListener {
 	
 	//re-création tileview	
 	public void ActionPressBouton4(View v) {
-		Log.d("vvnx", "press bouton 4");
+		
+		Point centre_ecran = tileView.centreEcran();
+		Log.d("vvnx", "bouton 4 centre:  --> " + centre_ecran.x + " " + centre_ecran.y);
+		//Log.d("vvnx", "press bouton 4  --> " + tileView.visible_vvnx() + " " + tileView.getScale() + " " + tileView.getScrollX());
+		//double centre_ecran_X = (tileView.getScrollX() + (tileView.getWidth()/2) / tileView.getScale());
+		//Log.d("vvnx", "calculs bouton 4  --> " + (int)centre_ecran_X);
+		
+		
 
-		tileView = null;
+		
+		//Log.d("vvnx", "press bouton 4  --> " + tileView.getScrollX() + " " +
+		//tileView.getScrollY() + " " + tileView.getScale() + " " + tileView.getWidth() + " " + tileView.getMeasuredHeight());
+		
+		//double centre_ecran_X = tileView.getScrollX() + ( (tileView.getWidth()/2)/tileView.getScale() );
+		//double centre_ecran_Y = tileView.getScrollY() + ((tileView.getMeasuredHeight()/tileView.getScale())/2);	
+		
+		
+		//Log.d("vvnx", "calculs bouton 4  --> " + centre_ecran_X);
+		
+		//Log.d("vvnx", "bouton 4  pivots --> " + tileView.getPivotX() + " " + tileView.getPivotY());
+		
+				
+		/*double lng = coordinatePlugin.xToLongitude_at_scale_1_vvnx((int)(centre_ecran_X));
+		double lat = coordinatePlugin.yToLatitude_at_scale_1_vvnx((int)(centre_ecran_Y));		
+		Log.d("vvnx", "calculs bouton 4  --> " + lat + "," + lng);*/
+		
+		
+		/*tileView = null;
 		coordinates[0] = 44.0246;
 		coordinates[1] = 3.5757;
 		createTileviewMain();
 		//si je bouge pas jai des sticky bitmaps faut donc bouger... au centre de tileview...
 		tileView.setScale(1f);
-		tileView.scrollTo(6400,6400);
+		tileView.scrollTo(6400,6400);*/
 	}
 	
 	

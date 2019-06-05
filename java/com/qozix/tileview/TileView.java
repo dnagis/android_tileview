@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.Point;
 import android.graphics.Region;
 import android.os.Handler;
 import android.os.Message;
@@ -162,12 +163,21 @@ public class TileView extends ScalingScrollView implements
   }
   
   // public
+  
+    //récupérer le centre de lecran visible a scale 1
+  public Point centreEcran() {
+		Point centre = new Point();
+		centre.x = mScaledViewport.left + ((mScaledViewport.right - mScaledViewport.left)/2); 
+		centre.y = mScaledViewport.top + ((mScaledViewport.bottom - mScaledViewport.top)/2); 
+		//Log.d("vvnx", "visible_vvnx: " + center_X + " " + center_Y);
+		return centre;
+	}
 
   public int getZoom() {
     return mZoom;
   }
   
-
+	
     
 
 
@@ -589,6 +599,8 @@ public class TileView extends ScalingScrollView implements
     public boolean hasValidDimensions() {
       return mWidth > 0 && mHeight > 0;
     }
+    
+
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
