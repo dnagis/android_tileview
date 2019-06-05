@@ -158,9 +158,9 @@ public class MainActivity extends Activity implements LocationListener {
 			.defineZoomLevel("/storage/BCC1-1AEC/tiles/ign-%1$d_%2$d.jpg") // storage/BCC1-1AEC/ c'est la carte sd removable
 			.setCol0(col_0) 
 			.setRow0(row_0) 
-			.installPlugin(new MarkerPluginLoc(this))
-			.installPlugin(new MarkerPluginGpx(this))
-			.installPlugin(new PathPlugin())
+			//.installPlugin(new MarkerPluginLoc(this))
+			//.installPlugin(new MarkerPluginGpx(this))
+			//.installPlugin(new PathPlugin())
 			.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 			//		.addReadyListener(this::onReady)
 			//		.setStreamProvider(new StreamProviderObbVvnx(this))
@@ -174,13 +174,12 @@ public class MainActivity extends Activity implements LocationListener {
 			coordinatePlugin.updateWidthHeightVvnx(sizePixelW, sizePixelH);
 		}
 		
-		//MarkerPlugin pour location mark
-		
+		/**
+		//MarkerPlugin pour location mark		
 		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView   
 		int x = coordinatePlugin.longitudeToX(coordinates[1]);
-		int y = coordinatePlugin.latitudeToY(coordinates[0]);
-		
+		int y = coordinatePlugin.latitudeToY(coordinates[0]);		
 		ImageView markerLocation = new ImageView(this);
 		markerLocation.setImageResource(R.drawable.marker); //le png
 		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); 
@@ -203,7 +202,7 @@ public class MainActivity extends Activity implements LocationListener {
 		  ImageView markerGpx = new ImageView(this); //car pas possible dutiliser plusieurs fois la même view (erreur runtime this child already has a parent)
 		  markerGpx.setImageResource(R.drawable.dot);
 		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
-		}
+		}*/
 	}
 
   
@@ -273,38 +272,21 @@ public class MainActivity extends Activity implements LocationListener {
 	public void ActionPressBouton4(View v) {
 		
 		Point centre_ecran = tileView.centreEcran();
-		Log.d("vvnx", "bouton 4 centre:  --> " + centre_ecran.x + " " + centre_ecran.y);
-		//Log.d("vvnx", "press bouton 4  --> " + tileView.visible_vvnx() + " " + tileView.getScale() + " " + tileView.getScrollX());
-		//double centre_ecran_X = (tileView.getScrollX() + (tileView.getWidth()/2) / tileView.getScale());
-		//Log.d("vvnx", "calculs bouton 4  --> " + (int)centre_ecran_X);
+		double scaleBefore = tileView.getScale();
+		//Log.d("vvnx", "bouton 4 centre en pixels:  --> " + centre_ecran.x + " " + centre_ecran.y);
+		double lng = coordinatePlugin.xToLongitude_at_scale_1_vvnx(centre_ecran.x);
+		double lat = coordinatePlugin.yToLatitude_at_scale_1_vvnx(centre_ecran.y);		
+		Log.d("vvnx", "bouton 4 centre latlng:  --> " + lat + "," + lng);
 		
 		
-
-		
-		//Log.d("vvnx", "press bouton 4  --> " + tileView.getScrollX() + " " +
-		//tileView.getScrollY() + " " + tileView.getScale() + " " + tileView.getWidth() + " " + tileView.getMeasuredHeight());
-		
-		//double centre_ecran_X = tileView.getScrollX() + ( (tileView.getWidth()/2)/tileView.getScale() );
-		//double centre_ecran_Y = tileView.getScrollY() + ((tileView.getMeasuredHeight()/tileView.getScale())/2);	
-		
-		
-		//Log.d("vvnx", "calculs bouton 4  --> " + centre_ecran_X);
-		
-		//Log.d("vvnx", "bouton 4  pivots --> " + tileView.getPivotX() + " " + tileView.getPivotY());
-		
-				
-		/*double lng = coordinatePlugin.xToLongitude_at_scale_1_vvnx((int)(centre_ecran_X));
-		double lat = coordinatePlugin.yToLatitude_at_scale_1_vvnx((int)(centre_ecran_Y));		
-		Log.d("vvnx", "calculs bouton 4  --> " + lat + "," + lng);*/
-		
-		
-		/*tileView = null;
-		coordinates[0] = 44.0246;
-		coordinates[1] = 3.5757;
+		tileView = null;
+		coordinatePlugin = null;
+		coordinates[0] = lat;
+		coordinates[1] = lng;
 		createTileviewMain();
 		//si je bouge pas jai des sticky bitmaps faut donc bouger... au centre de tileview...
-		tileView.setScale(1f);
-		tileView.scrollTo(6400,6400);*/
+		tileView.setScale((float)scaleBefore);
+		tileView.scrollTo((int)(6400*scaleBefore),(int)(6400*scaleBefore)); //nb ça le met en haut à gauche... pas super grave...
 	}
 	
 	
@@ -330,7 +312,7 @@ public class MainActivity extends Activity implements LocationListener {
 		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
 		
 		//update markerpos seulement si bouton gps on, parce que fait sauter tileview quand redraw, chiant pour browser.
-		if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);
+		//if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);
         
      
     }
