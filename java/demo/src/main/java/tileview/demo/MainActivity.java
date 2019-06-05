@@ -181,11 +181,10 @@ public class MainActivity extends Activity implements LocationListener {
 		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView 
 		 
-		//int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
-		//int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
+		int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
+		int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
 		//Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y); 
-		int x = 0;
-		int y = 0;				
+			
 		ImageView markerLocation = new ImageView(this);
 		markerLocation.setImageResource(R.drawable.marker); //le png
 		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); //
@@ -227,20 +226,11 @@ public class MainActivity extends Activity implements LocationListener {
 	}
 	
 	/**
-	 * Bouton pour recentrer sur le marker et passer à scale 1
-	 */
+	 * Bouton pour recentrer sur coordinates_loc et passer à scale 1 */
 	
-	public void ActionPressBouton1(View v) {
-		//int x = 1;
-		//int y = 1;	
+	public void ActionPressBouton1(View v) {	
 		int x_at_scale_1 = 1;
-		int y_at_scale_1 = 1;
-		/*Log.d("vvnx", "bouton 1 pressé x=" + x_r + " et y=" + y_r);
-		int x_r = (int)(Math.random()*((2000)+1))+2000;
-		int y_r = (int)(Math.random()*((2000)+1))+2000;		
-		markerPlugin.updateMarkerPos(x_r, y_r);*/
-		
-				
+		int y_at_scale_1 = 1;				
 		//x = coordinatePlugin.longitudeToX(coordinates_loc[1]);
 		//y = coordinatePlugin.latitudeToY(coordinates_loc[0]);
 		//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
@@ -250,20 +240,25 @@ public class MainActivity extends Activity implements LocationListener {
 		//est ce la loc est dans la grid?
 		//Log.d("vvnx", "bouton 1 pressé x@1=" + x_at_scale_1 + " et y@1=" + y_at_scale_1 + "  pour latlng=" + coordinates_loc[0] + "," + coordinates_loc[1]);
 		Rect test_r = new Rect(0, 0, sizePixelW, sizePixelH);
-		if (test_r.contains(x_at_scale_1, y_at_scale_1)) {
-			Log.d("vvnx", "La loc est dans la grid");
-			tileView.setScale(1f);
-			/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-			méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
-			tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);			
-			} else {
-			Log.d("vvnx", "La loc est off-grid");
-			//ToDo: on est off-grid: faut recréer une tileview centrée sur coordinates_loc[]
-			
-				
-				};
 		
-
+		if (! test_r.contains(x_at_scale_1, y_at_scale_1)) { //si on est dans la grid, on va centrer sur x_at_scale_1, y_at_scale_1, rien à faire...
+					Log.d("vvnx", "La loc est off-grid");
+					//on est off-grid: faut recréer une tileview centrée sur coordinates_loc[]
+					tileView = null;
+					coordinatePlugin = null; 
+					markerPluginLoc.removeMarkers();
+					markerPluginLoc = null;
+					coordinates_centre[0] = coordinates_loc[0];
+					coordinates_centre[1] = coordinates_loc[1];
+					createTileviewMain();
+					x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
+					y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);			
+			};
+			
+		tileView.setScale(1f);
+		/**on centre sur x_at_scale_1, y_at_scale_1 (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
+		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
+		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);
 		
 				
 	}
@@ -280,7 +275,7 @@ public class MainActivity extends Activity implements LocationListener {
 	public void ActionPressBouton3(View v) {
 		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 		
-		markerPluginGpx.toggleVisibility(trkButton.isChecked());
+		//markerPluginGpx.toggleVisibility(trkButton.isChecked());
 		
 		/**pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
 		si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
@@ -290,7 +285,7 @@ public class MainActivity extends Activity implements LocationListener {
 		pathPlugin.clear();**/
 		}
 	
-	//re-création tileview autour du centre
+	//re-création tileview autour du centre de lecran visible du tel
 	public void ActionPressBouton4(View v) {
 		
 		Point centre_ecran = tileView.centreEcran(); //faut accéder a scaledviewport, chiant à faire ici
@@ -306,6 +301,7 @@ public class MainActivity extends Activity implements LocationListener {
 		coordinates_centre[0] = lat;
 		coordinates_centre[1] = lng;
 		createTileviewMain();
+		
 		//si je bouge pas jai des sticky bitmaps faut donc bouger... au centre de tileview...
 		tileView.setScale((float)scaleBefore);
 		tileView.scrollTo((int)(6400*scaleBefore),(int)(6400*scaleBefore)); //nb ça le met en haut à gauche... pas super grave...

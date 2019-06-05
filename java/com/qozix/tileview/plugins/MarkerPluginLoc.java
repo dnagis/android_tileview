@@ -98,7 +98,7 @@ public MarkerPluginLoc(Context context) {
 		 
 	for (int i = 0; i < getChildCount(); i++) {
 			View child = getChildAt(i);
-			child.setVisibility(VISIBLE);
+			//child.setVisibility(VISIBLE);
 			//Log.d("vvnx", "updateMarkerPos avec x=" + x + " et y=" + y + " scale=" + mScale); 
 			int left = (int) ((x * mScale) - 63.0) ;
 			int top = (int) ((y * mScale) - 180.0) ;
@@ -126,7 +126,7 @@ public MarkerPluginLoc(Context context) {
         relativeAnchorLeft, relativeAnchorTop,
         absoluteAnchorLeft, absoluteAnchorTop);
     addView(view, layoutParams);
-    view.setVisibility(INVISIBLE); //sinon jai des trucs bizarre à la re-création dune tileview.workaround un peu moche mais dans la vraie vie... franchement...
+    //view.setVisibility(INVISIBLE); //sinon jai des trucs bizarre à la re-création dune tileview.workaround un peu moche mais dans la vraie vie... franchement...
     //les premières coordonnées, on les garde
     x_mp = left;
     y_mp = top;
