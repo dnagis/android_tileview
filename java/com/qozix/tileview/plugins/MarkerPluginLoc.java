@@ -98,6 +98,7 @@ public MarkerPluginLoc(Context context) {
 		 
 	for (int i = 0; i < getChildCount(); i++) {
 			View child = getChildAt(i);
+			child.setVisibility(VISIBLE);
 			//Log.d("vvnx", "updateMarkerPos avec x=" + x + " et y=" + y + " scale=" + mScale); 
 			int left = (int) ((x * mScale) - 63.0) ;
 			int top = (int) ((y * mScale) - 180.0) ;
@@ -125,9 +126,17 @@ public MarkerPluginLoc(Context context) {
         relativeAnchorLeft, relativeAnchorTop,
         absoluteAnchorLeft, absoluteAnchorTop);
     addView(view, layoutParams);
+    view.setVisibility(INVISIBLE);
     //les premières coordonnées, on les garde
     x_mp = left;
     y_mp = top;
+  }
+  
+ public void removeMarkers() {
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      removeView(child);
+    }
   }
   
 
