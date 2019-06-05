@@ -126,7 +126,7 @@ public MarkerPluginLoc(Context context) {
         relativeAnchorLeft, relativeAnchorTop,
         absoluteAnchorLeft, absoluteAnchorTop);
     addView(view, layoutParams);
-    view.setVisibility(INVISIBLE);
+    view.setVisibility(INVISIBLE); //sinon jai des trucs bizarre à la re-création dune tileview.workaround un peu moche mais dans la vraie vie... franchement...
     //les premières coordonnées, on les garde
     x_mp = left;
     y_mp = top;

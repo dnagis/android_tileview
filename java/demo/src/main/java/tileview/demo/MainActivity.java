@@ -34,6 +34,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.CornerPathEffect;
 import android.util.DisplayMetrics;
 
@@ -75,7 +76,7 @@ public class MainActivity extends Activity implements LocationListener {
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
 	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
-	double[] coordinates_loc = coordinates_centre;
+	double[] coordinates_loc = new double[]{43.9161529541016,3.73525381088257};
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -180,12 +181,14 @@ public class MainActivity extends Activity implements LocationListener {
 		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView 
 		 
-		int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
-		int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
-		Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y); 		
+		//int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
+		//int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
+		//Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y); 
+		int x = 0;
+		int y = 0;				
 		ImageView markerLocation = new ImageView(this);
 		markerLocation.setImageResource(R.drawable.marker); //le png
-		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); 
+		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); //
 
 		
 		/**
@@ -237,18 +240,32 @@ public class MainActivity extends Activity implements LocationListener {
 		int y_r = (int)(Math.random()*((2000)+1))+2000;		
 		markerPlugin.updateMarkerPos(x_r, y_r);*/
 		
-		if(coordinatePlugin != null) {		
-			//x = coordinatePlugin.longitudeToX(coordinates_loc[1]);
-			//y = coordinatePlugin.latitudeToY(coordinates_loc[0]);
-			//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
-			x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
-			y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);		
-		}
+				
+		//x = coordinatePlugin.longitudeToX(coordinates_loc[1]);
+		//y = coordinatePlugin.latitudeToY(coordinates_loc[0]);
+		//markerplugin applique une correction scale, il ne faut pas cumuler celle de coordinatePlugin et de markerPlugin -> je crée des méthodes "at_scale_1" dans coordinatePlugin
+		x_at_scale_1 = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
+		y_at_scale_1 = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);		
+				
+		//est ce la loc est dans la grid?
+		//Log.d("vvnx", "bouton 1 pressé x@1=" + x_at_scale_1 + " et y@1=" + y_at_scale_1 + "  pour latlng=" + coordinates_loc[0] + "," + coordinates_loc[1]);
+		Rect test_r = new Rect(0, 0, sizePixelW, sizePixelH);
+		if (test_r.contains(x_at_scale_1, y_at_scale_1)) {
+			Log.d("vvnx", "La loc est dans la grid");
+			tileView.setScale(1f);
+			/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
+			méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
+			tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);			
+			} else {
+			Log.d("vvnx", "La loc est off-grid");
+			//ToDo: on est off-grid: faut recréer une tileview centrée sur coordinates_loc[]
+			
+				
+				};
+		
 
-		tileView.setScale(1f);
-		/**on centre sur le Marker (scrollTo -> x et y position upper left, faut centrer donc on enlève la moitié de l'écran à chaque fois
-		méthode provient de ScalingScrollView.java on utilise x et y avec correction scale**/		
-		tileView.scrollTo(x_at_scale_1-tileView.getWidth()/2,y_at_scale_1-tileView.getMeasuredHeight()/2);		
+		
+				
 	}
 	
 	/**
