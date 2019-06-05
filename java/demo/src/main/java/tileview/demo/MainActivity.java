@@ -89,6 +89,7 @@ public class MainActivity extends Activity implements LocationListener {
 	public LocationManager mLocationManager;
 	private BaseDeDonnees maBDD;
 	TextView infoTextView;
+	List<Point> points_gpx;
 	
 	
 	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
@@ -117,14 +118,18 @@ public class MainActivity extends Activity implements LocationListener {
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
 		}
 		
+
+		
 		createTileviewMain();
+		
+	
 		
 		
 		
 }
 
 	public void createTileviewMain() {
-		Log.d("vvnx", "createTileviewMain");
+		//Log.d("vvnx", "createTileviewMain");
 		
 		//Définitions pour créer la grid
 		int zoom = 65536; // 2^16 avec 16=niveau de zoom des tiles		
@@ -150,7 +155,7 @@ public class MainActivity extends Activity implements LocationListener {
 		//Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
-		if (tileView == null) Log.d("vvnx", "createTileViewMain tileview est null...");
+		//if (tileView == null) Log.d("vvnx", "createTileViewMain tileview est null...");
 		
 		tileView = findViewById(R.id.tileview);
 		new TileView.Builder(tileView)
@@ -161,7 +166,7 @@ public class MainActivity extends Activity implements LocationListener {
 			.setCol0(col_0) 
 			.setRow0(row_0) 
 			.installPlugin(new MarkerPluginLoc(this))
-			//.installPlugin(new MarkerPluginGpx(this))
+			.installPlugin(new MarkerPluginGpx(this))
 			//.installPlugin(new PathPlugin())
 			.installPlugin(new CoordinatePlugin(WEST, NORTH, EAST, SOUTH))
 			//		.addReadyListener(this::onReady)
@@ -179,37 +184,34 @@ public class MainActivity extends Activity implements LocationListener {
 		
 		//MarkerPlugin pour location mark		
 		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
-		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView 
-		 
+		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView		 
 		int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
 		int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
-		//Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y); 
-			
+		//Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y);			
 		ImageView markerLocation = new ImageView(this);
 		markerLocation.setImageResource(R.drawable.marker); //le png
-		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0); //
+		markerPluginLoc.addMarker(markerLocation, x, y, -0.5f, -1f, 0, 0);
 
-		
-		/**
-		//Creation de la liste des points en x et y a partir de gpx (assets/traces.gpx) voir la classe GPXReader
-		List<Point> points = new ArrayList<>();		
-		GpxReader gpxReader = new GpxReader(this, coordinates);
+		//Creation de la liste des points gpx de la trace la plus proche(assets/traces.gpx) voir la classe GPXReader
+		points_gpx = new ArrayList<>();		
+		GpxReader gpxReader = new GpxReader(this, coordinates_loc);
 		ArrayList<double[]> sites = gpxReader.getgpx();		
 		for (double[] coordinate : sites) {
 		  Point point = new Point();
 		  point.x = coordinatePlugin.longitudeToX(coordinate[1]);
 		  point.y = coordinatePlugin.latitudeToY(coordinate[0]);
-		  points.add(point);
-		}				
-		
+		  points_gpx.add(point);
+		}
+
 		//Affichage des points gpx
-		markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
-		for (Point point : points) {
+		if(markerPluginGpx == null) markerPluginGpx = tileView.getPlugin(MarkerPluginGpx.class);
+		markerPluginGpx.removeAllViews();
+		for (Point point : points_gpx) {
 		  //Log.d("vvnx", "add point x=" + point.x + " et y=" + point.y);
 		  ImageView markerGpx = new ImageView(this); //car pas possible dutiliser plusieurs fois la même view (erreur runtime this child already has a parent)
 		  markerGpx.setImageResource(R.drawable.dot);
 		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
-		}*/
+		}
 	}
 
   
@@ -275,7 +277,7 @@ public class MainActivity extends Activity implements LocationListener {
 	public void ActionPressBouton3(View v) {
 		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 		
-		//markerPluginGpx.toggleVisibility(trkButton.isChecked());
+		markerPluginGpx.toggleVisibility(trkButton.isChecked());
 		
 		/**pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
 		si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
@@ -293,15 +295,14 @@ public class MainActivity extends Activity implements LocationListener {
 		//Log.d("vvnx", "bouton 4 centre en pixels:  --> " + centre_ecran.x + " " + centre_ecran.y);
 		double lng = coordinatePlugin.xToLongitude_at_scale_1_vvnx(centre_ecran.x);
 		double lat = coordinatePlugin.yToLatitude_at_scale_1_vvnx(centre_ecran.y);		
-		//Log.d("vvnx", "bouton 4 centre latlng:  --> " + lat + "," + lng);		
-		tileView = null;
-		coordinatePlugin = null; //pour avoir nouveau set de coordonnées
+		//Log.d("vvnx", "bouton 4 centre latlng:  --> " + lat + "," + lng);			
+		coordinatePlugin = null; 
 		markerPluginLoc.removeMarkers();
 		markerPluginLoc = null;
+		tileView = null;
 		coordinates_centre[0] = lat;
-		coordinates_centre[1] = lng;
-		createTileviewMain();
-		
+		coordinates_centre[1] = lng;		
+		createTileviewMain();		
 		//si je bouge pas jai des sticky bitmaps faut donc bouger... au centre de tileview...
 		tileView.setScale((float)scaleBefore);
 		tileView.scrollTo((int)(6400*scaleBefore),(int)(6400*scaleBefore)); //nb ça le met en haut à gauche... pas super grave...

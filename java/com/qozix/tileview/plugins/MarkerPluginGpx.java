@@ -111,6 +111,8 @@ public class MarkerPluginGpx extends ViewGroup implements TileView.Plugin, TileV
   }
   
 
+
+	//marche pas.... jutilise viewgroup.removeallviews...
   public void removeMarker(View view) {
     if (view.getParent() == this) {
       removeView(view);

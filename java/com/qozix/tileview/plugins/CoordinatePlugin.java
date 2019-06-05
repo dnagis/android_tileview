@@ -29,7 +29,7 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
     mNorth = north;
     mDistanceLongitude = east - west;
     mDistanceLatitude = south - north;
-    Log.d("vvnx", "coordPlugin builder W=" + west + " N=" + north + " distLng=" + mDistanceLongitude + " distLat=" + mDistanceLatitude);
+    //Log.d("vvnx", "coordPlugin builder W=" + west + " N=" + north + " distLng=" + mDistanceLongitude + " distLat=" + mDistanceLatitude);
   }
   
   public void updateWidthHeightVvnx(int w, int h) {
@@ -83,8 +83,7 @@ public class CoordinatePlugin implements TileView.Plugin, TileView.Listener, Til
 	* latlng -> xy sans tenir compte de scale, pour passer à markerplugin qui applique déjà la correction scale
    */
   public int longitudeToX_at_scale_1_vvnx(double longitude) {
-    double factor = (longitude - mWest) / mDistanceLongitude;
-    Log.d("vvnx", "longitudeToX_at_scale_1_vvnx mWest=" + mWest + " lng=" + longitude + " distLng=" + mDistanceLongitude);
+    double factor = (longitude - mWest) / mDistanceLongitude;    
     return (int) (mPixelWidth * factor);
   }
 

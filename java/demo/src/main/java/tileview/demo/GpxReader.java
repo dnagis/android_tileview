@@ -57,7 +57,7 @@ public class GpxReader {
 		
 		} catch(IOException | XmlPullParserException e) { Log.d("vvnx", "GpxReader.getgpx exception" + e.getMessage());}
 		
-		Log.d("vvnx", "GpxReader.getgpx on va retourner un array de taille=" + sites.size());	 
+		//Log.d("vvnx", "GpxReader.getgpx on va retourner un array de taille=" + sites.size());	 
 		
 		calcul_trkpt_distances(sites);
 		return sites;
@@ -100,7 +100,7 @@ public class GpxReader {
             }
         });
  	    //on renvoie l'arraylist des points du trek le plus proche: premier dans l'array (0)       
-	    Log.d("vvnx", "GpxReader.readFichierGpx le trek le plus proche = " + treks.get(0).mName + "    comporte " + treks.get(0).mTrkpts.size() + " points" );	   
+	    //Log.d("vvnx", "GpxReader.readFichierGpx le trek le plus proche = " + treks.get(0).mName + "    comporte " + treks.get(0).mTrkpts.size() + " points" );	   
 	    return treks.get(0).mTrkpts;
 	}
 	
