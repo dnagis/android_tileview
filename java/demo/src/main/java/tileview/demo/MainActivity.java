@@ -74,9 +74,9 @@ public class MainActivity extends Activity implements LocationListener {
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
-	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
-	double[] coordinates_loc = new double[]{43.9161529541016,3.73525381088257};
+	//12rpdl->43.93421087,3.71005111 ventoux->44.1815,5.2673 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
+	double[] coordinates_centre = new double[]{44.1815,5.2673};
+	double[] coordinates_loc = new double[]{44.1815,5.2673}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
