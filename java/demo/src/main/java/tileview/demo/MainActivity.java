@@ -12,7 +12,7 @@ package tileview.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
-//import android.support.annotation.Nullable;
+//import android.support.annotation.Nullable; //existe pas dans mon aosp
 import com.qozix.tileview.io.StreamProvider;
 import com.qozix.tileview.io.StreamProviderObbVvnx;
 
@@ -47,6 +47,7 @@ import android.widget.TextView;
 import android.widget.PopupMenu;
 import android.view.View;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
@@ -64,7 +65,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 
-public class MainActivity extends Activity implements LocationListener {
+public class MainActivity extends Activity implements LocationListener, PopupMenu.OnMenuItemClickListener {
 	
 	//coordonnées: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames --> en python, mon script latlong, 
 	//upper left tile : COL0=33478 ROW0=23948 43.53262042681010 3.90014648437500
@@ -101,7 +102,7 @@ public class MainActivity extends Activity implements LocationListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//protected void onCreate(@Nullable Bundle savedInstanceState) {
-
+		Log.d("vvnx", "onCreate");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
@@ -118,17 +119,9 @@ public class MainActivity extends Activity implements LocationListener {
 		if (lastKnownLocationGPS != null) {
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
-		}
-		
-
-		
-		createTileviewMain();
-		
-	
-		
-		
-		
-}
+		}		
+		createTileviewMain();		
+	}
 
 	public void createTileviewMain() {
 		//Log.d("vvnx", "createTileviewMain");
@@ -221,24 +214,55 @@ public class MainActivity extends Activity implements LocationListener {
 	protected void onResume() {
 		super.onResume();		
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
-	}
-	
+	}	
   
 	@Override
 	protected void onPause() {
 		super.onPause();
 	}
 	
+	
+	/**
+	 * Menu
+	 * 
+	 * 
+	 * 
+	 * */	
+	
 	public void showPopup(View v) {
 	    PopupMenu popup = new PopupMenu(this, v);
 	    MenuInflater inflater = popup.getMenuInflater();
 	    inflater.inflate(R.menu.menu_main, popup.getMenu());
+	    popup.setOnMenuItemClickListener(this); //PopupMenu.OnMenuItemClickListener
 	    popup.show();
+	}	
+		
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+    // Handle item selection
+    Log.d("vvnx", "press le menu");
+    switch (item.getItemId()) {
+        case R.id.menu3:
+            Log.d("vvnx", "press un bouton");
+            return true;
+        case R.id.menu4:
+            Log.d("vvnx", "press un autre bouton");
+            return true;
+        case R.id.menu2:
+            Log.d("vvnx", "press encore un autre bouton");
+            return true;
+        default:
+            return false;
+		}
 	}
 	
 	/**
-	 * Bouton pour recentrer sur coordinates_loc et passer à scale 1 */
-	
+	 *
+	 * Boutons
+	 * 
+	 * 
+	 * */
+	//Bouton pour recentrer sur coordinates_loc et passer à scale 1
 	public void ActionPressBouton1(View v) {	
 		int x_at_scale_1 = 1;
 		int y_at_scale_1 = 1;				
@@ -274,15 +298,12 @@ public class MainActivity extends Activity implements LocationListener {
 				
 	}
 	
-	/**
-	 * Le state de ce bouton est utilisé pour décider si le marker est actualisé au location received (parce que j'ai l'impression
-	 * que ça peut faire sauter la view)
-	 */	
+	//Le state de ce bouton est utilisé pour décider si le marker est actualisé au location received (parce que j'ai l'impression que ça peut faire sauter la view)
 	public void ActionPressBouton2(View v) {
 			//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 	}
 	
-	//bouton pour toggle gpx
+	//bouton pour toggle GPX
 	public void ActionPressBouton3(View v) {
 		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 		
@@ -316,10 +337,13 @@ public class MainActivity extends Activity implements LocationListener {
 		tileView.setScale((float)scaleBefore);
 		tileView.scrollTo((int)(6400*scaleBefore),(int)(6400*scaleBefore)); //nb ça le met en haut à gauche... pas super grave...
 	}
-	
-	
-	
-	//implements LocationListener --> il faut les 4 méthodes     
+
+	/**
+	 *
+	 * MainActivity implements LocationListener --> il faut les 4 méthodes 
+	 * 
+	 * 
+	 **/    
     @Override	
     public void onLocationChanged(Location location) {
         Log.d("vvnx", location.getLatitude() + ",  " + location.getLongitude() + ",  " + location.getAccuracy() + ",  " + location.getAltitude() + ",  " + location.getTime());
@@ -340,9 +364,7 @@ public class MainActivity extends Activity implements LocationListener {
 		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
 		
 		//update markerpos seulement si bouton gps on, parce que fait sauter tileview quand redraw, chiant pour browser.
-		if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);
-        
-     
+		if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);     
     }
         
 	@Override

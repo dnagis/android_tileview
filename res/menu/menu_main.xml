@@ -3,25 +3,15 @@
     <item android:id="@+id/tiles"
           android:title="@string/menu1">
         <menu>
-
-                  
-                  
-        <group android:checkableBehavior="single">
+		<group android:checkableBehavior="single">
             <item android:id="@+id/menu3"
                   android:title="@string/menu3"
                   android:checked="true" />
-        <item android:id="@+id/menu4"
-              android:title="@string/menu4" />
-    </group>
+			<item android:id="@+id/menu4"
+				  android:title="@string/menu4" />
+		</group>
         </menu>
-    </item>           
-          
-          
-          
-          
-          
+    </item>      
     <item android:id="@+id/menu2"
-          android:title="@string/menu2"
-          android:checkable="true"/> 
-     
+          android:title="@string/menu2"/>    
 </menu>
