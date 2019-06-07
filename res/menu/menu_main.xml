@@ -3,12 +3,11 @@
     <item android:id="@+id/tiles"
           android:title="@string/menu1">
         <menu>
-		<group android:checkableBehavior="single">
-            <item android:id="@+id/menu3"
-                  android:title="@string/menu3"
-                  android:checked="true" />
-			<item android:id="@+id/menu4"
-				  android:title="@string/menu4" />
+		<group android:checkableBehavior="all">
+            <item android:id="@+id/menu1_1"
+                  android:title="@string/menu1_1" />
+			<item android:id="@+id/menu1_2"
+				  android:title="@string/menu1_2" />
 		</group>
         </menu>
     </item>      

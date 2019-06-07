@@ -93,7 +93,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	private BaseDeDonnees maBDD;
 	TextView infoTextView;
 	List<Point> points_gpx;
-	
+	PopupMenu popup;
+	MenuInflater inflater;
 	
 	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
     private static final int MIN_DIST = 1; //float: minimum distance between location updates, in meters
@@ -230,27 +231,29 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	 * */	
 	
 	public void showPopup(View v) {
-	    PopupMenu popup = new PopupMenu(this, v);
-	    MenuInflater inflater = popup.getMenuInflater();
-	    inflater.inflate(R.menu.menu_main, popup.getMenu());
-	    popup.setOnMenuItemClickListener(this); //PopupMenu.OnMenuItemClickListener
-	    popup.show();
+		if (popup == null) {
+			Log.d("vvnx", "Popup menu null");
+		    popup = new PopupMenu(this, v);
+		    inflater = popup.getMenuInflater();
+		    inflater.inflate(R.menu.menu_main, popup.getMenu());
+		    popup.setOnMenuItemClickListener(this); //PopupMenu.OnMenuItemClickListener
+		}
+	 	    popup.show();
 	}	
 		
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
-    // Handle item selection
-    Log.d("vvnx", "press le menu");
     switch (item.getItemId()) {
-        case R.id.menu3:
-            Log.d("vvnx", "press un bouton");
+        case R.id.menu1_1:
+			Log.d("vvnx", "menu IGN");
+            if (item.isChecked()) item.setChecked(false);
+            else item.setChecked(true);
             return true;
-        case R.id.menu4:
-            Log.d("vvnx", "press un autre bouton");
-            return true;
-        case R.id.menu2:
-            Log.d("vvnx", "press encore un autre bouton");
-            return true;
+        case R.id.menu1_2:
+			Log.d("vvnx", "menu OTM");
+            if (item.isChecked()) item.setChecked(false);
+            else item.setChecked(true);
+            return true;	
         default:
             return false;
 		}
@@ -277,7 +280,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		Rect test_r = new Rect(0, 0, sizePixelW, sizePixelH);
 		
 		if (! test_r.contains(x_at_scale_1, y_at_scale_1)) { //si on est dans la grid, on va centrer sur x_at_scale_1, y_at_scale_1, rien à faire...
-					Log.d("vvnx", "La loc est off-grid");
+					//Log.d("vvnx", "La loc est off-grid");
 					//on est off-grid: faut recréer une tileview centrée sur coordinates_loc[]
 					tileView = null;
 					coordinatePlugin = null; 
