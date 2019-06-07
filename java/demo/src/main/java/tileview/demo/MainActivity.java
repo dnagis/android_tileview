@@ -73,6 +73,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	// c'est à dire la tile n° x' y' avec x'=x+n et y'=y+m 
 	/*public static final double NORTH = 43.95723647202563 ... WEST = 3.68041992187500 ... SOUTH = 43.85829677916184 EAST = 3.81774902343750;*/
 	//
+	
+	String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
 	double WEST;
 	double EAST;
 	double NORTH;
@@ -158,7 +160,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			.setSize(sizePixelW, sizePixelH)			
 			//        .defineZoomLevel("tiles/phi-1000000-%1$d_%2$d.jpg")
 			//.defineZoomLevel("/sdcard/tiles/ign-%1$d_%2$d.jpg") //pour obb mettre un leading / et l'enlever pour assets
-			.defineZoomLevel("/storage/BCC1-1AEC/tiles/ign-%1$d_%2$d.jpg") // storage/BCC1-1AEC/ c'est la carte sd removable
+			//.defineZoomLevel("/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg") // storage/BCC1-1AEC/ c'est la carte sd removable
+			.defineZoomLevel(tiles_provider)
 			.setCol0(col_0) 
 			.setRow0(row_0) 
 			.installPlugin(new MarkerPluginLoc(this))
@@ -225,13 +228,13 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	
 	/**
 	 * Menu
-	 * 
+	 * res/menu/menu_main.xml
 	 * 
 	 * 
 	 * */	
 	
 	public void showPopup(View v) {
-		if (popup == null) {
+		if (popup == null) { //Si nouvelle instance PopupMenu à chaque fois on retain pas le state isChecked des items...
 			Log.d("vvnx", "Popup menu null");
 		    popup = new PopupMenu(this, v);
 		    inflater = popup.getMenuInflater();
@@ -244,16 +247,26 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
     switch (item.getItemId()) {
-        case R.id.menu1_1:
-			Log.d("vvnx", "menu IGN");
-            if (item.isChecked()) item.setChecked(false);
-            else item.setChecked(true);
+		//menu1_1 et menu1_2 mutuellement exclusifs car <group android:checkableBehavior="single">
+        case R.id.menu1_1:			
+            if (!item.isChecked()) {
+				Log.d("vvnx", "menu IGN");
+				item.setChecked(true);
+				//Do = switch to IGN tiles
+				tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+			};
             return true;
         case R.id.menu1_2:
-			Log.d("vvnx", "menu OTM");
-            if (item.isChecked()) item.setChecked(false);
-            else item.setChecked(true);
-            return true;	
+            if (!item.isChecked()) {
+				Log.d("vvnx", "menu OTM");
+				item.setChecked(true);
+				//Do = switch to OpenTopoMaps tiles
+				tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
+			};
+            return true;
+        case R.id.menu2:
+			item.setChecked(!item.isChecked());
+			return true;	
         default:
             return false;
 		}
