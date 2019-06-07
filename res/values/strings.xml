@@ -4,5 +4,9 @@
   <string name="button_txt">&gt;&lt;</string>  
   <string name="bgcl">Background color</string>
   <string name="fgcl">Foreground color</string>
+  <string name="menu1">tiles</string>
+  <string name="menu2">menu deuxième</string>
+  <string name="menu3">menu essai</string>
+  <string name="menu4">menu essai2</string>
 
 </resources>

@@ -43,8 +43,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
 import android.view.ViewGroup.LayoutParams;
-import android.view.View;
 import android.widget.TextView;
+import android.widget.PopupMenu;
+import android.view.View;
+import android.view.MenuInflater;
 
 import com.qozix.tileview.TileView;
 import com.qozix.tileview.plugins.CoordinatePlugin;
@@ -75,8 +77,8 @@ public class MainActivity extends Activity implements LocationListener {
 	double NORTH;
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 ventoux->44.1815,5.2673 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
-	double[] coordinates_centre = new double[]{44.1815,5.2673};
-	double[] coordinates_loc = new double[]{44.1815,5.2673}; //attention ne pas faire coordinates_loc = coordinates_centre
+	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
+	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -225,6 +227,13 @@ public class MainActivity extends Activity implements LocationListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
+	}
+	
+	public void showPopup(View v) {
+	    PopupMenu popup = new PopupMenu(this, v);
+	    MenuInflater inflater = popup.getMenuInflater();
+	    inflater.inflate(R.menu.menu_main, popup.getMenu());
+	    popup.show();
 	}
 	
 	/**
