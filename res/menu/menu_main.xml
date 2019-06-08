@@ -15,5 +15,6 @@
     </item>      
     <item android:id="@+id/menu2"
           android:title="@string/menu2"
-          android:checkable="true"/>    
+          android:checkable="true"
+          android:checked="true"/>    
 </menu>

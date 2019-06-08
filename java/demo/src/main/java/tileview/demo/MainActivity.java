@@ -79,16 +79,16 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 ventoux->44.1815,5.2673 fucking bartas->43.9161529541016,3.73525381088257 lozere: 44.4017,3.8456
-	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
-	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 MontValierAriege 42.7899,1.0797
+	double[] coordinates_centre = new double[]{42.7899,1.0797};
+	double[] coordinates_loc = new double[]{42.7899,1.0797}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
 	TileView tileView;
 	MarkerPluginLoc markerPluginLoc;
 	MarkerPluginGpx markerPluginGpx;
-	ToggleButton myButton, trkButton;
+	ToggleButton myButton;
 	CoordinatePlugin coordinatePlugin;
 	PathPlugin pathPlugin;
 	public LocationManager mLocationManager;
@@ -110,19 +110,21 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
 		myButton = (ToggleButton)  findViewById(R.id.bouton2);
-		trkButton = (ToggleButton)  findViewById(R.id.bouton3);
+		
 
+		
+		maBDD = new BaseDeDonnees(this);
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
-		maBDD = new BaseDeDonnees(this);
+		
 		
 		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	
 		if (lastKnownLocationGPS != null) {
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
-		}		
+		}	
 		createTileviewMain();		
 	}
 
@@ -265,6 +267,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			};
             return true;
         case R.id.menu2:
+			markerPluginGpx.toggleVisibility(!item.isChecked());
 			item.setChecked(!item.isChecked());
 			return true;	
         default:
@@ -319,19 +322,16 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
 	}
 	
-	//bouton pour toggle GPX
+	/**bouton pour toggle GPX, enlevé car menu
 	public void ActionPressBouton3(View v) {
-		//if ( trkButton.isChecked() == true ) { Log.d("vvnx", "bouton 3 on"); } else { Log.d("vvnx", "bouton 3 off"); }
-		
-		markerPluginGpx.toggleVisibility(trkButton.isChecked());
-		
+		markerPluginGpx.toggleVisibility(trkButton.isChecked());		
 		/**pathPlugin.toggle_transparent(trkButton.isChecked()); //set la couleur de paint transparent
 		si je ne demande pas un redraw (redecorate()) du canvas, je n'ai l'effet qu'au prochain mouvement: c'est moche!	
 		tileView.setDirty(); dirty, invalidate, postvalidate etc... ça dit en gros 'je suis outdated, redessine moi!!!'		
 		soucis lors du test avant Lozère: si path de grande taille: perte fluidité que cest rien de le dire ("performance canvas ondraw path")
 		donc en attendant mieux: workaround moche mais efficace (destruction de la path)		
-		pathPlugin.clear();**/
-		}
+		pathPlugin.clear();* * /
+		} **/
 	
 	//re-création tileview autour du centre de lecran visible du tel
 	public void ActionPressBouton4(View v) {
