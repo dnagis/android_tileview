@@ -100,7 +100,7 @@ public class GpxReader {
             }
         });
  	    //on renvoie l'arraylist des points du trek le plus proche: premier dans l'array (0)       
-	    //Log.d("vvnx", "GpxReader.readFichierGpx le trek le plus proche = " + treks.get(0).mName + "    comporte " + treks.get(0).mTrkpts.size() + " points" );	   
+	    Log.d("vvnx", "GpxReader.readFichierGpx le trek le plus proche = " + treks.get(0).mName + "    comporte " + treks.get(0).mTrkpts.size() + " points" );	   
 	    return treks.get(0).mTrkpts;
 	}
 	

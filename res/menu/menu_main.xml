@@ -16,5 +16,28 @@
     <item android:id="@+id/menu2"
           android:title="@string/menu2"
           android:checkable="true"
-          android:checked="true"/>    
+          android:checked="true"/>
+          
+     <item android:id="@+id/menu3"
+          android:title="@string/menu3"> 
+          
+        <menu>
+		<group>
+            <item android:id="@+id/menu3_1"
+                  android:title="@string/menu3_1" />
+			<item android:id="@+id/menu3_2"
+				  android:title="@string/menu3_2" />
+			<item android:id="@+id/menu3_3"
+				  android:title="@string/menu3_3" />
+			<item android:id="@+id/menu3_4"
+				  android:title="@string/menu3_4" />
+			<item android:id="@+id/menu3_5"
+				  android:title="@string/menu3_5" />
+		</group>
+        </menu>
+          
+          
+     </item> 
+          
+       
 </menu>

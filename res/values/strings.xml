@@ -8,4 +8,11 @@
   <string name="menu1_1">IGN</string>
   <string name="menu1_2">OTM</string>
   <string name="menu2">GPX</string>
+  <string name="menu3">MockLoc</string>
+  
+  <string name="menu3_1">artigues</string>
+  <string name="menu3_2">salau</string>
+  <string name="menu3_3">estagnous</string>
+  <string name="menu3_4">urets</string>
+  <string name="menu3_5">honeria</string>
 </resources>

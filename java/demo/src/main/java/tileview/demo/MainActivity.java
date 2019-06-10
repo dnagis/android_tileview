@@ -79,9 +79,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 MontValierAriege 42.7899,1.0797
-	double[] coordinates_centre = new double[]{42.7899,1.0797};
-	double[] coordinates_loc = new double[]{42.7899,1.0797}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 MontValierAriege 42.7899,1.0797 StGui 43.7353,3.5473
+	double[] coordinates_centre = new double[]{43.9334,3.7098};
+	double[] coordinates_loc = new double[]{43.9334,3.7098}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -97,6 +97,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	List<Point> points_gpx;
 	PopupMenu popup;
 	MenuInflater inflater;
+	boolean afficheGPX;
 	
 	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
     private static final int MIN_DIST = 1; //float: minimum distance between location updates, in meters
@@ -110,7 +111,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
 		myButton = (ToggleButton)  findViewById(R.id.bouton2);
-		
+		afficheGPX = true;
 
 		
 		maBDD = new BaseDeDonnees(this);
@@ -152,7 +153,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		NORTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)row_0/zoom))));
 		SOUTH = Math.toDegrees(Math.atan(Math.sinh(Math.PI * (1 - 2 * (double)(row_0+n_tiles_y)/zoom))));
 		
-		//Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
+		Log.d("vvnx", "onCreate, tile_loc_x=" + tile_loc_x + " tile_loc_y=" + tile_loc_y + " col_0=" + col_0 + " row_0=" + row_0);
 		//Log.d("vvnx", "onCreate, mes boundaries calculées: WEST=" + WEST + " EAST=" + EAST + " NORTH=" + NORTH + " SOUTH=" + SOUTH);
 		
 		//if (tileView == null) Log.d("vvnx", "createTileViewMain tileview est null...");
@@ -186,8 +187,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		//MarkerPlugin pour location mark		
 		markerPluginLoc = tileView.getPlugin(MarkerPluginLoc.class); 
 		//ces xy tiennent compte de la scale. normalement on doit être à 1 car on vient de builder une TileView		 
-		int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_loc[1]);
-		int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_loc[0]);
+		int x = coordinatePlugin.longitudeToX_at_scale_1_vvnx(coordinates_centre[1]);
+		int y = coordinatePlugin.latitudeToY_at_scale_1_vvnx(coordinates_centre[0]);
 		//Log.d("vvnx", "marker a ajouter a latlng=" + coordinates_loc[0] + "," + coordinates_loc[1] + " avec x y = " + x + " " +y);			
 		ImageView markerLocation = new ImageView(this);
 		markerLocation.setImageResource(R.drawable.marker); //le png
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 
 		//Creation de la liste des points gpx de la trace la plus proche(assets/traces.gpx) voir la classe GPXReader
 		points_gpx = new ArrayList<>();		
-		GpxReader gpxReader = new GpxReader(this, coordinates_loc);
+		GpxReader gpxReader = new GpxReader(this, coordinates_centre);
 		ArrayList<double[]> sites = gpxReader.getgpx();		
 		for (double[] coordinate : sites) {
 		  Point point = new Point();
@@ -213,6 +214,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		  markerGpx.setImageResource(R.drawable.dot);
 		  markerPluginGpx.addMarker(markerGpx, point.x, point.y, -0.5f, -1f, 0, 0);
 		}
+		
+		markerPluginGpx.toggleVisibility(afficheGPX);
 	}
 
   
@@ -267,13 +270,43 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			};
             return true;
         case R.id.menu2:
-			markerPluginGpx.toggleVisibility(!item.isChecked());
-			item.setChecked(!item.isChecked());
+			afficheGPX = !afficheGPX;
+			markerPluginGpx.toggleVisibility(afficheGPX);
+			item.setChecked(afficheGPX);
+			return true;
+		case R.id.menu3_1:
+			reCreateTVonLoc(42.7031,1.3508);
+			return true;
+		case R.id.menu3_2:
+			reCreateTVonLoc(42.7397,1.1310);
+			return true;
+		case R.id.menu3_3:
+			reCreateTVonLoc(42.79740,1.07235);
+			return true;
+		case R.id.menu3_4:
+			reCreateTVonLoc(42.7895,0.9263);
+			return true;
+		case R.id.menu3_5:
+			reCreateTVonLoc(42.8181,0.8065);
 			return true;	
         default:
             return false;
 		}
 	}
+	
+	public void reCreateTVonLoc(double y_deg, double x_deg) {
+		coordinates_centre[0] = y_deg;
+		coordinates_centre[1] = x_deg;
+		coordinatePlugin = null; 
+		markerPluginLoc.removeMarkers();
+		markerPluginLoc = null;
+		tileView = null;
+		createTileviewMain();		
+		//ToDo: sticky bitmaps qui font chier... invalidate???
+		tileView.setScale(1.0f);		
+	}
+	
+	
 	
 	/**
 	 *
