@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.ContentValues;
 
 
-//sqlite3 /data/data/com.example.android.hellogps/databases/loc.db "select datetime(FIXTIME/1000, 'unixepoch', 'localtime'), LAT, LONG, ACC from loc;"
+//sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC from loc;"
 
 public class BaseDeDonnees extends SQLiteOpenHelper {
 

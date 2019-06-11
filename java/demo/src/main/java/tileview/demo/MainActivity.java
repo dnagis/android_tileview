@@ -5,7 +5,7 @@ le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
 
-sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME/1000, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
+sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
  
 */
 package tileview.demo;
