@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--https://developer.android.com/guide/topics/resources/menu-resource-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+	 <item android:id="@+id/min_time"
+          android:title="@string/menu4">
+        <menu>
+		<group android:checkableBehavior="single">
+            <item android:id="@+id/menu4_1"
+                  android:title="@string/menu4_1" />
+                  
+			<item android:id="@+id/menu4_2"
+				  android:title="@string/menu4_2" 
+				  android:checked="true" />
+			<item android:id="@+id/menu4_3"
+				  android:title="@string/menu4_3" />
+			<item android:id="@+id/menu4_4"
+				  android:title="@string/menu4_4" />
+		</group>
+        </menu>
+    </item> 
     <item android:id="@+id/tiles"
           android:title="@string/menu1">
         <menu>

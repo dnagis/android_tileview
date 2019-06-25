@@ -79,9 +79,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 fucking bartas->43.9161529541016,3.73525381088257 MontValierAriege 42.7899,1.0797 StGui 43.7353,3.5473
-	double[] coordinates_centre = new double[]{43.9334,3.7098};
-	double[] coordinates_loc = new double[]{43.9334,3.7098}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 stVeran->44.69856,6.87092
+	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
+	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -99,8 +99,13 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	MenuInflater inflater;
 	boolean afficheGPX;
 	
-	private static final int MIN_TIME = 1000; //long: minimum time interval between location updates, in milliseconds
-    private static final int MIN_DIST = 1; //float: minimum distance between location updates, in meters
+	 //long: minimum time interval between location updates, in milliseconds
+	private static final int MIN_TIME_HIGH = 1000;
+	int MIN_TIME_LOW = 301 * 1000; //301 * 1000 -> un peu plus que 5 min car LoctionManagerService.java: max interval a loc request can have and still be considered "high power" HIGH_POWER_INTERVAL_MS = 5 * 60 * 1000;
+	
+	
+    private static final int MIN_DIST = 0; //float: minimum distance between location updates, in meters
+    private static final int MIN_DIST_BACKGRND = 100; //au on_stop, on_pause, je veux des updates que quand je bouge
 
 
 	@Override
@@ -117,15 +122,13 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		maBDD = new BaseDeDonnees(this);
 		
 		mLocationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
-		
-		
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_HIGH, MIN_DIST, this);		
 		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	
 		if (lastKnownLocationGPS != null) {
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
-		}	
+		}
 		createTileviewMain();		
 	}
 
@@ -222,13 +225,26 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	@Override
 	protected void onResume() {
 		super.onResume();		
-		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, this);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_HIGH, MIN_DIST, this);
 	}	
   
 	@Override
 	protected void onPause() {
 		super.onPause();
+		Log.d("vvnx", "onPause");
+		//mLocationManager.removeUpdates(this);
+		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_LOW, MIN_DIST_BACKGRND, this);
 	}
+	
+	@Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("vvnx", "onStop");
+        //mLocationManager.removeUpdates(this);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_LOW, MIN_DIST_BACKGRND, this);
+    }
+	
+	
 	
 	
 	/**
@@ -255,17 +271,15 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		//menu1_1 et menu1_2 mutuellement exclusifs car <group android:checkableBehavior="single">
         case R.id.menu1_1:			
             if (!item.isChecked()) {
-				Log.d("vvnx", "menu IGN");
+				//Log.d("vvnx", "menu IGN");
 				item.setChecked(true);
-				//Do = switch to IGN tiles
 				tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
 			};
             return true;
         case R.id.menu1_2:
             if (!item.isChecked()) {
-				Log.d("vvnx", "menu OTM");
+				//Log.d("vvnx", "menu OTM");
 				item.setChecked(true);
-				//Do = switch to OpenTopoMaps tiles
 				tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
 			};
             return true;
@@ -275,19 +289,47 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			item.setChecked(afficheGPX);
 			return true;
 		case R.id.menu3_1:
-			reCreateTVonLoc(42.7031,1.3508);
+			reCreateTVonLoc(44.69819,6.87298);
 			return true;
 		case R.id.menu3_2:
-			reCreateTVonLoc(42.7397,1.1310);
+			reCreateTVonLoc(44.8646,6.7202);
 			return true;
 		case R.id.menu3_3:
-			reCreateTVonLoc(42.79740,1.07235);
+			reCreateTVonLoc(44.6843,6.6721);
 			return true;
 		case R.id.menu3_4:
-			reCreateTVonLoc(42.7895,0.9263);
+			reCreateTVonLoc(44.7536,6.9248);
 			return true;
 		case R.id.menu3_5:
-			reCreateTVonLoc(42.8181,0.8065);
+			reCreateTVonLoc(44.7945,6.6460);
+			return true;
+		case R.id.menu4_1:
+		    if (!item.isChecked()) {
+				Log.d("vvnx", "menu 4 1");
+				item.setChecked(true);
+				MIN_TIME_LOW = 2 * 60 * 1000;
+			};			
+			return true;
+		case R.id.menu4_2:
+		    if (!item.isChecked()) {
+				Log.d("vvnx", "menu 4 2");
+				item.setChecked(true);
+				MIN_TIME_LOW = 301 * 1000;
+			};			
+			return true;
+		case R.id.menu4_3:
+		    if (!item.isChecked()) {
+				Log.d("vvnx", "menu 4 3");
+				item.setChecked(true);
+				MIN_TIME_LOW = 10 * 60 * 1000;
+			};			
+			return true;
+		case R.id.menu4_4:
+		    if (!item.isChecked()) {
+				Log.d("vvnx", "menu 4 4");
+				item.setChecked(true);
+				MIN_TIME_LOW = 30 * 60 * 1000;
+			};			
 			return true;	
         default:
             return false;

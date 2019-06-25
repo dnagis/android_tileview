@@ -3,16 +3,24 @@
   <string name="init_txtview">Pas encore d\'infos</string>  
   <string name="button_txt">&gt;&lt;</string>  
   <string name="bgcl">Background color</string>
-  <string name="fgcl">Foreground color</string>
-  <string name="menu1">tiles</string>
+  <string name="fgcl">Foreground color</string>  
+  
+  <string name="menu4">MinTime</string>
+  <string name="menu4_1">2 min</string>
+  <string name="menu4_2">5 min</string>
+  <string name="menu4_3">10 min</string>
+  <string name="menu4_4">30 min</string>
+  
+  <string name="menu1">Tiles</string>
   <string name="menu1_1">IGN</string>
   <string name="menu1_2">OTM</string>
-  <string name="menu2">GPX</string>
-  <string name="menu3">MockLoc</string>
   
-  <string name="menu3_1">artigues</string>
-  <string name="menu3_2">salau</string>
-  <string name="menu3_3">estagnous</string>
-  <string name="menu3_4">urets</string>
-  <string name="menu3_5">honeria</string>
+  <string name="menu2">GPX</string>
+  
+  <string name="menu3">MockLoc</string>  
+  <string name="menu3_1">1</string>
+  <string name="menu3_2">2</string>
+  <string name="menu3_3">3</string>
+  <string name="menu3_4">4</string>
+  <string name="menu3_5">5</string>
 </resources>
