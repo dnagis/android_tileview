@@ -6,15 +6,13 @@
         <menu>
 		<group android:checkableBehavior="single">
             <item android:id="@+id/menu4_1"
-                  android:title="@string/menu4_1" />
-                  
+                  android:title="@string/menu4_1" 
+                  android:checked="true"
+                  />                  
 			<item android:id="@+id/menu4_2"
-				  android:title="@string/menu4_2" 
-				  android:checked="true" />
+				  android:title="@string/menu4_2" />
 			<item android:id="@+id/menu4_3"
 				  android:title="@string/menu4_3" />
-			<item android:id="@+id/menu4_4"
-				  android:title="@string/menu4_4" />
 		</group>
         </menu>
     </item> 

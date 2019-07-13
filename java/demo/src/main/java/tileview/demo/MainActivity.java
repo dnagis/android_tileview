@@ -101,11 +101,11 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	
 	 //long: minimum time interval between location updates, in milliseconds
 	private static final int MIN_TIME_HIGH = 1000;
-	int MIN_TIME_LOW = 301 * 1000; //301 * 1000 -> un peu plus que 5 min car LoctionManagerService.java: max interval a loc request can have and still be considered "high power" HIGH_POWER_INTERVAL_MS = 5 * 60 * 1000;
+	int MIN_TIME_LOW = 10 * 1000; //301 * 1000 -> un peu plus que 5 min car LoctionManagerService.java: max interval a loc request can have and still be considered "high power" HIGH_POWER_INTERVAL_MS = 5 * 60 * 1000;
 	
 	
     private static final int MIN_DIST = 0; //float: minimum distance between location updates, in meters
-    private static final int MIN_DIST_BACKGRND = 100; //au on_stop, on_pause, je veux des updates que quand je bouge
+    private static final int MIN_DIST_BACKGRND = 0; //au on_stop, on_pause
 
 
 	@Override
@@ -305,28 +305,18 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			return true;
 		case R.id.menu4_1:
 		    if (!item.isChecked()) {
-				Log.d("vvnx", "menu 4 1");
 				item.setChecked(true);
-				MIN_TIME_LOW = 2 * 60 * 1000;
+				MIN_TIME_LOW = 10 * 1000;
 			};			
 			return true;
 		case R.id.menu4_2:
 		    if (!item.isChecked()) {
-				Log.d("vvnx", "menu 4 2");
 				item.setChecked(true);
 				MIN_TIME_LOW = 301 * 1000;
 			};			
 			return true;
 		case R.id.menu4_3:
 		    if (!item.isChecked()) {
-				Log.d("vvnx", "menu 4 3");
-				item.setChecked(true);
-				MIN_TIME_LOW = 10 * 60 * 1000;
-			};			
-			return true;
-		case R.id.menu4_4:
-		    if (!item.isChecked()) {
-				Log.d("vvnx", "menu 4 4");
 				item.setChecked(true);
 				MIN_TIME_LOW = 30 * 60 * 1000;
 			};			
