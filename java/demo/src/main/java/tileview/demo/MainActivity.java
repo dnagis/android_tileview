@@ -129,7 +129,10 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
 		}
-		createTileviewMain();		
+		createTileviewMain();
+		
+		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
+		startForegroundService(new Intent(this, ForegroundService.class));		
 	}
 
 	public void createTileviewMain() {
@@ -320,6 +323,11 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 				item.setChecked(true);
 				MIN_TIME_LOW = 30 * 60 * 1000;
 			};			
+			return true;
+		case R.id.menu5:
+		    Log.d("vvnx", "menu 5 (quit)");		
+		    stopService(new Intent(this, ForegroundService.class));
+		    onStop();		    
 			return true;	
         default:
             return false;

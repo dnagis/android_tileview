@@ -53,6 +53,9 @@
           
           
      </item> 
+     
+     <item android:id="@+id/menu5"
+          android:title="@string/menu5" />
           
        
 </menu>

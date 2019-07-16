@@ -24,6 +24,7 @@
       <activity android:name=".ScalingScrollViewDemoTiger" />
       <activity android:name=".TileViewDemoAdvanced" />
       <activity android:name=".TileViewDemoSimple" />
+      <service android:name=".ForegroundService" />
     </application>
 
 </manifest>

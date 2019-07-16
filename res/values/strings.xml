@@ -23,4 +23,6 @@
   <string name="menu3_3">3</string>
   <string name="menu3_4">4</string>
   <string name="menu3_5">5</string>
+  
+  <string name="menu5">Stop</string>
 </resources>
