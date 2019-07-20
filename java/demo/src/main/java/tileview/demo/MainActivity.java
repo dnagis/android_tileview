@@ -67,21 +67,18 @@ import android.location.LocationManager;
 
 public class MainActivity extends Activity implements LocationListener, PopupMenu.OnMenuItemClickListener {
 	
-	//coordonnées: https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames --> en python, mon script latlong, 
-	//upper left tile : COL0=33478 ROW0=23948 43.53262042681010 3.90014648437500
-	//si j'ai n tiles en horizontal (x, col) et m tiles en vertical (y, row), il faut calculer les coordonnées upper left (ce que latlng donne) de la première tile out of range en bas à droite
-	// c'est à dire la tile n° x' y' avec x'=x+n et y'=y+m 
-	/*public static final double NORTH = 43.95723647202563 ... WEST = 3.68041992187500 ... SOUTH = 43.85829677916184 EAST = 3.81774902343750;*/
-	//
+
+
+	//Sur la SD tu ne peux pas mettre plus de 21000 fichier par dir (que le nom soit ign-32830_24162.jpg ou 32830_24162.jpg ça change rien)
 	
 	String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
 	double WEST;
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 stVeran->44.69856,6.87092 Abries->44.79487,6.92705
-	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
-	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 vignemale->42.77449,-0.14729 respomuso->42.81492,-0.29097 MalhArrouy->42.78428,-0.07257
+	double[] coordinates_centre = new double[]{42.8894,-0.1151};
+	double[] coordinates_loc = new double[]{42.8894,-0.1151}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -292,19 +289,19 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			item.setChecked(afficheGPX);
 			return true;
 		case R.id.menu3_1:
-			reCreateTVonLoc(44.69819,6.87298);
+			reCreateTVonLoc(42.83881,-0.29037);
 			return true;
 		case R.id.menu3_2:
-			reCreateTVonLoc(44.8646,6.7202);
+			reCreateTVonLoc(42.77373,-0.14724);
 			return true;
 		case R.id.menu3_3:
-			reCreateTVonLoc(44.6843,6.6721);
+			reCreateTVonLoc(42.69109,-0.03387);
 			return true;
 		case R.id.menu3_4:
-			reCreateTVonLoc(44.7536,6.9248);
+			reCreateTVonLoc(42.81492,-0.29097);
 			return true;
 		case R.id.menu3_5:
-			reCreateTVonLoc(44.7945,6.6460);
+			reCreateTVonLoc(42.78428,-0.07257);
 			return true;
 		case R.id.menu4_1:
 		    if (!item.isChecked()) {
