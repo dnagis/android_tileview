@@ -71,14 +71,15 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 
 	//Sur la SD tu ne peux pas mettre plus de 21000 fichier par dir (que le nom soit ign-32830_24162.jpg ou 32830_24162.jpg ça change rien)
 	
-	String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+	//String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+	String tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
 	double WEST;
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 vignemale->42.77449,-0.14729 respomuso->42.81492,-0.29097 MalhArrouy->42.78428,-0.07257
-	double[] coordinates_centre = new double[]{42.8894,-0.1151};
-	double[] coordinates_loc = new double[]{42.8894,-0.1151}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 euskadi 43.07190,-1.51345
+	double[] coordinates_centre = new double[]{43.07190,-1.51345};
+	double[] coordinates_loc = new double[]{43.07190,-1.51345}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
