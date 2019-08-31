@@ -22,10 +22,11 @@
 		<group android:checkableBehavior="single">
             <item android:id="@+id/menu1_1"
                   android:title="@string/menu1_1"
+                  android:checked="true" 
                   />
 			<item android:id="@+id/menu1_2"
 				  android:title="@string/menu1_2" 
-				  android:checked="true" />
+				  />
 		</group>
         </menu>
     </item>      

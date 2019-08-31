@@ -71,15 +71,15 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 
 	//Sur la SD tu ne peux pas mettre plus de 21000 fichier par dir (que le nom soit ign-32830_24162.jpg ou 32830_24162.jpg ça change rien)
 	
-	//String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
-	String tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
+	String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+	//String tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
 	double WEST;
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 euskadi 43.07190,-1.51345
-	double[] coordinates_centre = new double[]{43.07190,-1.51345};
-	double[] coordinates_loc = new double[]{43.07190,-1.51345}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 Valgaudemar 44.81813,6.19646
+	double[] coordinates_centre = new double[]{44.81813,6.19646};
+	double[] coordinates_loc = new double[]{44.81813,6.19646}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -114,7 +114,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		setContentView(R.layout.activity_demos_tileview);
 		infoTextView = (TextView) findViewById(R.id.textview1);
 		myButton = (ToggleButton)  findViewById(R.id.bouton2);
-		afficheGPX = true;
+		afficheGPX = false;
 
 		
 		maBDD = new BaseDeDonnees(this);
@@ -290,13 +290,13 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			item.setChecked(afficheGPX);
 			return true;
 		case R.id.menu3_1:
-			reCreateTVonLoc(42.83881,-0.29037);
+			reCreateTVonLoc(44.81813,6.19646);
 			return true;
 		case R.id.menu3_2:
-			reCreateTVonLoc(42.77373,-0.14724);
+			reCreateTVonLoc(44.48271,6.41672);
 			return true;
 		case R.id.menu3_3:
-			reCreateTVonLoc(42.69109,-0.03387);
+			reCreateTVonLoc(44.72210,6.43404);
 			return true;
 		case R.id.menu3_4:
 			reCreateTVonLoc(42.81492,-0.29097);
