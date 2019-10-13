@@ -5,6 +5,7 @@ le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
 
+
 sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
  
 */
@@ -78,8 +79,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double NORTH;
 	double SOUTH;
 	//12rpdl->43.93421087,3.71005111 Valgaudemar 44.81813,6.19646
-	double[] coordinates_centre = new double[]{44.81813,6.19646};
-	double[] coordinates_loc = new double[]{44.81813,6.19646}; //attention ne pas faire coordinates_loc = coordinates_centre
+	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
+	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 

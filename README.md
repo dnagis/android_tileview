@@ -1,5 +1,11 @@
 TileView remasterisé pour passer dans l'aosp
 
+adb uninstall tileview.demo
+adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
+pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+
+
+
 problème de performance pour les paths de grande taille: (pathplugin: canvas.drawpath()
 
 https://stackoverflow.com/questions/15039829/drawing-paths-and-hardware-acceleration
@@ -34,9 +40,7 @@ format gpx: assets/traces.gpx
 						
 						
 
-adb uninstall tileview.demo
-adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
-pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+
 
 ****HOWTO res/drawables -> trouver, créer
 
