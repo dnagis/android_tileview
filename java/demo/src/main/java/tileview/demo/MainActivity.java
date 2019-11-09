@@ -72,7 +72,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 
 	//Sur la SD tu ne peux pas mettre plus de 21000 fichier par dir (que le nom soit ign-32830_24162.jpg ou 32830_24162.jpg ça change rien)
 	
-	String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+	//String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg"; //la carte SD (la vraie, physique)
+	String tiles_provider = "/storage/emulated/0/tiles/ign/ign-%1$d_%2$d.jpg"; //le storage local non SD (a besoin de l'autorisation READ_EXTERNAL_STORAGE aussi)
 	//String tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
 	double WEST;
 	double EAST;
