@@ -1,5 +1,9 @@
 /*
  * 
+adb uninstall tileview.demo
+
+adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
+
 le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView(R.layout.activity_demos_tileview);
 
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
@@ -79,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 Valgaudemar 44.81813,6.19646
-	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
-	double[] coordinates_loc = new double[]{43.93421087,3.71005111}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 Die->44.756547,5.370898
+	double[] coordinates_centre = new double[]{44.756547,5.370898};
+	double[] coordinates_loc = new double[]{44.756547,5.370898}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -276,14 +280,14 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
             if (!item.isChecked()) {
 				//Log.d("vvnx", "menu IGN");
 				item.setChecked(true);
-				tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg";
+				tiles_provider = "/storage/emulated/0/tiles/ign/ign-%1$d_%2$d.jpg";
 			};
             return true;
         case R.id.menu1_2:
             if (!item.isChecked()) {
 				//Log.d("vvnx", "menu OTM");
 				item.setChecked(true);
-				tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
+				tiles_provider = "/storage/emulated/0/tiles/otm/otm-%1$d_%2$d.png";
 			};
             return true;
         case R.id.menu2:
