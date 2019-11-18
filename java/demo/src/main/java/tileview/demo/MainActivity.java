@@ -83,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 Die->44.756547,5.370898
-	double[] coordinates_centre = new double[]{44.756547,5.370898};
-	double[] coordinates_loc = new double[]{44.756547,5.370898}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 StGui->43.733918, 3.549678
+	double[] coordinates_centre = new double[]{43.733918, 3.549678};
+	double[] coordinates_loc = new double[]{43.733918, 3.549678}; //attention ne pas faire coordinates_loc = coordinates_centre
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
