@@ -83,9 +83,10 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 StGui->43.733918, 3.549678
-	double[] coordinates_centre = new double[]{43.733918, 3.549678};
-	double[] coordinates_loc = new double[]{43.733918, 3.549678}; //attention ne pas faire coordinates_loc = coordinates_centre
+	//12rpdl->43.93421087,3.71005111 aigoual 44.122962,3.579226 StGui->43.733918, 3.549678
+	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate()
+	double[] coordinates_centre = new double[]{44.122962,3.579226};
+	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
 
@@ -129,7 +130,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME_HIGH, MIN_DIST, this);		
 		Location lastKnownLocationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 	
-		if (lastKnownLocationGPS != null) {
+		if (fonctionnement_normal && lastKnownLocationGPS != null) {
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
 		}
