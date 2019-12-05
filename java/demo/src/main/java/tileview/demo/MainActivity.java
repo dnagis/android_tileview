@@ -83,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 aigoual 44.122962,3.579226 StGui->43.733918, 3.549678
+	//12rpdl->43.93421087,3.71005111 LodeveCirqueBoutMonde 43.787578,3.379669
 	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate()
-	double[] coordinates_centre = new double[]{44.122962,3.579226};
+	double[] coordinates_centre = new double[]{43.787578,3.379669};
 	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
@@ -113,6 +113,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
     private static final int MIN_DIST_BACKGRND = 0; //au on_stop, on_pause
 
 
+	//éviter de repasser là dedans à chaque rotation (portrait/paysage) de l'écran -> manifest: android:configChanges="orientation|screenLayout|screenSize"
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		//protected void onCreate(@Nullable Bundle savedInstanceState) {
