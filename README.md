@@ -2,9 +2,10 @@ TileView remasterisé pour passer dans l'aosp
 
 adb uninstall tileview.demo
 adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
+pm grant tileview.demo android.permission.ACCESS_FINE_LOCATIO
 pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 
-
+obb -> voir com.qozix.tileview.io.StreamProviderObbVvnx; j'avais pas tout noté mais ça doit être faisable!
 
 problème de performance pour les paths de grande taille: (pathplugin: canvas.drawpath()
 
