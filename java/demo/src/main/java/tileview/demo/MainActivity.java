@@ -83,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//12rpdl->43.93421087,3.71005111 LodeveCirqueBoutMonde 43.787578,3.379669
+	//12rpdl->43.93421087,3.71005111 Mzmt->43.500348,2.375236 LodeveCirqueBoutMonde 43.787578,3.379669
 	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate()
-	double[] coordinates_centre = new double[]{43.93421087,3.71005111};
+	double[] coordinates_centre = new double[]{43.500348,2.375236};
 	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
