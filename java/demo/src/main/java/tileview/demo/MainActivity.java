@@ -83,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//arles->43.66815,4.62878 die->44.7553,5.3713 
+	//arles->43.66815,4.62878 die->44.75441,5.37030 
 	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate()
-	double[] coordinates_centre = new double[]{43.66815,4.62878};
+	double[] coordinates_centre = new double[]{44.75441,5.37030};
 	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
@@ -298,7 +298,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			item.setChecked(afficheGPX);
 			return true;
 		case R.id.menu3_1:
-			reCreateTVonLoc(44.81813,6.19646);
+			reCreateTVonLoc(44.75441,5.37030);
 			return true;
 		case R.id.menu3_2:
 			reCreateTVonLoc(44.48271,6.41672);
