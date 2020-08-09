@@ -11,6 +11,8 @@ LOCAL_PACKAGE_NAME := tv_vvnx
 
 LOCAL_SDK_VERSION := current
 
+LOCAL_MIN_SDK_VERSION := 27
+
 LOCAL_DEX_PREOPT := false
 
 include $(BUILD_PACKAGE)

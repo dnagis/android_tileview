@@ -2,12 +2,12 @@
  * 
 adb uninstall tileview.demo
 
-adb install out/target/product/mido/system/app/tv_vvnx/tv_vvnx.apk
+adb install out/target/product/generic_arm64/system/app/tv_vvnx/tv_vvnx.apk
 
 le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView(R.layout.activity_demos_tileview);
 
-pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
-pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
+adb shell pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+adb shell pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
 
 
 sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
@@ -83,9 +83,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//arles->43.66815,4.62878 die->44.75441,5.37030 
-	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate()
-	double[] coordinates_centre = new double[]{44.75441,5.37030};
+	//lozere->44.4321,3.7285 >arles->43.66815,4.62878 die->44.75441,5.37030 
+	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate() pour te permettre de vérifier que tu as les bonnes tiles
+	double[] coordinates_centre = new double[]{44.4321,3.7285};
 	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
@@ -135,6 +135,8 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			coordinates_loc[0] = lastKnownLocationGPS.getLatitude();
 			coordinates_loc[1] = lastKnownLocationGPS.getLongitude();
 		}
+		
+		if (!fonctionnement_normal) infoTextView.setText("ATTENTION TEST MODE");
 		createTileviewMain();
 		
 		//foreground service pour importance (am package-importance com.example.android.hellogps) à 125
@@ -456,7 +458,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		Calendar cal = Calendar.getInstance();
 		//Log.d("vvnx", "essai time="+sdf.format(location.getTime()));
 		
-		infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
+		if (fonctionnement_normal) infoTextView.setText(sdf.format(location.getTime()) + " || " + (int)location.getAccuracy());
 		
 		//update markerpos seulement si bouton gps on, parce que fait sauter tileview quand redraw, chiant pour browser.
 		if ( myButton.isChecked() == true ) markerPluginLoc.updateMarkerPos(x, y);     
