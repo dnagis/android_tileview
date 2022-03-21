@@ -1,13 +1,23 @@
 /*
  * 
 adb uninstall tileview.demo
-
 adb install out/target/product/generic_arm64/system/app/tv_vvnx/tv_vvnx.apk
-
-le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView(R.layout.activity_demos_tileview);
 
 adb shell pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
 adb shell pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
+* 
+* 
+Android 11 (POCO X3 Pro) il faut nouvelle permission pour accéder à /sdcard/ et faire l'autorisation à la main (grant en CLI pas
+* possible) pour tout les fichiers
+* sinon c'est que multimedia:
+* <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+*
+* 
+* 
+* 
+le layout est dans res/layout/activity_demos_tileview.xml --> car setContentView(R.layout.activity_demos_tileview);
+
+
 
 
 sqlite3 /data/data/tileview.demo/databases/loc.db "select datetime(FIXTIME, 'unixepoch', 'localtime'), LAT, LONG, ACC, ALT from loc;"
