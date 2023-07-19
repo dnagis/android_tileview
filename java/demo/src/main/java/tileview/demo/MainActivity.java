@@ -93,9 +93,9 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	double EAST;
 	double NORTH;
 	double SOUTH;
-	//ganges->43.93338,3.71012 alpilles->43.7446,4.8144 camargue->43.5112,4.6280 lozere->44.4321,3.7285 die->44.75441,5.37030 
+	//vauvert: 43.692825, 4.278145 grau: 43.529198 ganges->43.93338,3.71012 
 	boolean fonctionnement_normal = true; //pour bloquer l utilisation de lastknownlocation dans onCreate() pour te permettre de vérifier que tu as les bonnes tiles
-	double[] coordinates_centre = new double[]{43.93338,3.71012};
+	double[] coordinates_centre = new double[]{43.692825, 4.278145};
 	double[] coordinates_loc = Arrays.copyOf(coordinates_centre, 2); //une copie de coordinates_centre (coordinates_loc = coordinates_centre pas possible)
 	int n_tiles_x, n_tiles_y, col_0, row_0, sizePixelW, sizePixelH, tile_loc_x, tile_loc_y;
 	
@@ -310,10 +310,10 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 			item.setChecked(afficheGPX);
 			return true;
 		case R.id.menu3_1:
-			reCreateTVonLoc(44.75441,5.37030);
+			reCreateTVonLoc(43.692825,4.278145);
 			return true;
 		case R.id.menu3_2:
-			reCreateTVonLoc(44.48271,6.41672);
+			reCreateTVonLoc(43.529198,4.142017);
 			return true;
 		case R.id.menu3_3:
 			reCreateTVonLoc(44.72210,6.43404);
