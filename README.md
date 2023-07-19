@@ -2,13 +2,20 @@ TileView remasterisé pour passer dans l'aosp
 
 
 
--Problème du n max de tiles dans un folder qui limite les marches dans des endroits différents:
+-Problème du n max de tiles dans un folder qui limite la possibilité de randos dans des endroits éloignés:
 	-Juillet 2022 j'avais dans le dossier IGN 6600 tuiles 135Mo ça passait...
-	-Solution idée 1 (qui date de quand j'ai bricolé tv la première fois):
+	
+	-Solution 2 (2023) avoir dans /sdcard/tiles/ plusieurs dirs et sélectionner le dir à utiliser (var String tiles_provider)
+	à la main (via menu)
+	Nom des dirs: 
+	/sdcard/tiles/ign_1
+	/sdcard/tiles/ign_2
+	...
+
+
+	-Solution 1 (qui date de quand j'ai bricolé tv la première fois):
 	obb files -> voir com.qozix.tileview.io.StreamProviderObbVvnx; j'avais pas tout noté mais ça doit être faisable!
-	-Solution idée 2 (2022) vallée d'Aspe: avoir dans /sdcard/tiles/les mêmes directories que ceux de mon ordi, et la sélection
-	de la path se ferait soit en fonction de la première loc (si la loc est dans ce rect -> ce dir), soit à la main (le menu
-	de sélection que j'avais fait)
+
 	
 	
 

@@ -3,12 +3,12 @@
 adb uninstall tileview.demo
 adb install out/target/product/generic_arm64/system/app/tv_vvnx/tv_vvnx.apk
 
-adb shell pm grant tileview.demo android.permission.READ_EXTERNAL_STORAGE
+
 adb shell pm grant tileview.demo android.permission.ACCESS_FINE_LOCATION
 * 
 * 
-Android 11 (POCO X3 Pro) il faut nouvelle permission pour accéder à /sdcard/ et faire l'autorisation à la main (grant en CLI pas
-* possible) pour tout les fichiers
+Android 11 (POCO X3 Pro, Pixel) il faut nouvelle permission pour accéder à /sdcard/ +
+  faire l'autorisation à la main (grant en CLI pas possible) pour tout les fichiers
 * sinon c'est que multimedia:
 * <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 *
@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 	//Sur la SD tu ne peux pas mettre plus de 21000 fichier par dir (que le nom soit ign-32830_24162.jpg ou 32830_24162.jpg ça change rien)
 	
 	//String tiles_provider = "/storage/BCC1-1AEC/tiles/ign/ign-%1$d_%2$d.jpg"; //la carte SD (la vraie, physique)
-	String tiles_provider = "/storage/emulated/0/tiles/ign/ign-%1$d_%2$d.jpg"; //le storage local non SD (a besoin de l'autorisation READ_EXTERNAL_STORAGE aussi)
+	String tiles_provider = "/storage/emulated/0/tiles/ign_1/ign-%1$d_%2$d.jpg"; //le storage local non SD (a besoin de l'autorisation READ_EXTERNAL_STORAGE aussi)
 	//String tiles_provider = "/storage/BCC1-1AEC/tiles/otm/otm-%1$d_%2$d.png";
 	double WEST;
 	double EAST;
@@ -292,16 +292,16 @@ public class MainActivity extends Activity implements LocationListener, PopupMen
 		//menu1_1 et menu1_2 mutuellement exclusifs car <group android:checkableBehavior="single">
         case R.id.menu1_1:			
             if (!item.isChecked()) {
-				//Log.d("vvnx", "menu IGN");
+				//Log.d("vvnx", "menu ign_1");
 				item.setChecked(true);
-				tiles_provider = "/storage/emulated/0/tiles/ign/ign-%1$d_%2$d.jpg";
+				tiles_provider = "/storage/emulated/0/tiles/ign_1/ign-%1$d_%2$d.jpg";
 			};
             return true;
         case R.id.menu1_2:
             if (!item.isChecked()) {
-				//Log.d("vvnx", "menu OTM");
+				//Log.d("vvnx", "menu ign_2");
 				item.setChecked(true);
-				tiles_provider = "/storage/emulated/0/tiles/otm/otm-%1$d_%2$d.png";
+				tiles_provider = "/storage/emulated/0/tiles/ign_2/ign-%1$d_%2$d.jpg";
 			};
             return true;
         case R.id.menu2:

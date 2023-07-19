@@ -12,8 +12,8 @@
 
   
   <string name="menu1">Tiles</string>
-  <string name="menu1_1">IGN</string>
-  <string name="menu1_2">OTM</string>
+  <string name="menu1_1">ign_1</string>
+  <string name="menu1_2">ign_2</string>
   
   <string name="menu2">GPX</string>
   
